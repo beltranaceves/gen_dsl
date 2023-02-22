@@ -5,12 +5,12 @@ defmodule HexTemplate do
 
   @doc """
   Hello world.
-
+  
   ## Examples
-
+  
       iex> HexTemplate.hello()
       :world
-
+  
   """
   def hello do
     :world
