@@ -1,6 +1,6 @@
-defmodule HexTemplate do
+defmodule GenDSL do
   @moduledoc """
-  Documentation for `HexTemplate`.
+  Documentation for `GenDSL`.
   """
 
   @doc """
@@ -8,7 +8,7 @@ defmodule HexTemplate do
 
   ## Examples
 
-      iex> HexTemplate.hello()
+      iex> GenDSL.hello()
       :world
 
   """
