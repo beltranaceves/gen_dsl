@@ -15,4 +15,11 @@ defmodule GenDSL do
   def hello do
     :world
   end
+
+  # A function that reads a JSON file
+  # and returns a map.
+  def read_json(filename) do
+    {:ok, json} = File.read(filename)
+    Poison.decode!(json)
+  end
 end
