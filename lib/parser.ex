@@ -13,10 +13,13 @@ defmodule GenDSL.Parser do
   def parse(blueprint) do
     IO.puts("Decoding Blueprint")
 
-    Poison.decode!(blueprint)
-    |> Enum.map(fn blueprint_map ->
-      String.to_existing_atom(blueprint_map["type"]).new(blueprint_map)
-    end)
+    # Poison.decode!(blueprint)
+    # |> Enum.map(fn blueprint_map ->
+    #   String.to_existing_atom(blueprint_map["type"]).new(blueprint_map)
+    # end)
+    elements = Poison.Parser.parse!(blueprint)
+    # IO.puts(elements)
+    IO.inspect(elements)
   end
 
   def struct_to_command(element = %:Html{}) do

@@ -1,14 +1,33 @@
-defmodule Html do
+# TODO: separate model into different files within app context
+# TODO: study specific case of Schema, as reference instead of map as it uses all of the same elements/fields of the command. Search how to cast nested Ecto Schemas
+defmodule Application do
   use Ecto.Schema
   import Ecto.Changeset
 
-  schema ":Html" do
-    has_one :contex, Context
-    has_one :schema, Schema
-    field :web, :string
+  schema "Application" do
+    field :path, :string
+    field :umbrella, :boolean
+    field :app, :string
+    field :module, :string
+    field :database, :string # TODO: Check values with changeset validation: postgres, mysql, mssql, sqlite3
+    field :no_assets, :boolean
+    field :no_esbuild, :boolean
+    field :no_tailwind, :boolean
+    field :no_dashboard, :boolean
+    field :no_ecto, :boolean
+    field :no_gettext, :boolean
+    field :no_html, :boolean
+    field :no_live, :boolean
+    field :no_mailer, :boolean
+    field :binary_id, :boolean
+    field :verbose, :boolean
+    field :version, :boolean # TODO: check if this still runs the rest of the command
+    field :install, :boolean
+    field :no_install, :boolean
+    field :command, default: "new"
   end
   @required_fields ~w[]a
-  @optional_fields ~w[avg_pass, avg_fail, total_students ]a
+  @optional_fields ~w[]a
 
 
   def changeset(struct, params \\ %{}) do
@@ -17,49 +36,107 @@ defmodule Html do
   end
 end
 
+defmodule Html do
+  use Ecto.Schema
+  import Ecto.Changeset
 
-# Generable elements
-defmodule :Html do
-  defstruct [
-    :context,
-    :schema,
-    :web,
-    "no-context": false,
-    "no-schema": false,
-    command: "html"
-  ]
+  schema "Html" do
+    field :module, :string
+    field :contex, :string
+    field :schema, :map  # {name, table, fields} # TODO: Check values with changeset for valid datatypes in fields
+    field :web, :string
+    field :no_context, :boolean
+    field :no_context, :boolean
+    field :context_app, :string
+    field :command, default: "html"
+  end
+  @required_fields ~w[]a
+  @optional_fields ~w[]a
 
-  use ExConstructor
+
+  def changeset(struct, params \\ %{}) do
+    struct
+    |> cast(params, @optional_fields, required: false )
+  end
 end
 
-defmodule :Schema do
-  defstruct [
-    :fields,
-    "no-migration": false,
-    command: "schema"
-  ]
+defmodule Schema do
+  use Ecto.Schema
+  import Ecto.Changeset
 
-  use ExConstructor
+  schema ":Schema" do
+    field :module, :string
+    field :name, :string
+    field :fields, :map # TODO: Check values with changeset for valid datatypes # TODO: how to handle enums definition
+    field :no_migration, :boolean
+    field :table, :string
+    field :binary_id, :boolean
+    field :command, default: "schema"
+  end
+  @required_fields ~w[]a
+  @optional_fields ~w[]a
+
+  def changeset(struct, params \\ %{}) do
+    struct
+    |> cast(params, @optional_fields, required: false )
+  end
 end
 
-defmodule :Notifier do
-  defstruct [
-    :context,
-    :notifier_name,
-    message_names: [],
-    command: "notifier"
-  ]
+defmodule Notifier do
+  use Ecto.Schema
+  import Ecto.Changeset
 
-  use ExConstructor
+  schema "Notifier" do
+    field :module, :string
+    field :name, :string
+    field :message_names, {:array, :string}
+    field :context_app, :string
+    field :command, default: "notifier"
+  end
+  @required_fields ~w[]a
+  @optional_fields ~w[]a
+
+  def changeset(struct, params \\ %{}) do
+    struct
+    |> cast(params, @optional_fields, required: false )
+  end
 end
 
-defmodule :Secret do
-  defstruct [
-    :length,
-    command: "secret"
-  ]
+defmodule Secret do
+  use Ecto.Schema
+  import Ecto.Changeset
 
-  use ExConstructor
+  schema "Secret" do
+    field :length, :integer, default: 32
+    field :command, default: "secret"
+  end
+  @required_fields ~w[]a
+  @optional_fields ~w[]a
+
+  def changeset(struct, params \\ %{}) do
+    struct
+    |> cast(params, @optional_fields, required: false )
+  end
+end
+
+defmodule Json do
+  use Ecto.Schema
+  import Ecto.Changeset
+
+  schema "Json" do
+    field :context, :string
+    field :module, :string
+    field :schema, :map # TODO: Check values with changeset for valid datatypes
+    field :api_prefix, :string
+    field :command, default: "secret"
+  end
+  @required_fields ~w[]a
+  @optional_fields ~w[]a
+
+  def changeset(struct, params \\ %{}) do
+    struct
+    |> cast(params, @optional_fields, required: false )
+  end
 end
 
 defmodule :Json do
