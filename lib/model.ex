@@ -41,7 +41,6 @@ defmodule Html do
   import Ecto.Changeset
 
   schema "Html" do
-    field :module, :string
     field :contex, :string
     field :schema, :map  # {name, table, fields} # TODO: Check values with changeset for valid datatypes in fields
     field :web, :string
@@ -87,7 +86,7 @@ defmodule Notifier do
   import Ecto.Changeset
 
   schema "Notifier" do
-    field :module, :string
+    field :context, :string
     field :name, :string
     field :message_names, {:array, :string}
     field :context_app, :string
@@ -125,7 +124,6 @@ defmodule Json do
 
   schema "Json" do
     field :context, :string
-    field :module, :string
     field :schema, :map # TODO: Check values with changeset for valid datatypes
     field :api_prefix, :string
     field :command, default: "secret"
@@ -139,44 +137,57 @@ defmodule Json do
   end
 end
 
-defmodule :Json do
-  defstruct [
-    :context,
-    :schema,
-    :web,
-    "no-context": false,
-    "no-schema": false,
-    command: "json"
-  ]
+defmodule Embededd do
+  use Ecto.Schema
+  import Ecto.Changeset
 
-  use ExConstructor
+  schema "Embededd" do
+    field :schema, :map
+    field :command, default: "embededd"
+  end
+  @required_fields ~w[]a
+  @optional_fields ~w[]a
+
+  def changeset(struct, params \\ %{}) do
+    struct
+    |> cast(params, @optional_fields, required: false )
+  end
 end
 
-defmodule :Embedded do
-  defstruct [
-    :schema,
-    command: "embedded"
-  ]
+defmodule Release do
+  use Ecto.Schema
+  import Ecto.Changeset
 
-  use ExConstructor
+  schema "Release" do
+    field :docker, :bool
+    field :no_ecto, :bool
+    field :ecto, :bool
+    field :command, default: "release"
+  end
+  @required_fields ~w[]a
+  @optional_fields ~w[]a
+
+  def changeset(struct, params \\ %{}) do
+    struct
+    |> cast(params, @optional_fields, required: false )
+  end
 end
 
-defmodule :Release do
-  defstruct docker: [],
-            "no-ecto": [],
-            ecto: [],
-            command: "release"
+defmodule Socket do
+  use Ecto.Schema
+  import Ecto.Changeset
 
-  use ExConstructor
-end
+  schema "Socket" do
+    field :module, :string
+    field :command, default: "socket"
+  end
+  @required_fields ~w[]a
+  @optional_fields ~w[]a
 
-defmodule :Socket do
-  defstruct [
-    :module_name,
-    command: "socket"
-  ]
-
-  use ExConstructor
+  def changeset(struct, params \\ %{}) do
+    struct
+    |> cast(params, @optional_fields, required: false )
+  end
 end
 
 defmodule :Live do
