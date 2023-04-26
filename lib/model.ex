@@ -5,34 +5,36 @@ defmodule Application do
   import Ecto.Changeset
 
   schema "Application" do
-    field :path, :string
-    field :umbrella, :boolean
-    field :app, :string
-    field :module, :string
-    field :database, :string # TODO: Check values with changeset validation: postgres, mysql, mssql, sqlite3
-    field :no_assets, :boolean
-    field :no_esbuild, :boolean
-    field :no_tailwind, :boolean
-    field :no_dashboard, :boolean
-    field :no_ecto, :boolean
-    field :no_gettext, :boolean
-    field :no_html, :boolean
-    field :no_live, :boolean
-    field :no_mailer, :boolean
-    field :binary_id, :boolean
-    field :verbose, :boolean
-    field :version, :boolean # TODO: check if this still runs the rest of the command
-    field :install, :boolean
-    field :no_install, :boolean
-    field :command, default: "new"
+    field(:path, :string)
+    field(:umbrella, :boolean)
+    field(:app, :string)
+    field(:module, :string)
+    # TODO: Check values with changeset validation: postgres, mysql, mssql, sqlite3
+    field(:database, :string)
+    field(:no_assets, :boolean)
+    field(:no_esbuild, :boolean)
+    field(:no_tailwind, :boolean)
+    field(:no_dashboard, :boolean)
+    field(:no_ecto, :boolean)
+    field(:no_gettext, :boolean)
+    field(:no_html, :boolean)
+    field(:no_live, :boolean)
+    field(:no_mailer, :boolean)
+    field(:binary_id, :boolean)
+    field(:verbose, :boolean)
+    # TODO: check if this still runs the rest of the command
+    field(:version, :boolean)
+    field(:install, :boolean)
+    field(:no_install, :boolean)
+    field(:command, default: "new")
   end
+
   @required_fields ~w[]a
   @optional_fields ~w[]a
 
-
   def changeset(struct, params \\ %{}) do
     struct
-    |> cast(params, @optional_fields, required: false )
+    |> cast(params, @optional_fields, required: false)
   end
 end
 
@@ -41,21 +43,23 @@ defmodule Html do
   import Ecto.Changeset
 
   schema "Html" do
-    field :contex, :string
-    field :schema, :map  # {name, table, fields, flags} # TODO: Check values with changeset for valid datatypes in fields
-    field :web, :string
-    field :no_context, :boolean
-    field :no_schema, :boolean
-    field :context_app, :string
-    field :command, default: "html"
+    field(:contex, :string)
+
+    # {name, table, fields, flags} # TODO: Check values with changeset for valid datatypes in fields
+    field(:schema, :map)
+    field(:web, :string)
+    field(:no_context, :boolean)
+    field(:no_schema, :boolean)
+    field(:context_app, :string)
+    field(:command, default: "html")
   end
+
   @required_fields ~w[]a
   @optional_fields ~w[]a
 
-
   def changeset(struct, params \\ %{}) do
     struct
-    |> cast(params, @optional_fields, required: false )
+    |> cast(params, @optional_fields, required: false)
   end
 end
 
@@ -64,20 +68,22 @@ defmodule Schema do
   import Ecto.Changeset
 
   schema ":Schema" do
-    field :module, :string
-    field :name, :string
-    field :fields, :map # TODO: Check values with changeset for valid datatypes # TODO: how to handle enums definition
-    field :no_migration, :boolean
-    field :table, :string
-    field :binary_id, :boolean
-    field :command, default: "schema"
+    field(:module, :string)
+    field(:name, :string)
+    # TODO: Check values with changeset for valid datatypes # TODO: how to handle enums definition
+    field(:fields, :map)
+    field(:no_migration, :boolean)
+    field(:table, :string)
+    field(:binary_id, :boolean)
+    field(:command, default: "schema")
   end
+
   @required_fields ~w[]a
   @optional_fields ~w[]a
 
   def changeset(struct, params \\ %{}) do
     struct
-    |> cast(params, @optional_fields, required: false )
+    |> cast(params, @optional_fields, required: false)
   end
 end
 
@@ -86,18 +92,19 @@ defmodule Notifier do
   import Ecto.Changeset
 
   schema "Notifier" do
-    field :context, :string
-    field :name, :string
-    field :message_names, {:array, :string}
-    field :context_app, :string
-    field :command, default: "notifier"
+    field(:context, :string)
+    field(:name, :string)
+    field(:message_names, {:array, :string})
+    field(:context_app, :string)
+    field(:command, default: "notifier")
   end
+
   @required_fields ~w[]a
   @optional_fields ~w[]a
 
   def changeset(struct, params \\ %{}) do
     struct
-    |> cast(params, @optional_fields, required: false )
+    |> cast(params, @optional_fields, required: false)
   end
 end
 
@@ -106,15 +113,16 @@ defmodule Secret do
   import Ecto.Changeset
 
   schema "Secret" do
-    field :length, :integer, default: 32
-    field :command, default: "secret"
+    field(:length, :integer, default: 32)
+    field(:command, default: "secret")
   end
+
   @required_fields ~w[]a
   @optional_fields ~w[]a
 
   def changeset(struct, params \\ %{}) do
     struct
-    |> cast(params, @optional_fields, required: false )
+    |> cast(params, @optional_fields, required: false)
   end
 end
 
@@ -123,17 +131,19 @@ defmodule Json do
   import Ecto.Changeset
 
   schema "Json" do
-    field :context, :string
-    field :schema, :map # TODO: Check values with changeset for valid datatypes
-    field :api_prefix, :string
-    field :command, default: "secret"
+    field(:context, :string)
+    # TODO: Check values with changeset for valid datatypes
+    field(:schema, :map)
+    field(:api_prefix, :string)
+    field(:command, default: "secret")
   end
+
   @required_fields ~w[]a
   @optional_fields ~w[]a
 
   def changeset(struct, params \\ %{}) do
     struct
-    |> cast(params, @optional_fields, required: false )
+    |> cast(params, @optional_fields, required: false)
   end
 end
 
@@ -142,15 +152,16 @@ defmodule Embededd do
   import Ecto.Changeset
 
   schema "Embededd" do
-    field :schema, :map
-    field :command, default: "embededd"
+    field(:schema, :map)
+    field(:command, default: "embededd")
   end
+
   @required_fields ~w[]a
   @optional_fields ~w[]a
 
   def changeset(struct, params \\ %{}) do
     struct
-    |> cast(params, @optional_fields, required: false )
+    |> cast(params, @optional_fields, required: false)
   end
 end
 
@@ -159,17 +170,18 @@ defmodule Release do
   import Ecto.Changeset
 
   schema "Release" do
-    field :docker, :bool
-    field :no_ecto, :bool
-    field :ecto, :bool
-    field :command, default: "release"
+    field(:docker, :bool)
+    field(:no_ecto, :bool)
+    field(:ecto, :bool)
+    field(:command, default: "release")
   end
+
   @required_fields ~w[]a
   @optional_fields ~w[]a
 
   def changeset(struct, params \\ %{}) do
     struct
-    |> cast(params, @optional_fields, required: false )
+    |> cast(params, @optional_fields, required: false)
   end
 end
 
@@ -178,15 +190,16 @@ defmodule Socket do
   import Ecto.Changeset
 
   schema "Socket" do
-    field :module, :string
-    field :command, default: "socket"
+    field(:module, :string)
+    field(:command, default: "socket")
   end
+
   @required_fields ~w[]a
   @optional_fields ~w[]a
 
   def changeset(struct, params \\ %{}) do
     struct
-    |> cast(params, @optional_fields, required: false )
+    |> cast(params, @optional_fields, required: false)
   end
 end
 
@@ -195,20 +208,22 @@ defmodule Live do
   import Ecto.Changeset
 
   schema "Live" do
-    field :context; :string
-    field :schema, :map
-    field :web, :string
-    field :no_context, :boolean
-    field :no_schema, :boolean
-    field :context_app, :string
-    field :command, default: "live"
+    field(:context)
+    :string
+    field(:schema, :map)
+    field(:web, :string)
+    field(:no_context, :boolean)
+    field(:no_schema, :boolean)
+    field(:context_app, :string)
+    field(:command, default: "live")
   end
+
   @required_fields ~w[]a
   @optional_fields ~w[]a
 
   def changeset(struct, params \\ %{}) do
     struct
-    |> cast(params, @optional_fields, required: false )
+    |> cast(params, @optional_fields, required: false)
   end
 end
 
@@ -217,15 +232,16 @@ defmodule Presence do
   import Ecto.Changeset
 
   schema "Presence" do
-    field :module, :string
-    field :command, default: "presence"
+    field(:module, :string)
+    field(:command, default: "presence")
   end
+
   @required_fields ~w[]a
   @optional_fields ~w[]a
 
   def changeset(struct, params \\ %{}) do
     struct
-    |> cast(params, @optional_fields, required: false )
+    |> cast(params, @optional_fields, required: false)
   end
 end
 
@@ -234,19 +250,20 @@ defmodule Context do
   import Ecto.Changeset
 
   schema "Context" do
-    field :context, :string
-    field :schema, :map
-    field :no_schema, :boolean
-    field :merge_with_existing_context, :boolean
-    field :no_merge_with_existing_context, :boolean
-    field :command, default: "context"
+    field(:context, :string)
+    field(:schema, :map)
+    field(:no_schema, :boolean)
+    field(:merge_with_existing_context, :boolean)
+    field(:no_merge_with_existing_context, :boolean)
+    field(:command, default: "context")
   end
+
   @required_fields ~w[]a
   @optional_fields ~w[]a
 
   def changeset(struct, params \\ %{}) do
     struct
-    |> cast(params, @optional_fields, required: false )
+    |> cast(params, @optional_fields, required: false)
   end
 end
 
@@ -255,19 +272,20 @@ defmodule Cert do
   import Ecto.Changeset
 
   schema "Cert" do
-    field :app, :string
-    field :domain, :string
-    field :url, :string
-    field :output, :string
-    field :name, :string
-    field :command, default: "cert"
+    field(:app, :string)
+    field(:domain, :string)
+    field(:url, :string)
+    field(:output, :string)
+    field(:name, :string)
+    field(:command, default: "cert")
   end
+
   @required_fields ~w[]a
   @optional_fields ~w[]a
 
   def changeset(struct, params \\ %{}) do
     struct
-    |> cast(params, @optional_fields, required: false )
+    |> cast(params, @optional_fields, required: false)
   end
 end
 
@@ -276,15 +294,16 @@ defmodule Channel do
   import Ecto.Changeset
 
   schema "Channel" do
-    field :module, :string
-    field :command, default: "channel"
+    field(:module, :string)
+    field(:command, default: "channel")
   end
+
   @required_fields ~w[]a
   @optional_fields ~w[]a
 
   def changeset(struct, params \\ %{}) do
     struct
-    |> cast(params, @optional_fields, required: false )
+    |> cast(params, @optional_fields, required: false)
   end
 end
 
@@ -293,17 +312,19 @@ defmodule Auth do
   import Ecto.Changeset
 
   schema "Auth" do
-    field :context, :string
-    field :schema, :map
-    field :web, :string
-    field :hashing_lib, :string # TODO: check valid input
-    field :command, default: "auth"
+    field(:context, :string)
+    field(:schema, :map)
+    field(:web, :string)
+    # TODO: check valid input
+    field(:hashing_lib, :string)
+    field(:command, default: "auth")
   end
+
   @required_fields ~w[]a
   @optional_fields ~w[]a
 
   def changeset(struct, params \\ %{}) do
     struct
-    |> cast(params, @optional_fields, required: false )
+    |> cast(params, @optional_fields, required: false)
   end
 end

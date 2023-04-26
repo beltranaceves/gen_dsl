@@ -5,12 +5,12 @@ defmodule GenDSL do
 
   @doc """
   Hello world.
-
+  
   ## Examples
-
+  
       iex> GenDSL.hello()
       :world
-
+  
   """
   def hello do
     :world
