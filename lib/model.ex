@@ -42,10 +42,10 @@ defmodule Html do
 
   schema "Html" do
     field :contex, :string
-    field :schema, :map  # {name, table, fields} # TODO: Check values with changeset for valid datatypes in fields
+    field :schema, :map  # {name, table, fields, flags} # TODO: Check values with changeset for valid datatypes in fields
     field :web, :string
     field :no_context, :boolean
-    field :no_context, :boolean
+    field :no_schema, :boolean
     field :context_app, :string
     field :command, default: "html"
   end
@@ -190,64 +190,120 @@ defmodule Socket do
   end
 end
 
-defmodule :Live do
-  defstruct [
-    :context,
-    :schema,
-    :web,
-    "no-context": false,
-    "no-schema": false,
-    command: "live"
-  ]
+defmodule Live do
+  use Ecto.Schema
+  import Ecto.Changeset
 
-  use ExConstructor
+  schema "Live" do
+    field :context; :string
+    field :schema, :map
+    field :web, :string
+    field :no_context, :boolean
+    field :no_schema, :boolean
+    field :context_app, :string
+    field :command, default: "live"
+  end
+  @required_fields ~w[]a
+  @optional_fields ~w[]a
+
+  def changeset(struct, params \\ %{}) do
+    struct
+    |> cast(params, @optional_fields, required: false )
+  end
 end
 
-defmodule :Presence do
-  defstruct [
-    :module_name,
-    command: "presence"
-  ]
+defmodule Presence do
+  use Ecto.Schema
+  import Ecto.Changeset
 
-  use ExConstructor
+  schema "Presence" do
+    field :module, :string
+    field :command, default: "presence"
+  end
+  @required_fields ~w[]a
+  @optional_fields ~w[]a
+
+  def changeset(struct, params \\ %{}) do
+    struct
+    |> cast(params, @optional_fields, required: false )
+  end
 end
 
-defmodule :Context do
-  defstruct [
-    :name,
-    :schema,
-    "no-schema": false,
-    "--merge-with-existing-context": false,
-    "--no-merge-with-existing-context": false,
-    command: "context"
-  ]
+defmodule Context do
+  use Ecto.Schema
+  import Ecto.Changeset
 
-  use ExConstructor
+  schema "Context" do
+    field :context, :string
+    field :schema, :map
+    field :no_schema, :boolean
+    field :merge_with_existing_context, :boolean
+    field :no_merge_with_existing_context, :boolean
+    field :command, default: "context"
+  end
+  @required_fields ~w[]a
+  @optional_fields ~w[]a
+
+  def changeset(struct, params \\ %{}) do
+    struct
+    |> cast(params, @optional_fields, required: false )
+  end
 end
 
-defmodule :Cert do
-  # TODO: i don't understand this one, ask someone
-  defstruct command: "cert"
-  use ExConstructor
+defmodule Cert do
+  use Ecto.Schema
+  import Ecto.Changeset
+
+  schema "Cert" do
+    field :app, :string
+    field :domain, :string
+    field :url, :string
+    field :output, :string
+    field :name, :string
+    field :command, default: "cert"
+  end
+  @required_fields ~w[]a
+  @optional_fields ~w[]a
+
+  def changeset(struct, params \\ %{}) do
+    struct
+    |> cast(params, @optional_fields, required: false )
+  end
 end
 
-defmodule :Channel do
-  defstruct [
-    :module_name,
-    command: "channel"
-  ]
+defmodule Channel do
+  use Ecto.Schema
+  import Ecto.Changeset
 
-  use ExConstructor
+  schema "Channel" do
+    field :module, :string
+    field :command, default: "channel"
+  end
+  @required_fields ~w[]a
+  @optional_fields ~w[]a
+
+  def changeset(struct, params \\ %{}) do
+    struct
+    |> cast(params, @optional_fields, required: false )
+  end
 end
 
-defmodule :Auth do
-  defstruct [
-    :context,
-    :schema,
-    :web,
-    "hashing-lib": "bcrypt",
-    command: "auth"
-  ]
+defmodule Auth do
+  use Ecto.Schema
+  import Ecto.Changeset
 
-  use ExConstructor
+  schema "Auth" do
+    field :context, :string
+    field :schema, :map
+    field :web, :string
+    field :hashing_lib, :string # TODO: check valid input
+    field :command, default: "auth"
+  end
+  @required_fields ~w[]a
+  @optional_fields ~w[]a
+
+  def changeset(struct, params \\ %{}) do
+    struct
+    |> cast(params, @optional_fields, required: false )
+  end
 end
