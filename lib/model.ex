@@ -26,7 +26,7 @@ defmodule Application do
     field(:version, :boolean)
     field(:install, :boolean)
     field(:no_install, :boolean)
-    field(:command, default: "new")
+    field(:command, :string, default: "new")
   end
 
   @required_fields ~w[]a
@@ -51,7 +51,7 @@ defmodule Html do
     field(:no_context, :boolean)
     field(:no_schema, :boolean)
     field(:context_app, :string)
-    field(:command, default: "html")
+    field(:command, :string, default: "html")
   end
 
   @required_fields ~w[]a
@@ -75,7 +75,7 @@ defmodule Schema do
     field(:no_migration, :boolean)
     field(:table, :string)
     field(:binary_id, :boolean)
-    field(:command, default: "schema")
+    field(:command, :string, default: "schema")
   end
 
   @required_fields ~w[]a
@@ -96,7 +96,7 @@ defmodule Notifier do
     field(:name, :string)
     field(:message_names, {:array, :string})
     field(:context_app, :string)
-    field(:command, default: "notifier")
+    field(:command, :string, default: "notifier")
   end
 
   @required_fields ~w[]a
@@ -114,7 +114,7 @@ defmodule Secret do
 
   schema "Secret" do
     field(:length, :integer, default: 32)
-    field(:command, default: "secret")
+    field(:command, :string, default: "secret")
   end
 
   @required_fields ~w[]a
@@ -135,7 +135,7 @@ defmodule Json do
     # TODO: Check values with changeset for valid datatypes
     field(:schema, :map)
     field(:api_prefix, :string)
-    field(:command, default: "secret")
+    field(:command, :string, default: "secret")
   end
 
   @required_fields ~w[]a
@@ -153,7 +153,7 @@ defmodule Embededd do
 
   schema "Embededd" do
     field(:schema, :map)
-    field(:command, default: "embededd")
+    field(:command, :string, default: "embededd")
   end
 
   @required_fields ~w[]a
@@ -170,10 +170,10 @@ defmodule Release do
   import Ecto.Changeset
 
   schema "Release" do
-    field(:docker, :bool)
-    field(:no_ecto, :bool)
-    field(:ecto, :bool)
-    field(:command, default: "release")
+    field(:docker, :boolean)
+    field(:no_ecto, :boolean)
+    field(:ecto, :boolean)
+    field(:command, :string, default: "release")
   end
 
   @required_fields ~w[]a
@@ -191,7 +191,7 @@ defmodule Socket do
 
   schema "Socket" do
     field(:module, :string)
-    field(:command, default: "socket")
+    field(:command, :string, default: "socket")
   end
 
   @required_fields ~w[]a
@@ -215,7 +215,7 @@ defmodule Live do
     field(:no_context, :boolean)
     field(:no_schema, :boolean)
     field(:context_app, :string)
-    field(:command, default: "live")
+    field(:command, :string, default: "live")
   end
 
   @required_fields ~w[]a
@@ -233,7 +233,7 @@ defmodule Presence do
 
   schema "Presence" do
     field(:module, :string)
-    field(:command, default: "presence")
+    field(:command, :string, default: "presence")
   end
 
   @required_fields ~w[]a
@@ -255,7 +255,7 @@ defmodule Context do
     field(:no_schema, :boolean)
     field(:merge_with_existing_context, :boolean)
     field(:no_merge_with_existing_context, :boolean)
-    field(:command, default: "context")
+    field(:command, :string, default: "context")
   end
 
   @required_fields ~w[]a
@@ -277,7 +277,7 @@ defmodule Cert do
     field(:url, :string)
     field(:output, :string)
     field(:name, :string)
-    field(:command, default: "cert")
+    field(:command, :string, default: "cert")
   end
 
   @required_fields ~w[]a
@@ -295,7 +295,7 @@ defmodule Channel do
 
   schema "Channel" do
     field(:module, :string)
-    field(:command, default: "channel")
+    field(:command, :string, default: "channel")
   end
 
   @required_fields ~w[]a
@@ -317,7 +317,7 @@ defmodule Auth do
     field(:web, :string)
     # TODO: check valid input
     field(:hashing_lib, :string)
-    field(:command, default: "auth")
+    field(:command, :string, default: "auth")
   end
 
   @required_fields ~w[]a
