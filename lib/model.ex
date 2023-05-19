@@ -1,10 +1,10 @@
 # TODO: separate model into different files within app context
 # TODO: study specific case of Schema, as reference instead of map as it uses all of the same elements/fields of the command. Search how to cast nested Ecto Schemas
-defmodule Application do
+defmodule App do
   use Ecto.Schema
   import Ecto.Changeset
 
-  schema "Application" do
+  schema "App" do
     field(:path, :string)
     field(:umbrella, :boolean)
     field(:app, :string)
@@ -29,12 +29,13 @@ defmodule Application do
     field(:command, :string, default: "new")
   end
 
-  @required_fields ~w[]a
-  @optional_fields ~w[]a
+  @required_fields ~w[path]a
+  @optional_fields ~w[umbrella app module database no_assets no_esbuild no_tailwind no_dashboard no_ecto no_gettext no_html no_live no_mailer binary_id verbose install no_install]a
 
-  def changeset(struct, params \\ %{}) do
-    struct
-    |> cast(params, @optional_fields, required: false)
+  def changeset(params \\ %{}) do
+    %__MODULE__{}
+    |> cast(params, @required_fields ++ @optional_fields, required: false)
+    |> validate_required(@required_fields)
   end
 end
 
@@ -43,23 +44,28 @@ defmodule Html do
   import Ecto.Changeset
 
   schema "Html" do
-    field(:contex, :string)
-
-    # {name, table, fields, flags} # TODO: Check values with changeset for valid datatypes in fields
-    field(:schema, :map)
+    field(:context, :string)
     field(:web, :string)
     field(:no_context, :boolean)
     field(:no_schema, :boolean)
     field(:context_app, :string)
+
+    embeds_one(:schema, Schema) # {name, table, fields, flags} # TODO: Check values with changeset for valid datatypes in fields
+
     field(:command, :string, default: "html")
+
+    # TODO: check XOR schema/no_schema with constraints
   end
 
   @required_fields ~w[]a
   @optional_fields ~w[]a
+  @remainder_fields ~w[web no_context no_schema context_app]a # TODO: revise list
 
-  def changeset(struct, params \\ %{}) do
-    struct
-    |> cast(params, @optional_fields, required: false)
+  def changeset(params \\ %{}) do
+    %__MODULE__{}
+    |> cast(params, @required_fields ++ @optional_fields ++ @remainder_fields, required: false)
+    |> cast_embed(:schema, required: false, with: &Schema.changeset/1)
+    |> validate_required(@required_fields)
   end
 end
 
@@ -78,12 +84,13 @@ defmodule Schema do
     field(:command, :string, default: "schema")
   end
 
-  @required_fields ~w[]a
-  @optional_fields ~w[]a
+  @required_fields ~w[module name]a
+  @optional_fields ~w[fields no_migration table binary_id]a
 
-  def changeset(struct, params \\ %{}) do
-    struct
-    |> cast(params, @optional_fields, required: false)
+  def changeset(params \\ %{}) do
+    %__MODULE__{}
+    |> cast(params, @required_fields ++ @optional_fields, required: false)
+    |> validate_required(@required_fields)
   end
 end
 
@@ -99,12 +106,13 @@ defmodule Notifier do
     field(:command, :string, default: "notifier")
   end
 
-  @required_fields ~w[]a
-  @optional_fields ~w[]a
+  @required_fields ~w[context name message_names]a
+  @optional_fields ~w[context_app]a
 
-  def changeset(struct, params \\ %{}) do
-    struct
-    |> cast(params, @optional_fields, required: false)
+  def changeset(params \\ %{}) do
+    %__MODULE__{}
+    |> cast(params, @required_fields ++ @optional_fields, required: false)
+    |> validate_required(@required_fields)
   end
 end
 
