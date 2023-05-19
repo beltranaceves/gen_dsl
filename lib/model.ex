@@ -59,7 +59,7 @@ defmodule Html do
 
   @required_fields ~w[]a
   @optional_fields ~w[]a
-  @remainder_fields ~w[web no_context no_schema context_app]a # TODO: revise list
+  @remainder_fields ~w[context web no_context no_schema context_app]a # TODO: revise list
 
   def changeset(params \\ %{}) do
     %__MODULE__{}
@@ -126,11 +126,12 @@ defmodule Secret do
   end
 
   @required_fields ~w[]a
-  @optional_fields ~w[]a
+  @optional_fields ~w[length]a
 
-  def changeset(struct, params \\ %{}) do
-    struct
-    |> cast(params, @optional_fields, required: false)
+  def changeset(params \\ %{}) do
+    %__MODULE__{}
+    |> cast(params, @required_fields ++ @optional_fields, required: false)
+    |> validate_required(@required_fields)
   end
 end
 
@@ -140,18 +141,22 @@ defmodule Json do
 
   schema "Json" do
     field(:context, :string)
-    # TODO: Check values with changeset for valid datatypes
-    field(:schema, :map)
     field(:api_prefix, :string)
+
+    embeds_one(:schema, Schema) # TODO: Check values with changeset for valid datatypes
+
     field(:command, :string, default: "secret")
   end
 
   @required_fields ~w[]a
   @optional_fields ~w[]a
+  @remainder_fields ~w[schema]a
 
-  def changeset(struct, params \\ %{}) do
-    struct
-    |> cast(params, @optional_fields, required: false)
+  def changeset(params \\ %{}) do
+    %__MODULE__{}
+    |> cast(params, @required_fields ++ @optional_fields ++ @remainder_fields, required: false)
+    |> cast_embed(:schema, required: false, with: &Schema.changeset/1)
+    |> validate_required(@required_fields)
   end
 end
 
@@ -160,16 +165,19 @@ defmodule Embededd do
   import Ecto.Changeset
 
   schema "Embededd" do
-    field(:schema, :map)
+    embeds_one(:schema, Schema) # TODO: Check values with changeset for valid datatypes
     field(:command, :string, default: "embededd")
   end
 
   @required_fields ~w[]a
   @optional_fields ~w[]a
+  @remainder_fields ~w[schema]a
 
-  def changeset(struct, params \\ %{}) do
-    struct
-    |> cast(params, @optional_fields, required: false)
+  def changeset(params \\ %{}) do
+    %__MODULE__{}
+    |> cast(params, @required_fields ++ @optional_fields ++ @remainder_fields, required: false)
+    |> cast_embed(:schema, required: false, with: &Schema.changeset/1)
+    |> validate_required(@required_fields)
   end
 end
 
@@ -185,11 +193,12 @@ defmodule Release do
   end
 
   @required_fields ~w[]a
-  @optional_fields ~w[]a
+  @optional_fields ~w[docker no_ecto ecto]a
 
-  def changeset(struct, params \\ %{}) do
-    struct
-    |> cast(params, @optional_fields, required: false)
+  def changeset(params \\ %{}) do
+    %__MODULE__{}
+    |> cast(params, @required_fields ++ @optional_fields, required: false)
+    |> validate_required(@required_fields)
   end
 end
 
@@ -202,12 +211,13 @@ defmodule Socket do
     field(:command, :string, default: "socket")
   end
 
-  @required_fields ~w[]a
+  @required_fields ~w[module]a
   @optional_fields ~w[]a
 
-  def changeset(struct, params \\ %{}) do
-    struct
-    |> cast(params, @optional_fields, required: false)
+  def changeset(params \\ %{}) do
+    %__MODULE__{}
+    |> cast(params, @required_fields ++ @optional_fields, required: false)
+    |> validate_required(@required_fields)
   end
 end
 
@@ -216,22 +226,26 @@ defmodule Live do
   import Ecto.Changeset
 
   schema "Live" do
-    field(:context)
-    :string
-    field(:schema, :map)
+    field(:context, :string)
     field(:web, :string)
     field(:no_context, :boolean)
     field(:no_schema, :boolean)
     field(:context_app, :string)
+
+    embeds_one(:schema, Schema) # TODO: Check values with changeset for valid datatypes
+
     field(:command, :string, default: "live")
   end
 
   @required_fields ~w[]a
-  @optional_fields ~w[]a
+  @optional_fields ~w[context web no_context no_schema context_app]a
+  @remainder_fields ~w[schema]a
 
-  def changeset(struct, params \\ %{}) do
-    struct
-    |> cast(params, @optional_fields, required: false)
+  def changeset(params \\ %{}) do
+    %__MODULE__{}
+    |> cast(params, @required_fields ++ @optional_fields ++ @remainder_fields, required: false)
+    |> cast_embed(:schema, required: false, with: &Schema.changeset/1)
+    |> validate_required(@required_fields)
   end
 end
 
@@ -240,16 +254,18 @@ defmodule Presence do
   import Ecto.Changeset
 
   schema "Presence" do
-    field(:module, :string)
+    field(:module, :string, default: "Presence")
+
     field(:command, :string, default: "presence")
   end
 
   @required_fields ~w[]a
-  @optional_fields ~w[]a
+  @optional_fields ~w[module]a
 
-  def changeset(struct, params \\ %{}) do
-    struct
-    |> cast(params, @optional_fields, required: false)
+  def changeset(params \\ %{}) do
+    %__MODULE__{}
+    |> cast(params, @required_fields ++ @optional_fields, required: false)
+    |> validate_required(@required_fields)
   end
 end
 
@@ -259,19 +275,24 @@ defmodule Context do
 
   schema "Context" do
     field(:context, :string)
-    field(:schema, :map)
     field(:no_schema, :boolean)
     field(:merge_with_existing_context, :boolean)
     field(:no_merge_with_existing_context, :boolean)
+
+    embeds_one(:schema, Schema) # TODO: Check values with changeset for valid datatypes
+
     field(:command, :string, default: "context")
   end
 
-  @required_fields ~w[]a
-  @optional_fields ~w[]a
+  @required_fields ~w[context]a
+  @optional_fields ~w[web no_context no_schema merge_with_existing_context no_merge_with_existing_context]a
+  @remainder_fields ~w[schema]a
 
-  def changeset(struct, params \\ %{}) do
-    struct
-    |> cast(params, @optional_fields, required: false)
+  def changeset(params \\ %{}) do
+    %__MODULE__{}
+    |> cast(params, @required_fields ++ @optional_fields ++ @remainder_fields, required: false)
+    |> cast_embed(:schema, required: false, with: &Schema.changeset/1)
+    |> validate_required(@required_fields)
   end
 end
 
@@ -289,11 +310,12 @@ defmodule Cert do
   end
 
   @required_fields ~w[]a
-  @optional_fields ~w[]a
+  @optional_fields ~w[app domain url output name]a
 
-  def changeset(struct, params \\ %{}) do
-    struct
-    |> cast(params, @optional_fields, required: false)
+  def changeset(params \\ %{}) do
+    %__MODULE__{}
+    |> cast(params, @required_fields ++ @optional_fields, required: false)
+    |> validate_required(@required_fields)
   end
 end
 
@@ -306,12 +328,13 @@ defmodule Channel do
     field(:command, :string, default: "channel")
   end
 
-  @required_fields ~w[]a
+  @required_fields ~w[module]a
   @optional_fields ~w[]a
 
-  def changeset(struct, params \\ %{}) do
-    struct
-    |> cast(params, @optional_fields, required: false)
+  def changeset(params \\ %{}) do
+    %__MODULE__{}
+    |> cast(params, @required_fields ++ @optional_fields, required: false)
+    |> validate_required(@required_fields)
   end
 end
 
@@ -321,18 +344,23 @@ defmodule Auth do
 
   schema "Auth" do
     field(:context, :string)
-    field(:schema, :map)
     field(:web, :string)
     # TODO: check valid input
     field(:hashing_lib, :string)
+
+    embeds_one(:schema, Schema) # TODO: Check values with changeset for valid datatypes
+
     field(:command, :string, default: "auth")
   end
 
-  @required_fields ~w[]a
-  @optional_fields ~w[]a
+  @required_fields ~w[context]a
+  @optional_fields ~w[web hashing_lib]a
+  @remainder_fields ~w[schema]a
 
-  def changeset(struct, params \\ %{}) do
-    struct
-    |> cast(params, @optional_fields, required: false)
+  def changeset(params \\ %{}) do
+    %__MODULE__{}
+    |> cast(params, @required_fields ++ @optional_fields ++ @remainder_fields, required: false)
+    |> cast_embed(:schema, required: false, with: &Schema.changeset/1)
+    |> validate_required(@required_fields)
   end
 end
