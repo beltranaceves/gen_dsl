@@ -13,13 +13,20 @@ defmodule GenDSL.Parser do
   def parse(blueprint) do
     IO.puts("Decoding Blueprint")
 
-    elements =
+    elements_changesets =
       Poison.decode!(blueprint)
       |> Enum.map(fn blueprint_map ->
-        IO.inspect blueprint_map
+        IO.inspect(blueprint_map)
+
         apply(String.to_existing_atom("Elixir." <> blueprint_map["type"]), :changeset, [
           blueprint_map
         ])
+      end)
+
+    elements =
+      elements_changesets
+      |> Enum.map(fn changeset ->
+        changeset |> Ecto.Changeset.apply_changes()
       end)
 
     # elements = Poison.Parser.parse!(blueprint)

@@ -50,7 +50,8 @@ defmodule Html do
     field(:no_schema, :boolean)
     field(:context_app, :string)
 
-    embeds_one(:schema, Schema) # {name, table, fields, flags} # TODO: Check values with changeset for valid datatypes in fields
+    # {name, table, fields, flags} # TODO: Check values with changeset for valid datatypes in fields
+    embeds_one(:schema, Schema)
 
     field(:command, :string, default: "html")
 
@@ -59,7 +60,8 @@ defmodule Html do
 
   @required_fields ~w[]a
   @optional_fields ~w[]a
-  @remainder_fields ~w[context web no_context no_schema context_app]a # TODO: revise list
+  # TODO: revise list when a method to XOR fields is introduced
+  @remainder_fields ~w[context web no_context no_schema context_app]a
 
   def changeset(params \\ %{}) do
     %__MODULE__{}
@@ -76,18 +78,38 @@ defmodule Schema do
   schema ":Schema" do
     field(:module, :string)
     field(:name, :string)
-    # TODO: Check values with changeset for valid datatypes # TODO: how to handle enums definition
-    field(:fields, :map)
     field(:no_migration, :boolean)
     field(:table, :string)
     field(:binary_id, :boolean)
     field(:command, :string, default: "schema")
+
+    embeds_many(:fields, SchemaField)
   end
 
   @required_fields ~w[module name]a
-  @optional_fields ~w[fields no_migration table binary_id]a
+  @optional_fields ~w[no_migration table binary_id]a
 
   def changeset(params \\ %{}) do
+    %__MODULE__{}
+    |> cast(params, @required_fields ++ @optional_fields, required: false)
+    |> cast_embed(:fields, required: false)
+    |> validate_required(@required_fields)
+  end
+end
+
+defmodule SchemaField do
+  use Ecto.Schema
+  import Ecto.Changeset
+
+  schema ":SchemaField" do
+    field(:field_name, :string)
+    field(:datatype, Ecto.Enum, values: [:id, :binary_id, :integer, :float, :boolean, :string, :binary, :map, :decimal, :date, :time, :time_usec, :naive_datetime, :naive_datetime_usec, :utc_datetime, :utc_datetime_usec]) # TODO: Check values with changeset for valid datatypes # TODO: how to handle enums definition
+  end
+
+  @required_fields ~w[field_name datatype]a
+  @optional_fields ~w[]a
+
+  def changeset(_, params \\ %{}) do
     %__MODULE__{}
     |> cast(params, @required_fields ++ @optional_fields, required: false)
     |> validate_required(@required_fields)
@@ -143,7 +165,8 @@ defmodule Json do
     field(:context, :string)
     field(:api_prefix, :string)
 
-    embeds_one(:schema, Schema) # TODO: Check values with changeset for valid datatypes
+    # TODO: Check values with changeset for valid datatypes
+    embeds_one(:schema, Schema)
 
     field(:command, :string, default: "secret")
   end
@@ -165,7 +188,8 @@ defmodule Embededd do
   import Ecto.Changeset
 
   schema "Embededd" do
-    embeds_one(:schema, Schema) # TODO: Check values with changeset for valid datatypes
+    # TODO: Check values with changeset for valid datatypes
+    embeds_one(:schema, Schema)
     field(:command, :string, default: "embededd")
   end
 
@@ -232,7 +256,8 @@ defmodule Live do
     field(:no_schema, :boolean)
     field(:context_app, :string)
 
-    embeds_one(:schema, Schema) # TODO: Check values with changeset for valid datatypes
+    # TODO: Check values with changeset for valid datatypes
+    embeds_one(:schema, Schema)
 
     field(:command, :string, default: "live")
   end
@@ -279,7 +304,8 @@ defmodule Context do
     field(:merge_with_existing_context, :boolean)
     field(:no_merge_with_existing_context, :boolean)
 
-    embeds_one(:schema, Schema) # TODO: Check values with changeset for valid datatypes
+    # TODO: Check values with changeset for valid datatypes
+    embeds_one(:schema, Schema)
 
     field(:command, :string, default: "context")
   end
@@ -348,7 +374,8 @@ defmodule Auth do
     # TODO: check valid input
     field(:hashing_lib, :string)
 
-    embeds_one(:schema, Schema) # TODO: Check values with changeset for valid datatypes
+    # TODO: Check values with changeset for valid datatypes
+    embeds_one(:schema, Schema)
 
     field(:command, :string, default: "auth")
   end
