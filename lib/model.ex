@@ -9,8 +9,7 @@ defmodule App do
     field(:umbrella, :boolean)
     field(:app, :string)
     field(:module, :string)
-    # TODO: Check values with changeset validation: postgres, mysql, mssql, sqlite3
-    field(:database, :string)
+    field(:database, Ecto.Enum, values: [:postgres, :mysql, :mssql, :sqlite3])
     field(:no_assets, :boolean)
     field(:no_esbuild, :boolean)
     field(:no_tailwind, :boolean)
@@ -36,6 +35,10 @@ defmodule App do
     %__MODULE__{}
     |> cast(params, @required_fields ++ @optional_fields, required: false)
     |> validate_required(@required_fields)
+  end
+
+  def to_command((%App{} = app) do
+
   end
 end
 
