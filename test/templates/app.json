@@ -1,0 +1,24 @@
+[
+    {
+        "type": "App",
+        "path": "NEW_NAME",
+        "umbrella": false,
+        "app": "TestAppName",
+        "module": "TestModule",
+        "database": ":postgresql",
+        "no_assets": false,
+        "no_esbuild": false,
+        "no_tailwind": false,
+        "no_dashboard": false,
+        "no_ecto": false,
+        "no_gettext": false,
+        "no_html": false,
+        "no_live": false,
+        "no_mailer": false,
+        "binary_id": false,
+        "verbose": false,
+        "version": false,
+        "installed": false,
+        "no_install": false
+    }
+]

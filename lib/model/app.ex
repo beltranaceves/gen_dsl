@@ -1,4 +1,4 @@
-defmodule App do
+defmodule GenDSL.Model.App do
   use Ecto.Schema
   import Ecto.Changeset
 

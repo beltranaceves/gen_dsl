@@ -1,4 +1,4 @@
-defmodule Html do
+defmodule GenDSL.Model.Html do
   use Ecto.Schema
   import Ecto.Changeset
 

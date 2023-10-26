@@ -1,4 +1,4 @@
-defmodule Release do
+defmodule GenDSL.Model.Release do
   use Ecto.Schema
   import Ecto.Changeset
 

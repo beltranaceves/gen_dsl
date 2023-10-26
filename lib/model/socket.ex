@@ -1,4 +1,4 @@
-defmodule Socket do
+defmodule GenDSL.Model.Socket do
   use Ecto.Schema
   import Ecto.Changeset
 

@@ -1,5 +1,5 @@
 # TODO: study specific case of Schema, as reference instead of map as it uses all of the same elements/fields of the command. Search how to cast nested Ecto Schemas
-defmodule Schema do
+defmodule GenDSL.Model.Schema do
   use Ecto.Schema
   import Ecto.Changeset
 

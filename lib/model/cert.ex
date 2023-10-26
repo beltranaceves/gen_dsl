@@ -1,4 +1,4 @@
-defmodule Cert do
+defmodule GenDSL.Model.Cert do
   use Ecto.Schema
   import Ecto.Changeset
 

@@ -1,4 +1,4 @@
-defmodule Embededd do
+defmodule GenDSL.Model.Embededd do
   use Ecto.Schema
   import Ecto.Changeset
 

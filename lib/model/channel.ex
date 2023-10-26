@@ -1,4 +1,4 @@
-defmodule Channel do
+defmodule GenDSL.Model.Channel do
   use Ecto.Schema
   import Ecto.Changeset
 

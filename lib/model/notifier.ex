@@ -1,4 +1,4 @@
-defmodule Notifier do
+defmodule GenDSL.Model.Notifier do
   use Ecto.Schema
   import Ecto.Changeset
 

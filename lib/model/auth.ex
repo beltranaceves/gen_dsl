@@ -1,4 +1,4 @@
-defmodule Auth do
+defmodule GenDSL.Model.Auth do
   use Ecto.Schema
   import Ecto.Changeset
 

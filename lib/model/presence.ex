@@ -1,4 +1,4 @@
-defmodule Presence do
+defmodule GenDSL.Model.Presence do
   use Ecto.Schema
   import Ecto.Changeset
 

@@ -1,4 +1,4 @@
-defmodule Secret do
+defmodule GenDSL.Model.Secret do
   use Ecto.Schema
   import Ecto.Changeset
 

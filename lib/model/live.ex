@@ -1,4 +1,4 @@
-defmodule Live do
+defmodule GenDSL.Model.Live do
   use Ecto.Schema
   import Ecto.Changeset
 

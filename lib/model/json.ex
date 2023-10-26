@@ -1,4 +1,4 @@
-defmodule Json do
+defmodule GenDSL.Model.Json do
   use Ecto.Schema
   import Ecto.Changeset
 
