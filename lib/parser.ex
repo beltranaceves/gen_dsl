@@ -29,9 +29,8 @@ defmodule GenDSL.Parser do
         changeset |> Ecto.Changeset.apply_changes()
       end)
 
-    # elements = Poison.Parser.parse!(blueprint)
-    # IO.puts(elements)
     IO.inspect(elements)
+    elements
   end
 
   #   def struct_to_command(element = %:Html{}) do
