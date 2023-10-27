@@ -25,7 +25,7 @@ defmodule GenDSL.Model.Schema do
   end
 end
 
-defmodule SchemaField do
+defmodule GenDSL.Model.SchemaField do
   use Ecto.Schema
   import Ecto.Changeset
 

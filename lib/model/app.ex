@@ -19,8 +19,6 @@ defmodule GenDSL.Model.App do
     field(:no_mailer, :boolean)
     field(:binary_id, :boolean)
     field(:verbose, :boolean)
-    # TODO: check if this still runs the rest of the command
-    field(:version, :boolean)
     field(:install, :boolean)
     field(:no_install, :boolean)
     field(:command, :string, default: "new")

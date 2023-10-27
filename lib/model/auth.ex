@@ -9,7 +9,7 @@ defmodule GenDSL.Model.Auth do
     field(:hashing_lib, :string)
 
     # TODO: Check values with changeset for valid datatypes
-    embeds_one(:schema, Schema)
+    embeds_one(:schema, GenDSL.Model.Schema)
 
     field(:command, :string, default: "auth")
   end
@@ -21,7 +21,7 @@ defmodule GenDSL.Model.Auth do
   def changeset(params \\ %{}) do
     %__MODULE__{}
     |> cast(params, @required_fields ++ @optional_fields ++ @remainder_fields, required: false)
-    |> cast_embed(:schema, required: false, with: &Schema.changeset/1)
+    |> cast_embed(:schema, required: false, with: &GenDSL.Model.Schema.changeset/1)
     |> validate_required(@required_fields)
   end
 end

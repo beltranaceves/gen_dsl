@@ -5,7 +5,7 @@
         "umbrella": false,
         "app": "TestAppName",
         "module": "TestModule",
-        "database": ":postgresql",
+        "database": "postgres",
         "no_assets": false,
         "no_esbuild": false,
         "no_tailwind": false,
@@ -17,8 +17,7 @@
         "no_mailer": false,
         "binary_id": false,
         "verbose": false,
-        "version": false,
-        "installed": false,
+        "install": false,
         "no_install": false
     }
 ]

@@ -18,7 +18,7 @@ defmodule GenDSL.Parser do
       |> Enum.map(fn blueprint_map ->
         IO.inspect(blueprint_map)
 
-        apply(String.to_existing_atom("Elixir." <> blueprint_map["type"]), :changeset, [
+        apply(String.to_existing_atom("Elixir.GenDSL.Model." <> blueprint_map["type"]), :changeset, [
           blueprint_map
         ])
       end)
