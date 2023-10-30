@@ -11,7 +11,7 @@ defmodule GenDSL.Model.Schema do
     field(:binary_id, :boolean)
     field(:command, :string, default: "schema")
 
-    embeds_many(:fields, SchemaField)
+    embeds_many(:fields, GenDSL.Model.SchemaField)
   end
 
   @required_fields ~w[module name]a
@@ -31,7 +31,27 @@ defmodule GenDSL.Model.SchemaField do
 
   schema ":SchemaField" do
     field(:field_name, :string)
-    field(:datatype, Ecto.Enum, values: [:id, :binary_id, :integer, :float, :boolean, :string, :binary, :map, :decimal, :date, :time, :time_usec, :naive_datetime, :naive_datetime_usec, :utc_datetime, :utc_datetime_usec]) # TODO: Check values with changeset for valid datatypes # TODO: how to handle enums definition
+    # TODO: Check values with changeset for valid datatypes # TODO: how to handle enums definition
+    field(:datatype, Ecto.Enum,
+      values: [
+        :id,
+        :binary_id,
+        :integer,
+        :float,
+        :boolean,
+        :string,
+        :binary,
+        :map,
+        :decimal,
+        :date,
+        :time,
+        :time_usec,
+        :naive_datetime,
+        :naive_datetime_usec,
+        :utc_datetime,
+        :utc_datetime_usec
+      ]
+    )
   end
 
   @required_fields ~w[field_name datatype]a

@@ -3,20 +3,37 @@ defmodule GenDSLTest do
   doctest GenDSL
 
   @app "test/templates/app.json"
-  @auth "test/template/auth.json"
-  @cert "test/template/cert.json"
-  @channel "test/template/channel.json"
-  @context "test/template/context.json"
-  @embedded "test/template/embedded.json"
-  @html "test/template/html.json"
-  @json "test/template/json.json"
-  @live "test/template/live.json"
-  @notifier "test/template/notifier.json"
-  @presence "test/template/presence.json"
-  @release "test/template/release.json"
-  @schema "test/template/schema.json"
-  @secret "test/template/secret.json"
+  @auth "test/templates/auth.json"
+  @cert "test/templates/cert.json"
+  @channel "test/templates/channel.json"
+  @context "test/templates/context.json"
+  @embedded "test/templates/embedded.json"
+  @html "test/templates/html.json"
+  @json "test/templates/json.json"
+  @live "test/templates/live.json"
+  @notifier "test/templates/notifier.json"
+  @presence "test/templates/presence.json"
+  @release "test/templates/release.json"
+  @schema "test/templates/schema.json"
+  @secret "test/templates/secret.json"
   @socket "test/template/socket.json"
+
+  def assert_single_element(filepath) do
+    baseline_element = TestHelpers.read_single_element(filepath)
+    generated_element = GenDSL.Parser.read_blueprint(filepath) |> List.last()
+
+    baseline_element
+    |> Map.keys()
+    |> Enum.each(fn key ->
+      case key do
+        "type" ->
+          assert true
+
+        _ ->
+          assert generated_element |> Map.fetch!(key |> String.to_atom()) == baseline_element[key]
+      end
+    end)
+  end
 
   test "Parsing App Element" do
     baseline_element = TestHelpers.read_single_element(@app)
@@ -39,9 +56,25 @@ defmodule GenDSLTest do
     end)
   end
 
-  test "Parsing Auth Element" do
-    baseline_element = TestHelpers.read_single_element(@auth)
-    generated_element = GenDSL.Parser.read_blueprint(@auth) |> List.last()
+  test "Parsing Cert Element" do
+    assert_single_element(@cert)
+  end
+
+  test "Parsing Channel Element" do
+    assert_single_element(@channel)
+  end
+
+  test "Parsing Notifier Element" do
+    assert_single_element(@notifier)
+  end
+
+  test "Parsing Presence Element" do
+    assert_single_element(@presence)
+  end
+
+  test "Parsing Schema and SchemaField Elements" do
+    baseline_element = TestHelpers.read_single_element(@schema)
+    generated_element = GenDSL.Parser.read_blueprint(@schema) |> List.last()
 
     baseline_element
     |> Map.keys()
@@ -50,9 +83,35 @@ defmodule GenDSLTest do
         "type" ->
           assert true
 
-        "database" ->
-          assert generated_element |> Map.fetch!(key |> String.to_atom()) |> Atom.to_string() ==
-                   baseline_element[key]
+        "fields" ->
+          baseline_element["fields"]
+          |> Stream.with_index()
+          |> Enum.each(fn {field, index} ->
+            field
+            |> Map.keys()
+            |> Enum.each(fn field_key ->
+              case field_key do
+                "field_name" ->
+                  generated_element_value =
+                    generated_element.fields
+                    |> Enum.at(index)
+                    |> Map.fetch!(field_key |> String.to_atom())
+
+                  baseline_element_value = field[field_key]
+                  assert generated_element_value == baseline_element_value
+
+                "datatype" ->
+                  generated_element_value =
+                    generated_element.fields
+                    |> Enum.at(index)
+                    |> Map.fetch!(field_key |> String.to_atom())
+
+                  generated_element_value = generated_element_value |> Atom.to_string()
+                  baseline_element_value = field[field_key]
+                  assert generated_element_value == baseline_element_value
+              end
+            end)
+          end)
 
         _ ->
           assert generated_element |> Map.fetch!(key |> String.to_atom()) == baseline_element[key]

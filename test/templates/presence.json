@@ -1,0 +1,6 @@
+[
+    {
+        "type": "Presence",
+        "module": "presence_not_default"
+    }
+]

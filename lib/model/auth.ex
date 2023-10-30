@@ -9,7 +9,6 @@ defmodule GenDSL.Model.Auth do
     # field(:hashing_lib, :string)
     field(:hashing_lib, Ecto.Enum, values: [bcrypt: "bcrypt", pbkdf2: "pbkdf2", argon2: "argon2"])
 
-
     # TODO: Check values with changeset for valid datatypes
     embeds_one(:schema, GenDSL.Model.Schema)
 
