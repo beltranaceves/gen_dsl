@@ -1,16 +1,25 @@
 defmodule GenDSL.Parser do
-  @moduledoc "Module to parse custom DSL"
+  @moduledoc "Module to parse_blueprint custom DSL"
 
   @file_path "sample_blueprint.ex"
 
   def read_blueprint(blueprint_path \\ @file_path) do
     case File.read(blueprint_path) do
-      {:ok, body} -> parse(body)
+      {:ok, body} -> parse_blueprint(body)
       {:error, reason} -> IO.puts(reason)
     end
   end
 
-  def parse(blueprint) do
+  def parse_blueprint(bluepring) do
+    IO.puts("Parsing blueprint")
+
+    parsed_sections = Poison.decode!(blueprint)
+    parsed_sections |> Enum.each(fn parsed_section ->
+      process_section(parsed_section)
+    end)
+  end
+
+  def parse_blueprint(blueprint) do
     IO.puts("Decoding Blueprint")
 
     elements_changesets =
@@ -37,56 +46,23 @@ defmodule GenDSL.Parser do
     elements
   end
 
-  #   def struct_to_command(element = %:Html{}) do
-  #     IO.puts(element)
-  #   end
+  def process_section(section) when section.type == "dependencies" do
+    section.dependencies
+    |> Enum.each(fn depenency ->
+      Mix.install(depenency)
+    end)
+  end
 
-  #   def struct_to_command(element = %:Schema{}) do
-  #     IO.puts(element)
-  #   end
+  def process_section(section) when section.type == "pretasks" do
 
-  #   def struct_to_command(element = %:Notifier{}) do
-  #     IO.puts(element)
-  #   end
+  end
 
-  #   def struct_to_command(element = %:Secret{}) do
-  #     IO.puts(element)
-  #   end
+  def process_section(section) when section.type == "generable_elements" do
 
-  #   def struct_to_command(element = %:Json{}) do
-  #     IO.puts(element)
-  #   end
+  end
 
-  #   def struct_to_command(element = %:Embedded{}) do
-  #     IO.puts(element)
-  #   end
+  def process_section(section) when section.type == "posttasks" do
 
-  #   def struct_to_command(element = %:Release{}) do
-  #     [element.command]
-  #     # ++ element.docker_flag ++ element.no_ecto_flag ++ element.ecto_flag
-  #   end
+  end
 
-  #   def struct_to_command(element = %:Socket{}) do
-  #     IO.puts(element)
-  #   end
-
-  #   def struct_to_command(element = %:Live{}) do
-  #     IO.puts(element)
-  #   end
-
-  #   def struct_to_command(element = %:Presence{}) do
-  #     IO.puts(element)
-  #   end
-
-  #   def struct_to_command(element = %:Context{}) do
-  #     IO.puts(element)
-  #   end
-
-  #   def struct_to_command(element = %:Cert{}) do
-  #     IO.puts(element)
-  #   end
-
-  #   def struct_to_command(element = %:Auth{}) do
-  #     IO.puts(element)
-  #   end
 end
