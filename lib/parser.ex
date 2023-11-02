@@ -10,23 +10,37 @@ defmodule GenDSL.Parser do
     end
   end
 
-  def parse_blueprint(bluepring) do
+  def parse_blueprint(blueprint) do
     IO.puts("Parsing blueprint")
 
     parsed_sections = Poison.decode!(blueprint)
-    parsed_sections |> Enum.each(fn parsed_section ->
+    parsed_sections
+  end
+
+  def process_blueprint_sections(blueprint_sections) do
+    blueprint_sections
+    |> Enum.each(fn parsed_section ->
       process_section(parsed_section)
     end)
   end
 
-  def parse_blueprint(blueprint) do
+  def process_section(section) when section.type == "dependencies" do
+    section.dependencies
+    |> Enum.each(fn depenency ->
+      Mix.install(depenency)
+    end)
+  end
+
+  def process_section(section) when section.type == "pretasks" do
+  end
+
+  def process_section(section) when section.type == "generable_elements" do
     IO.puts("Decoding Blueprint")
 
     elements_changesets =
-      Poison.decode!(blueprint)
+      section.generable_elements
       |> Enum.map(fn blueprint_map ->
         IO.inspect(blueprint_map)
-
         apply(
           String.to_existing_atom("Elixir.GenDSL.Model." <> blueprint_map["type"]),
           :changeset,
@@ -46,23 +60,6 @@ defmodule GenDSL.Parser do
     elements
   end
 
-  def process_section(section) when section.type == "dependencies" do
-    section.dependencies
-    |> Enum.each(fn depenency ->
-      Mix.install(depenency)
-    end)
-  end
-
-  def process_section(section) when section.type == "pretasks" do
-
-  end
-
-  def process_section(section) when section.type == "generable_elements" do
-
-  end
-
   def process_section(section) when section.type == "posttasks" do
-
   end
-
 end
