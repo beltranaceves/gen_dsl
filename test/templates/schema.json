@@ -1,21 +1,37 @@
 [
     {
-        "type": "Schema",
-        "module": "module_name",
-        "name": "schema_name",
-        "no_migration": false,
-        "table": null,
-        "binary_id": false,
-        "fields": [
+        "type": "dependencies",
+        "dependencies": []
+    },
+    {
+        "type": "pretasks",
+        "pretasks": []
+    },
+    {
+        "type": "generable_elements",
+        "generable_elements": [
             {
-                "field_name": "username",
-                "datatype": "string"
-            },
-            {
-                "field_name": "password",
-                "datatype": "string"
+                "type": "Schema",
+                "module": "module_name",
+                "name": "schema_name",
+                "no_migration": false,
+                "table": null,
+                "binary_id": false,
+                "fields": [
+                    {
+                        "field_name": "username",
+                        "datatype": "string"
+                    },
+                    {
+                        "field_name": "password",
+                        "datatype": "string"
+                    }
+                ]
             }
         ]
-
+    },
+    {
+        "type": "posttasks",
+        "posttasks": []
     }
 ]
