@@ -22,4 +22,22 @@ defmodule GenDSL.Model.Json do
     |> cast_embed(:schema, required: false, with: &GenDSL.Model.Schema.changeset/1)
     |> validate_required(@required_fields)
   end
+
+def to_task(params) do
+    json =
+      params
+      |> changeset()
+      |> Ecto.Changeset.apply_changes()
+
+    task = &execute/1
+
+    %{"arguments" => json, "callback" => task}
+  end
+
+  def execute(json) do
+    specs = []
+
+    specs
+    |> Mix.Tasks.Phx.Gen.Json.run()
+  end
 end

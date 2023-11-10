@@ -1,23 +1,11 @@
-[
-    {
-        "type": "dependencies",
-        "dependencies": []
-    },
-    {
-        "type": "pretasks",
-        "pretasks": []
-    },
-    {
-        "type": "generable_elements",
-        "generable_elements": [
-            {
-                "type": "Presence",
-                "module": "presence_not_default"
-            }
-        ]
-    },
-    {
-        "type": "posttasks",
-        "posttasks": []
-    }
-]
+{
+    "dependencies": [],
+    "pretasks": [],
+    "generable_elements": [
+        {
+            "type": "Presence",
+            "module": "presence_not_default"
+        }
+    ],
+    "posttasks": []
+}

@@ -28,4 +28,22 @@ defmodule GenDSL.Model.Html do
     |> cast_embed(:schema, required: false, with: &GenDSL.Model.Schema.changeset/1)
     |> validate_required(@required_fields)
   end
+
+def to_task(params) do
+    html =
+      params
+      |> changeset()
+      |> Ecto.Changeset.apply_changes()
+
+    task = &execute/1
+
+    %{"arguments" => html, "callback" => task}
+  end
+
+  def execute(html) do
+    specs = []
+
+    specs
+    |> Mix.Tasks.Phx.Gen.Html.run()
+  end
 end

@@ -5,61 +5,95 @@ defmodule GenDSL.Parser do
 
   def read_blueprint(blueprint_path \\ @file_path) do
     case File.read(blueprint_path) do
-      {:ok, body} -> parse_blueprint(body)
-      {:error, reason} -> IO.puts(reason)
+      {:ok, body} -> {:ok, parse_blueprint(body)}
+      {:error, reason} -> {:error, reason}
     end
   end
 
   def parse_blueprint(blueprint) do
     IO.puts("Parsing blueprint")
 
-    parsed_sections = Poison.decode!(blueprint)
-    parsed_sections
+    parse_blueprint = Poison.decode!(blueprint)
+
+    parse_blueprint
   end
 
-  def process_blueprint_sections(blueprint_sections) do
-    blueprint_sections
-    |> Enum.each(fn parsed_section ->
-      process_section(parsed_section)
+  def process_blueprint(blueprint) do
+    IO.puts("Processing blueprint")
+
+    blueprint
+    |> Map.keys()
+    |> Enum.map(fn section_key ->
+      {section_key, process_section(blueprint[section_key], section_key)}
+    end)
+    |> Enum.into(%{})
+  end
+
+  def execute_blueprint(blueprint) do
+    IO.puts("Executing blueprint")
+
+    blueprint
+    |> Map.keys()
+    |> Enum.each(fn section_key ->
+      execute_section(blueprint[section_key], section_key)
     end)
   end
 
-  def process_section(section) when section.type == "dependencies" do
-    section.dependencies
+  def process_section(section, type) when type == "dependencies" do
+    section
+  end
+
+  def process_section(section, type) when type == "pretasks" do
+    section
+  end
+
+  def process_section(section, type) when type == "generable_elements" do
+    IO.puts("Processing generable elements")
+
+    element_tasks =
+      section
+      |> Enum.map(fn generable_element ->
+        apply(
+          String.to_existing_atom("Elixir.GenDSL.Model." <> generable_element["type"]),
+          :to_task,
+          [
+            generable_element
+          ]
+        )
+      end)
+
+    element_tasks
+  end
+
+  def process_section(section, type) when type == "posttasks" do
+    section
+  end
+
+  # TODO: Add support for all section types
+  def execute_section(section, type) when type == "dependencies" do
+    section
     |> Enum.each(fn depenency ->
       Mix.install(depenency)
     end)
   end
 
-  def process_section(section) when section.type == "pretasks" do
+  def execute_section(section, type) when type == "pretasks" do
+    section
   end
 
-  def process_section(section) when section.type == "generable_elements" do
-    IO.puts("Decoding Blueprint")
-
-    elements_changesets =
-      section.generable_elements
-      |> Enum.map(fn blueprint_map ->
-        IO.inspect(blueprint_map)
-        apply(
-          String.to_existing_atom("Elixir.GenDSL.Model." <> blueprint_map["type"]),
-          :changeset,
-          [
-            blueprint_map
-          ]
-        )
-      end)
-
-    elements =
-      elements_changesets
-      |> Enum.map(fn changeset ->
-        changeset |> Ecto.Changeset.apply_changes()
-      end)
-
-    IO.inspect(elements)
-    elements
+  def execute_section(section, type) when type == "generable_elements" do
+    section
+    |> Enum.each(fn generable_element ->
+      apply(
+        generable_element["callback"],
+        [
+          generable_element["arguments"]
+        ]
+      )
+    end)
   end
 
-  def process_section(section) when section.type == "posttasks" do
+  def execute_section(section, type) when type == "posttasks" do
+    section
   end
 end

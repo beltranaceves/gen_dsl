@@ -2,6 +2,7 @@ defmodule GenDSL do
   @moduledoc """
   Documentation for `GenDSL`.
   """
+  import GenDSL.Parser
 
   @doc """
   Hello world.
@@ -16,10 +17,17 @@ defmodule GenDSL do
     :world
   end
 
-  # A function that reads a JSON file
-  # and returns a map.
-  def read_json(filename) do
-    {:ok, json} = File.read(filename)
-    Poison.decode!(json)
+  def generate(filename) do
+    filename
+    |> read_blueprint()
+    |> case do
+      {:ok, blueprint} ->
+        blueprint
+        |> process_blueprint()
+        |> execute_blueprint()
+
+      {:error, reason} ->
+        IO.puts(reason)
+    end
   end
 end

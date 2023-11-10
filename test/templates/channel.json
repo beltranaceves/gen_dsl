@@ -1,23 +1,11 @@
-[
-    {
-        "type": "dependencies",
-        "dependencies": []
-    },
-    {
-        "type": "pretasks",
-        "pretasks": []
-    },
-    {
-        "type": "generable_elements",
-        "generable_elements": [
-            {
-                "type": "Channel",
-                "module": "my_module"
-            }
-        ]
-    },
-    {
-        "type": "posttasks",
-        "posttasks": []
-    }
-]
+{
+    "dependencies": [],
+    "pretasks": [],
+    "generable_elements": [
+        {
+            "type": "Channel",
+            "module": "my_module"
+        }
+    ],
+    "posttasks": []
+}

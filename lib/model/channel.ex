@@ -15,4 +15,23 @@ defmodule GenDSL.Model.Channel do
     |> cast(params, @required_fields ++ @optional_fields, required: false)
     |> validate_required(@required_fields)
   end
+
+
+  def to_task(params) do
+    channel =
+      params
+      |> changeset()
+      |> Ecto.Changeset.apply_changes()
+
+    task = &execute/1
+
+    %{"arguments" => channel, "callback" => task}
+  end
+
+  def execute(channel) do
+    specs = []
+
+    specs
+    |> Mix.Tasks.Phx.Gen.Channel.run()
+  end
 end

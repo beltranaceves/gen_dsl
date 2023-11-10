@@ -25,4 +25,22 @@ defmodule GenDSL.Model.Auth do
     |> cast_embed(:schema, required: false, with: &GenDSL.Model.Schema.changeset/1)
     |> validate_required(@required_fields)
   end
+
+  def to_task(params) do
+    auth =
+      params
+      |> changeset()
+      |> Ecto.Changeset.apply_changes()
+
+    task = &execute/1
+
+    %{"arguments" => auth, "callback" => task}
+  end
+
+  def execute(auth) do
+    specs = []
+
+    specs
+    |> Mix.Tasks.Phx.Gen.Auth.run()
+  end
 end

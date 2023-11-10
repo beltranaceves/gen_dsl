@@ -25,4 +25,24 @@ defmodule GenDSL.Model.Live do
     |> cast_embed(:schema, required: false, with: &GenDSL.Model.Schema.changeset/1)
     |> validate_required(@required_fields)
   end
+
+
+
+ def to_task(params) do
+    live =
+      params
+      |> changeset()
+      |> Ecto.Changeset.apply_changes()
+
+    task = &execute/1
+
+    %{"arguments" => live, "callback" => task}
+  end
+
+  def execute(live) do
+    specs = []
+
+    specs
+    |> Mix.Tasks.Phx.Gen.Live.run()
+  end
 end

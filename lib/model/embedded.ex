@@ -18,4 +18,22 @@ defmodule GenDSL.Model.Embededd do
     |> cast_embed(:schema, required: false, with: &GenDSL.Model.Schema.changeset/1)
     |> validate_required(@required_fields)
   end
+
+def to_task(params) do
+    embedded =
+      params
+      |> changeset()
+      |> Ecto.Changeset.apply_changes()
+
+    task = &execute/1
+
+    %{"arguments" => embedded, "callback" => task}
+  end
+
+  def execute(embedded) do
+    specs = []
+
+    specs
+    |> Mix.Tasks.Phx.Gen.Embedded.run()
+  end
 end

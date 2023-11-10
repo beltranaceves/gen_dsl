@@ -1,7 +1,7 @@
 defmodule TestHelpers do
-  def read_single_element(filepath) do
+  def read_blueprint(filepath) do
     case File.read(filepath) do
-      {:ok, body} -> Poison.decode!(body) |> List.last()
+      {:ok, body} -> Poison.decode!(body)
       {:error, reason} -> IO.puts(reason)
     end
   end

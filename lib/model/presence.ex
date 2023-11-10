@@ -16,4 +16,22 @@ defmodule GenDSL.Model.Presence do
     |> cast(params, @required_fields ++ @optional_fields, required: false)
     |> validate_required(@required_fields)
   end
+
+  def to_task(params) do
+    presence =
+      params
+      |> changeset()
+      |> Ecto.Changeset.apply_changes()
+
+    task = &execute/1
+
+    %{"arguments" => presence, "callback" => task}
+  end
+
+  def execute(presence) do
+    specs = []
+
+    specs
+    |> Mix.Tasks.Phx.Gen.Presence.run()
+  end
 end

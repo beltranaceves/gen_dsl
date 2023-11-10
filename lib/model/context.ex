@@ -24,4 +24,23 @@ defmodule GenDSL.Model.Context do
     |> cast_embed(:schema, required: false, with: &GenDSL.Model.Schema.changeset/1)
     |> validate_required(@required_fields)
   end
+
+
+def to_task(params) do
+    context =
+      params
+      |> changeset()
+      |> Ecto.Changeset.apply_changes()
+
+    task = &execute/1
+
+    %{"arguments" => context, "callback" => task}
+  end
+
+  def execute(context) do
+    specs = []
+
+    specs
+    |> Mix.Tasks.Phx.Gen.Context.run()
+  end
 end

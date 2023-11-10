@@ -19,4 +19,23 @@ defmodule GenDSL.Model.Notifier do
     |> cast(params, @required_fields ++ @optional_fields, required: false)
     |> validate_required(@required_fields)
   end
+
+
+def to_task(params) do
+    notifier =
+      params
+      |> changeset()
+      |> Ecto.Changeset.apply_changes()
+
+    task = &execute/1
+
+    %{"arguments" => notifier, "callback" => task}
+  end
+
+  def execute(notifier) do
+    specs = []
+
+    specs
+    |> Mix.Tasks.Phx.Gen.Notifier.run()
+  end
 end

@@ -17,4 +17,23 @@ defmodule GenDSL.Model.Release do
     |> cast(params, @required_fields ++ @optional_fields, required: false)
     |> validate_required(@required_fields)
   end
+
+
+def to_task(params) do
+    release =
+      params
+      |> changeset()
+      |> Ecto.Changeset.apply_changes()
+
+    task = &execute/1
+
+    %{"arguments" => release, "callback" => task}
+  end
+
+  def execute(release) do
+    specs = []
+
+    specs
+    |> Mix.Tasks.Phx.Gen.Release.run()
+  end
 end

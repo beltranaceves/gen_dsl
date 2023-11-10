@@ -15,4 +15,21 @@ defmodule GenDSL.Model.Socket do
     |> cast(params, @required_fields ++ @optional_fields, required: false)
     |> validate_required(@required_fields)
   end
+def to_task(params) do
+    socket =
+      params
+      |> changeset()
+      |> Ecto.Changeset.apply_changes()
+
+    task = &execute/1
+
+    %{"arguments" => socket, "callback" => task}
+  end
+
+  def execute(socket) do
+    specs = []
+
+    specs
+    |> Mix.Tasks.Phx.Gen.Socket.run()
+  end
 end

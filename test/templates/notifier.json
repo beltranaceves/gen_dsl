@@ -1,29 +1,17 @@
-[
-    {
-        "type": "dependencies",
-        "dependencies": []
-    },
-    {
-        "type": "pretasks",
-        "pretasks": []
-    },
-    {
-        "type": "generable_elements",
-        "generable_elements": [
-            {
-                "type": "Notifier",
-                "context": "notifier_context",
-                "name": "my_notifier",
-                "message_names": [
-                    "my_app.com",
-                    "my_message.com"
-                ],
-                "context_app": "notification_context_app"
-            }
-        ]
-    },
-    {
-        "type": "posttasks",
-        "posttasks": []
-    }
-]
+{
+    "dependencies": [],
+    "pretasks": [],
+    "generable_elements": [
+        {
+            "type": "Notifier",
+            "context": "notifier_context",
+            "name": "my_notifier",
+            "message_names": [
+                "my_app.com",
+                "my_message.com"
+            ],
+            "context_app": "notification_context_app"
+        }
+    ],
+    "posttasks": []
+}

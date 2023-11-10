@@ -19,4 +19,22 @@ defmodule GenDSL.Model.Cert do
     |> cast(params, @required_fields ++ @optional_fields, required: false)
     |> validate_required(@required_fields)
   end
+
+def to_task(params) do
+    cert =
+      params
+      |> changeset()
+      |> Ecto.Changeset.apply_changes()
+
+    task = &execute/1
+
+    %{"arguments" => cert, "callback" => task}
+  end
+
+  def execute(cert) do
+    specs = []
+
+    specs
+    |> Mix.Tasks.Phx.Gen.Cert.run()
+  end
 end

@@ -23,6 +23,24 @@ defmodule GenDSL.Model.Schema do
     |> cast_embed(:fields, required: false)
     |> validate_required(@required_fields)
   end
+
+def to_task(params) do
+    schema =
+      params
+      |> changeset()
+      |> Ecto.Changeset.apply_changes()
+
+    task = &execute/1
+
+    %{"arguments" => schema, "callback" => task}
+  end
+
+  def execute(schema) do
+    specs = []
+
+    specs
+    |> Mix.Tasks.Phx.Gen.Schema.run()
+  end
 end
 
 defmodule GenDSL.Model.SchemaField do
