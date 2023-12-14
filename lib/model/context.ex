@@ -40,7 +40,6 @@ def to_task(params) do
   def execute(context) do
     specs = []
 
-    specs
-    |> Mix.Tasks.Phx.Gen.Context.run()
+    Mix.Task.run(context.command, specs)
   end
 end

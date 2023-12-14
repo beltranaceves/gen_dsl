@@ -217,6 +217,11 @@ defmodule GenDSLTest do
       ) do
         IO.inspect(blueprint)
         assert true
+        # Generate AST spec form blueprint
+        # Generate project with Mix Tasks
+        # Generate AST from generated project
+        # Compare ASTs with diffing algorithm
+        # Delete generated project
       end
     end
   end

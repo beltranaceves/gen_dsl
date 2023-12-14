@@ -33,7 +33,6 @@ def to_task(params) do
   def execute(embedded) do
     specs = []
 
-    specs
-    |> Mix.Tasks.Phx.Gen.Embedded.run()
+    Mix.Task.run(embedded.command, specs)
   end
 end

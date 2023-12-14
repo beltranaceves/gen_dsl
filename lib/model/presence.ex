@@ -31,7 +31,6 @@ defmodule GenDSL.Model.Presence do
   def execute(presence) do
     specs = []
 
-    specs
-    |> Mix.Tasks.Phx.Gen.Presence.run()
+    Mix.Task.run(presence.command, specs)
   end
 end

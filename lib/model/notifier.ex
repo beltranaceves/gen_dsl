@@ -35,7 +35,6 @@ def to_task(params) do
   def execute(notifier) do
     specs = []
 
-    specs
-    |> Mix.Tasks.Phx.Gen.Notifier.run()
+    Mix.Task.run(notifier.command, specs)
   end
 end

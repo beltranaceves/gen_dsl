@@ -31,7 +31,6 @@ defmodule GenDSL.Model.Channel do
   def execute(channel) do
     specs = []
 
-    specs
-    |> Mix.Tasks.Phx.Gen.Channel.run()
+    Mix.Task.run(channel.command, specs)
   end
 end

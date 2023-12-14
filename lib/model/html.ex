@@ -43,7 +43,6 @@ def to_task(params) do
   def execute(html) do
     specs = []
 
-    specs
-    |> Mix.Tasks.Phx.Gen.Html.run()
+    Mix.Task.run(html.command, specs)
   end
 end

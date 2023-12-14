@@ -48,7 +48,6 @@ defmodule GenDSL.Model.App do
   def execute(app) do
     specs = []
 
-    specs
-    |> Mix.Tasks.Phx.New.run()
+    Mix.Task.run(app.command, specs)
   end
 end

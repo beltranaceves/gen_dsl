@@ -33,7 +33,6 @@ def to_task(params) do
   def execute(release) do
     specs = []
 
-    specs
-    |> Mix.Tasks.Phx.Gen.Release.run()
+    Mix.Task.run(release.command, specs)
   end
 end

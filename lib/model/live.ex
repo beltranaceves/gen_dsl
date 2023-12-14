@@ -42,7 +42,6 @@ defmodule GenDSL.Model.Live do
   def execute(live) do
     specs = []
 
-    specs
-    |> Mix.Tasks.Phx.Gen.Live.run()
+    Mix.Task.run(live.command, specs)
   end
 end

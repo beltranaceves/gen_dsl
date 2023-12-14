@@ -29,7 +29,6 @@ def to_task(params) do
   def execute(secret) do
     specs = []
 
-    specs
-    |> Mix.Tasks.Phx.Gen.Secret.run()
+    Mix.Task.run(secret.command, specs)
   end
 end

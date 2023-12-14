@@ -38,8 +38,7 @@ def to_task(params) do
   def execute(schema) do
     specs = []
 
-    specs
-    |> Mix.Tasks.Phx.Gen.Schema.run()
+    Mix.Task.run(schema.command, specs)
   end
 end
 

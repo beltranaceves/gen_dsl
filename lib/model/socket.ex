@@ -29,7 +29,6 @@ def to_task(params) do
   def execute(socket) do
     specs = []
 
-    specs
-    |> Mix.Tasks.Phx.Gen.Socket.run()
+    Mix.Task.run(socket.command, specs)
   end
 end

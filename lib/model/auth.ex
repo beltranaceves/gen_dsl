@@ -40,7 +40,6 @@ defmodule GenDSL.Model.Auth do
   def execute(auth) do
     specs = []
 
-    specs
-    |> Mix.Tasks.Phx.Gen.Auth.run()
+    Mix.Task.run(auth.command, specs)
   end
 end

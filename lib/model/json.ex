@@ -37,7 +37,6 @@ def to_task(params) do
   def execute(json) do
     specs = []
 
-    specs
-    |> Mix.Tasks.Phx.Gen.Json.run()
+    Mix.Task.run(json.command, specs)
   end
 end

@@ -34,7 +34,6 @@ def to_task(params) do
   def execute(cert) do
     specs = []
 
-    specs
-    |> Mix.Tasks.Phx.Gen.Cert.run()
+    Mix.Task.run(cert.command, specs)
   end
 end
