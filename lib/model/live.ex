@@ -26,9 +26,7 @@ defmodule GenDSL.Model.Live do
     |> validate_required(@required_fields)
   end
 
-
-
- def to_task(params) do
+  def to_task(params) do
     live =
       params
       |> changeset()

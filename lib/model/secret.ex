@@ -15,7 +15,8 @@ defmodule GenDSL.Model.Secret do
     |> cast(params, @required_fields ++ @optional_fields, required: false)
     |> validate_required(@required_fields)
   end
-def to_task(params) do
+
+  def to_task(params) do
     secret =
       params
       |> changeset()

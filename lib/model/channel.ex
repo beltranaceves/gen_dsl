@@ -16,7 +16,6 @@ defmodule GenDSL.Model.Channel do
     |> validate_required(@required_fields)
   end
 
-
   def to_task(params) do
     channel =
       params

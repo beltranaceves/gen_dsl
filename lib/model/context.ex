@@ -25,8 +25,7 @@ defmodule GenDSL.Model.Context do
     |> validate_required(@required_fields)
   end
 
-
-def to_task(params) do
+  def to_task(params) do
     context =
       params
       |> changeset()

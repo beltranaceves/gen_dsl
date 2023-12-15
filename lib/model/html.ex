@@ -29,7 +29,7 @@ defmodule GenDSL.Model.Html do
     |> validate_required(@required_fields)
   end
 
-def to_task(params) do
+  def to_task(params) do
     html =
       params
       |> changeset()

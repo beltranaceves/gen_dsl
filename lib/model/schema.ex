@@ -24,7 +24,7 @@ defmodule GenDSL.Model.Schema do
     |> validate_required(@required_fields)
   end
 
-def to_task(params) do
+  def to_task(params) do
     schema =
       params
       |> changeset()

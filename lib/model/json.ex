@@ -23,7 +23,7 @@ defmodule GenDSL.Model.Json do
     |> validate_required(@required_fields)
   end
 
-def to_task(params) do
+  def to_task(params) do
     json =
       params
       |> changeset()

@@ -20,8 +20,7 @@ defmodule GenDSL.Model.Notifier do
     |> validate_required(@required_fields)
   end
 
-
-def to_task(params) do
+  def to_task(params) do
     notifier =
       params
       |> changeset()

@@ -19,7 +19,7 @@ defmodule GenDSL.Model.Embededd do
     |> validate_required(@required_fields)
   end
 
-def to_task(params) do
+  def to_task(params) do
     embedded =
       params
       |> changeset()

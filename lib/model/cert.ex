@@ -20,7 +20,7 @@ defmodule GenDSL.Model.Cert do
     |> validate_required(@required_fields)
   end
 
-def to_task(params) do
+  def to_task(params) do
     cert =
       params
       |> changeset()
