@@ -22,7 +22,8 @@ defmodule GenDSL.Model.Auth do
   def changeset(params \\ %{}) do
     %__MODULE__{}
     |> cast(params, @required_fields ++ @optional_fields ++ @remainder_fields, required: false)
-    |> cast_embed(:schema, required: false, with: &GenDSL.Model.Schema.changeset/1)
+    # TODO: check if I really need an embedded schema I can just do with schema module and table fields
+    |> cast_embed(:schema, required: true, with: &GenDSL.Model.Schema.changeset/1)
     |> validate_required(@required_fields)
   end
 
@@ -30,7 +31,12 @@ defmodule GenDSL.Model.Auth do
     auth =
       params
       |> changeset()
-      |> Ecto.Changeset.apply_changes()
+      |> then(fn changeset ->
+        case changeset.valid? do
+          true -> changeset |> Ecto.Changeset.apply_changes()
+          false -> raise "Invalid changeset"
+        end
+      end)
 
     task = &execute/1
 
@@ -38,7 +44,7 @@ defmodule GenDSL.Model.Auth do
   end
 
   def execute(auth) do
-    specs = []
+    specs = [auth]
 
     Mix.Task.run(auth.command, specs)
   end

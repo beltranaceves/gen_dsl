@@ -29,7 +29,12 @@ defmodule GenDSL.Model.Context do
     context =
       params
       |> changeset()
-      |> Ecto.Changeset.apply_changes()
+      |> then(fn changeset ->
+        case changeset.valid? do
+          true -> changeset |> Ecto.Changeset.apply_changes()
+          false -> raise "Invalid changeset"
+        end
+      end)
 
     task = &execute/1
 

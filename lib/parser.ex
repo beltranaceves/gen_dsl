@@ -32,7 +32,8 @@ defmodule GenDSL.Parser do
   def execute_blueprint(blueprint) do
     IO.puts("Executing blueprint")
 
-    Mix.Task.load_all() # TODO: check if this loads all plugins
+    # TODO: check if this loads all plugins
+    Mix.Task.load_all()
 
     blueprint
     |> Map.keys()

@@ -1,0 +1,146 @@
+{:ok,
+ {:defmodule, [line: 1],
+  [
+    {:__aliases__, [line: 1], [:ValidAppds47wf6isof4n9n8nduvWeb, :Telemetry]},
+    [
+      do: {:__block__, [],
+       [
+         {:use, [line: 2], [{:__aliases__, [line: 2], [:Supervisor]}]},
+         {:import, [line: 3],
+          [{:__aliases__, [line: 3], [:Telemetry, :Metrics]}]},
+         {:def, [line: 5],
+          [
+            {:start_link, [line: 5], [{:arg, [line: 5], nil}]},
+            [
+              do: {{:., [line: 6],
+                [{:__aliases__, [line: 6], [:Supervisor]}, :start_link]},
+               [line: 6],
+               [
+                 {:__MODULE__, [line: 6], nil},
+                 {:arg, [line: 6], nil},
+                 [name: {:__MODULE__, [line: 6], nil}]
+               ]}
+            ]
+          ]},
+         {:@, [line: 9], [{:impl, [line: 9], [true]}]},
+         {:def, [line: 10],
+          [
+            {:init, [line: 10], [{:_arg, [line: 10], nil}]},
+            [
+              do: {:__block__, [],
+               [
+                 {:=, [line: 11],
+                  [
+                    {:children, [line: 11], nil},
+                    [
+                      telemetry_poller: [
+                        measurements: {:periodic_measurements, [line: 14], []},
+                        period: 10000
+                      ]
+                    ]
+                  ]},
+                 {{:., [line: 19],
+                   [{:__aliases__, [line: 19], [:Supervisor]}, :init]},
+                  [line: 19],
+                  [{:children, [line: 19], nil}, [strategy: :one_for_one]]}
+               ]}
+            ]
+          ]},
+         {:def, [line: 22],
+          [
+            {:metrics, [line: 22], nil},
+            [
+              do: [
+                {:summary, [line: 25],
+                 [
+                   "phoenix.endpoint.start.system_time",
+                   [unit: {:native, :millisecond}]
+                 ]},
+                {:summary, [line: 28],
+                 [
+                   "phoenix.endpoint.stop.duration",
+                   [unit: {:native, :millisecond}]
+                 ]},
+                {:summary, [line: 31],
+                 [
+                   "phoenix.router_dispatch.start.system_time",
+                   [tags: [:route], unit: {:native, :millisecond}]
+                 ]},
+                {:summary, [line: 35],
+                 [
+                   "phoenix.router_dispatch.exception.duration",
+                   [tags: [:route], unit: {:native, :millisecond}]
+                 ]},
+                {:summary, [line: 39],
+                 [
+                   "phoenix.router_dispatch.stop.duration",
+                   [tags: [:route], unit: {:native, :millisecond}]
+                 ]},
+                {:summary, [line: 43],
+                 [
+                   "phoenix.socket_connected.duration",
+                   [unit: {:native, :millisecond}]
+                 ]},
+                {:summary, [line: 46],
+                 [
+                   "phoenix.channel_joined.duration",
+                   [unit: {:native, :millisecond}]
+                 ]},
+                {:summary, [line: 49],
+                 [
+                   "phoenix.channel_handled_in.duration",
+                   [tags: [:event], unit: {:native, :millisecond}]
+                 ]},
+                {:summary, [line: 55],
+                 [
+                   "validAppds47wf6isof4n9n8nduv.repo.query.total_time",
+                   [
+                     unit: {:native, :millisecond},
+                     description: "The sum of the other measurements"
+                   ]
+                 ]},
+                {:summary, [line: 59],
+                 [
+                   "validAppds47wf6isof4n9n8nduv.repo.query.decode_time",
+                   [
+                     unit: {:native, :millisecond},
+                     description: "The time spent decoding the data received from the database"
+                   ]
+                 ]},
+                {:summary, [line: 63],
+                 [
+                   "validAppds47wf6isof4n9n8nduv.repo.query.query_time",
+                   [
+                     unit: {:native, :millisecond},
+                     description: "The time spent executing the query"
+                   ]
+                 ]},
+                {:summary, [line: 67],
+                 [
+                   "validAppds47wf6isof4n9n8nduv.repo.query.queue_time",
+                   [
+                     unit: {:native, :millisecond},
+                     description: "The time spent waiting for a database connection"
+                   ]
+                 ]},
+                {:summary, [line: 71],
+                 [
+                   "validAppds47wf6isof4n9n8nduv.repo.query.idle_time",
+                   [
+                     unit: {:native, :millisecond},
+                     description: "The time the connection spent waiting before being checked out for the query"
+                   ]
+                 ]},
+                {:summary, [line: 78],
+                 ["vm.memory.total", [unit: {:byte, :kilobyte}]]},
+                {:summary, [line: 79], ["vm.total_run_queue_lengths.total"]},
+                {:summary, [line: 80], ["vm.total_run_queue_lengths.cpu"]},
+                {:summary, [line: 81], ["vm.total_run_queue_lengths.io"]}
+              ]
+            ]
+          ]},
+         {:defp, [line: 85],
+          [{:periodic_measurements, [line: 85], nil}, [do: []]]}
+       ]}
+    ]
+  ]}}

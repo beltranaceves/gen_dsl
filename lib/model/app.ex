@@ -46,8 +46,11 @@ defmodule GenDSL.Model.App do
       |> changeset()
       |> then(fn changeset ->
         case changeset.valid? do
-          true -> changeset |> Ecto.Changeset.apply_changes()
-          false -> raise "Invalid changeset"
+          true ->
+            changeset |> Ecto.Changeset.apply_changes()
+
+          false ->
+            raise "Invalid changeset"
         end
       end)
 
@@ -59,7 +62,8 @@ defmodule GenDSL.Model.App do
   def execute(app) do
     specs = [app.path]
 
-    [valid_flags, valid_named_arguments , _valid_app] = GenDSL.Model.validate_model(app, @flags, @named_arguments)
+    [valid_flags, valid_named_arguments, _valid_app] =
+      GenDSL.Model.validate_model(app, @flags, @named_arguments)
 
     specs = (specs ++ valid_flags ++ valid_named_arguments) |> List.flatten()
     IO.inspect(specs)

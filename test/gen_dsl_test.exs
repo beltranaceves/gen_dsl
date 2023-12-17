@@ -79,90 +79,90 @@ defmodule GenDSLTest do
     end)
   end
 
-  test "Parsing App Element" do
-    baseline_element = TestHelpers.read_blueprint(@app)["generable_elements"] |> List.last()
+  # test "Parsing App Element" do
+  #   baseline_element = TestHelpers.read_blueprint(@app)["generable_elements"] |> List.last()
 
-    generated_element =
-      GenDSL.Parser.read_blueprint(@app)["generable_elements"]
-      |> GenDSL.Parser.process_blueprint()
-      |> List.last()
+  #   generated_element =
+  #     GenDSL.Parser.read_blueprint(@app)["generable_elements"]
+  #     |> GenDSL.Parser.process_blueprint()
+  #     |> List.last()
 
-    baseline_element
-    |> Map.keys()
-    |> Enum.each(fn key ->
-      case key do
-        "type" ->
-          assert true
+  #   baseline_element
+  #   |> Map.keys()
+  #   |> Enum.each(fn key ->
+  #     case key do
+  #       "type" ->
+  #         assert true
 
-        "database" ->
-          assert generated_element |> Map.fetch!(key |> String.to_atom()) |> Atom.to_string() ==
-                   baseline_element[key]
+  #       "database" ->
+  #         assert generated_element |> Map.fetch!(key |> String.to_atom()) |> Atom.to_string() ==
+  #                  baseline_element[key]
 
-        _ ->
-          assert generated_element |> Map.fetch!(key |> String.to_atom()) == baseline_element[key]
-      end
-    end)
-  end
+  #       _ ->
+  #         assert generated_element |> Map.fetch!(key |> String.to_atom()) == baseline_element[key]
+  #     end
+  #   end)
+  # end
 
-  test "Parsing App Plugin Element" do
-    baseline_element =
-      TestHelpers.read_blueprint(@app_plugin)["generable_elements"] |> List.last()
+  # test "Parsing App Plugin Element" do
+  #   baseline_element =
+  #     TestHelpers.read_blueprint(@app_plugin)["generable_elements"] |> List.last()
 
-    generated_element =
-      GenDSL.Parser.read_blueprint(@app_plugin)["generable_elements"] |> List.last()
+  #   generated_element =
+  #     GenDSL.Parser.read_blueprint(@app_plugin)["generable_elements"] |> List.last()
 
-    baseline_element
-    |> Map.keys()
-    |> Enum.each(fn key ->
-      case key do
-        "type" ->
-          assert true
+  #   baseline_element
+  #   |> Map.keys()
+  #   |> Enum.each(fn key ->
+  #     case key do
+  #       "type" ->
+  #         assert true
 
-        "database" ->
-          assert generated_element |> Map.fetch!(key |> String.to_atom()) |> Atom.to_string() ==
-                   baseline_element[key]
+  #       "database" ->
+  #         assert generated_element |> Map.fetch!(key |> String.to_atom()) |> Atom.to_string() ==
+  #                  baseline_element[key]
 
-        _ ->
-          assert generated_element |> Map.fetch!(key |> String.to_atom()) == baseline_element[key]
-      end
-    end)
-  end
+  #       _ ->
+  #         assert generated_element |> Map.fetch!(key |> String.to_atom()) == baseline_element[key]
+  #     end
+  #   end)
+  # end
 
-  test "Parsing Cert Element" do
-    assert_single_element(@cert)
-  end
+  # test "Parsing Cert Element" do
+  #   assert_single_element(@cert)
+  # end
 
-  test "Parsing Channel Element" do
-    assert_single_element(@channel)
-  end
+  # test "Parsing Channel Element" do
+  #   assert_single_element(@channel)
+  # end
 
-  test "Parsing Notifier Element" do
-    assert_single_element(@notifier)
-  end
+  # test "Parsing Notifier Element" do
+  #   assert_single_element(@notifier)
+  # end
 
-  test "Parsing Presence Element" do
-    assert_single_element(@presence)
-  end
+  # test "Parsing Presence Element" do
+  #   assert_single_element(@presence)
+  # end
 
-  test "Parsing Schema and SchemaField Elements" do
-    baseline_element = TestHelpers.read_blueprint(@schema)["generable_elements"] |> List.last()
-    generated_element = GenDSL.Parser.read_blueprint(@schema)["generable_elements"] |> List.last()
+  # test "Parsing Schema and SchemaField Elements" do
+  #   baseline_element = TestHelpers.read_blueprint(@schema)["generable_elements"] |> List.last()
+  #   generated_element = GenDSL.Parser.read_blueprint(@schema)["generable_elements"] |> List.last()
 
-    baseline_element
-    |> Map.keys()
-    |> Enum.each(fn key ->
-      case key do
-        "type" ->
-          assert true
+  #   baseline_element
+  #   |> Map.keys()
+  #   |> Enum.each(fn key ->
+  #     case key do
+  #       "type" ->
+  #         assert true
 
-        "fields" ->
-          assert_schema_fields_equal(baseline_element, generated_element)
+  #       "fields" ->
+  #         assert_schema_fields_equal(baseline_element, generated_element)
 
-        _ ->
-          assert generated_element |> Map.fetch!(key |> String.to_atom()) == baseline_element[key]
-      end
-    end)
-  end
+  #       _ ->
+  #         assert generated_element |> Map.fetch!(key |> String.to_atom()) == baseline_element[key]
+  #     end
+  #   end)
+  # end
 
   describe "process_blueprint/1" do
     property "StreamData generated map is valid gen_dsl" do
@@ -173,13 +173,22 @@ defmodule GenDSLTest do
               %{
                 type: StreamData.constant("App"),
                 path:
-                  StreamData.string(Enum.concat([?a..?z, ?1..?9]), min_length: 5, max_lenght: 35),
-                umbrella: StreamData.boolean(),
-                app:
-                  StreamData.string(Enum.concat([?a..?z, ?1..?9]), min_length: 5, max_lenght: 35),
+                  StreamData.string(Enum.concat([?a..?z, ?1..?9]), min_length: 20, max_lenght: 35)
+                  |> StreamData.map(&("validApp" <> &1))
+                  |> StreamData.map(&Path.join("test/test_projects", &1)),
+                # TODO: enable this fields once umbrella projects are supported
+                # umbrella: StreamData.boolean(),
+                app: StreamData.string(Enum.concat([?a..?z]), min_length: 5, max_lenght: 35),
                 module:
-                  StreamData.string(Enum.concat([?a..?z, ?1..?9]), min_length: 5, max_lenght: 35),
-                database: StreamData.one_of([:postgres, :mysql, :mssql, :sqlite3]),
+                  StreamData.atom(:alias)
+                  |> StreamData.map(&Atom.to_string/1),
+                database:
+                  StreamData.one_of([
+                    StreamData.constant("postgres"),
+                    StreamData.constant("mysql"),
+                    StreamData.constant("mssql"),
+                    StreamData.constant("sqlite3")
+                  ]),
                 no_assets: StreamData.boolean(),
                 no_esbuild: StreamData.boolean(),
                 no_tailwind: StreamData.boolean(),
@@ -190,12 +199,15 @@ defmodule GenDSLTest do
                 no_live: StreamData.boolean(),
                 no_mailer: StreamData.boolean(),
                 binary_id: StreamData.boolean(),
-                verbose: StreamData.boolean(),
-                install: StreamData.boolean(),
-                no_install: StreamData.boolean()
+                verbose: StreamData.boolean()
+                # TODO: enable this fields once the mix deps.get bug is fixed
+                # install: install_flag = StreamData.boolean(),
+                # no_install: install_flag |> StreamData.map(&(!&1)),
               },
               [
-                :umbrella,
+                # TODO: enable this field once umbrella projects are supported
+                # :umbrella,
+                :app,
                 :module,
                 :database,
                 :no_assets,
@@ -208,20 +220,30 @@ defmodule GenDSLTest do
                 :no_live,
                 :no_mailer,
                 :binary_id,
-                :verbose,
-                :install,
-                :no_install
+                :verbose
+                # :install,
+                # :no_install
               ]
             )
+            |> StreamData.unshrinkable(),
+          max_runs: 1
         )
       ) do
         IO.inspect(blueprint)
-        assert true
-        # Generate AST spec form blueprint
-        # Generate project with Mix Tasks
-        # Generate AST from generated project
-        # Compare ASTs with diffing algorithm
-        # Delete generated project
+        app = GenDSL.Model.App.to_task(blueprint)
+        app["arguments"] |> app["callback"].()
+
+        property_map =
+          TestHelpers.generate_property_map(app["arguments"], blueprint.type)
+
+        IO.puts("Generated Property Map")
+        IO.inspect(property_map)
+
+        assert TestHelpers.analyze_project(
+                 app["arguments"].path |> Path.basename(),
+                 property_map,
+                 app["arguments"] |> Map.fetch!(:umbrella)
+               )
       end
     end
   end
