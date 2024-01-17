@@ -4,11 +4,13 @@ defmodule GenDSL.Model.Auth do
 
   schema "Auth" do
     field(:context, :string)
+    # TODO: Validate context is a valid module name (eg. capital letter at the beginning)
     field(:web, :string)
-    # TODO: check valid input
-    # field(:hashing_lib, :string)
     field(:hashing_lib, Ecto.Enum, values: [bcrypt: "bcrypt", pbkdf2: "pbkdf2", argon2: "argon2"])
-
+    field(:no_live, :boolean, default: false)
+    field(:live, :boolean, default: true)
+    # TODO: Validate XOR live and no_live flags
+    field(:binary_id, :boolean, default: false)
     # TODO: Check values with changeset for valid datatypes
     embeds_one(:schema, GenDSL.Model.Schema)
 
@@ -16,14 +18,20 @@ defmodule GenDSL.Model.Auth do
   end
 
   @required_fields ~w[context]a
-  @optional_fields ~w[web hashing_lib]a
-  @remainder_fields ~w[schema]a
+  @optional_fields ~w[web hashing_lib no_live live binary_id]a
+  @remainder_fields ~w[]a
+
+  @flags ~w[no_live live binary_id]a
+  @named_arguments ~w[web hashing_lib]a
+  @positional_arguments ~w[context]a
+
+  # TODO: figure out how to get the schema values
 
   def changeset(params \\ %{}) do
     %__MODULE__{}
     |> cast(params, @required_fields ++ @optional_fields ++ @remainder_fields, required: false)
     # TODO: check if I really need an embedded schema I can just do with schema module and table fields
-    |> cast_embed(:schema, required: true, with: &GenDSL.Model.Schema.changeset/1)
+    |> cast_embed(:schema, required: true, with: &GenDSL.Model.Schema.embedded_changeset/2)
     |> validate_required(@required_fields)
   end
 
@@ -33,8 +41,12 @@ defmodule GenDSL.Model.Auth do
       |> changeset()
       |> then(fn changeset ->
         case changeset.valid? do
-          true -> changeset |> Ecto.Changeset.apply_changes()
-          false -> raise "Invalid changeset"
+          true ->
+            changeset |> Ecto.Changeset.apply_changes()
+
+          false ->
+            IO.inspect(changeset.errors)
+            raise "Invalid changeset"
         end
       end)
 
@@ -44,8 +56,15 @@ defmodule GenDSL.Model.Auth do
   end
 
   def execute(auth) do
-    specs = [auth]
+    specs = []
 
-    Mix.Task.run(auth.command, specs)
+    [valid_positional_arguments, valid_flags, valid_named_arguments, _valid_auth] =
+      GenDSL.Model.get_valid_model!(auth, @positional_arguments, @flags, @named_arguments)
+
+    valid_schema_spec = GenDSL.Model.Schema.to_valid_spec(auth.schema)
+
+    specs = (specs ++ valid_positional_arguments ++ valid_schema_spec ++ valid_named_arguments ++ valid_flags) |> List.flatten()
+    IO.inspect(specs)
+    Mix.Task.rerun("phx.gen." <> auth.command, specs)
   end
 end
