@@ -1,4 +1,4 @@
-defmodule GenDSL.Model.Embededd do
+defmodule GenDSL.Model.Embedded do
   use Ecto.Schema
   import Ecto.Changeset
 
@@ -10,12 +10,12 @@ defmodule GenDSL.Model.Embededd do
 
   @required_fields ~w[]a
   @optional_fields ~w[]a
-  @remainder_fields ~w[schema]a
+  @remainder_fields ~w[]a
 
   def changeset(params \\ %{}) do
     %__MODULE__{}
     |> cast(params, @required_fields ++ @optional_fields ++ @remainder_fields, required: false)
-    |> cast_embed(:schema, required: false, with: &GenDSL.Model.Schema.changeset/1)
+    |> cast_embed(:schema, required: false, with: &GenDSL.Model.Schema.embedded_changeset/2)
     |> validate_required(@required_fields)
   end
 
@@ -38,6 +38,10 @@ defmodule GenDSL.Model.Embededd do
   def execute(embedded) do
     specs = []
 
-    Mix.Task.run(embedded.command, specs)
+    valid_schema_spec = GenDSL.Model.Schema.to_valid_spec(embedded.schema)
+
+    specs = (specs ++ valid_schema_spec) |> List.flatten()
+    IO.inspect(specs)
+    # Mix.Task.run("phx." <> embedded.command, specs)
   end
 end
