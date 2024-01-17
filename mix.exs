@@ -37,9 +37,11 @@ defmodule GenDSL.MixProject do
       {:stream_data, "~> 0.6.0", only: :test},
       {:poison, "~> 5.0"},
       {:exconstructor, "~> 1.2"},
-      {:ecto, "~> 3.9"},
-      {:phoenix, "~> 1.7"},
-      {:phx_new, "~> 1.7"},
+      {:ecto, "~> 3.11.1"},
+      {:phoenix, "~> 1.7.10"},
+      {:ecto_sql, "~> 3.10"},
+      {:phx_new, "~> 1.7.10"},
+      {:phoenix_html, "~> 3.3"},
       {:gen_dsl_plugin, path: "../gen_dsl_plugin"}
     ]
   end
