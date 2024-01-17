@@ -14,6 +14,10 @@ defmodule GenDSL.Model.Cert do
   @required_fields ~w[]a
   @optional_fields ~w[app domain url output name]a
 
+  @flags ~w[]a
+  @named_arguments ~w[output name]a
+  @positional_arguments ~w[app domain url]a
+
   def changeset(params \\ %{}) do
     %__MODULE__{}
     |> cast(params, @required_fields ++ @optional_fields, required: false)
@@ -39,6 +43,11 @@ defmodule GenDSL.Model.Cert do
   def execute(cert) do
     specs = []
 
-    Mix.Task.run(cert.command, specs)
+    [valid_positional_arguments, valid_flags, valid_named_arguments, _valid_cert] =
+      GenDSL.Model.get_valid_model!(cert, @positional_arguments, @flags, @named_arguments)
+
+    specs = (specs ++ valid_positional_arguments ++ valid_flags ++ valid_named_arguments) |> List.flatten()
+    IO.inspect(specs)
+    # Mix.Task.rerun("phx." <> cert.command, specs)
   end
 end
