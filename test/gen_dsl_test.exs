@@ -174,7 +174,7 @@ defmodule GenDSLTest do
                 type: StreamData.constant("App"),
                 path:
                   StreamData.string(Enum.concat([?a..?z, ?1..?9]), min_length: 20, max_lenght: 35)
-                  |> StreamData.map(&("validApp" <> &1))
+                  |> StreamData.map(&("validapp" <> &1))
                   |> StreamData.map(&Path.join("test/test_projects", &1)),
                 # TODO: enable this fields once umbrella projects are supported
                 # umbrella: StreamData.boolean(),
