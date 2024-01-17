@@ -37,10 +37,24 @@ defmodule GenDSL.Model do
     end)
   end
 
-  def validate_model(model, flags, named_arguments) do
+  def get_valid_positional_arguments(positional_arguments, model) do
+    positional_arguments
+    |> Enum.filter(fn positional_argument ->
+      model |> Map.has_key?(positional_argument)
+    end)
+    |> Enum.map(fn positional_argument ->
+      model |> Map.fetch!(positional_argument)
+    end)
+  end
+
+  def get_valid_model!(model, positional_arguments, flags, named_arguments) do
     filtered_model =
       model
       |> filter_model()
+
+    valid_positional_arguments =
+      positional_arguments
+      |> get_valid_positional_arguments(filtered_model)
 
     valid_flags =
       flags
@@ -51,9 +65,11 @@ defmodule GenDSL.Model do
       |> get_valid_named_arguments(filtered_model)
 
     [
+      valid_positional_arguments,
       valid_flags,
       valid_named_arguments,
       filtered_model
     ]
   end
+
 end
