@@ -48,6 +48,6 @@ defmodule GenDSL.Model.Cert do
 
     specs = (specs ++ valid_positional_arguments ++ valid_flags ++ valid_named_arguments) |> List.flatten()
     IO.inspect(specs)
-    # Mix.Task.rerun("phx." <> cert.command, specs)
+    Mix.Task.rerun("phx." <> cert.command, specs)
   end
 end
