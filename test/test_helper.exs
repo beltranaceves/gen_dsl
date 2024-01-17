@@ -25,7 +25,7 @@ defmodule TestHelpers do
           end
 
         _ ->
-          [element.module |> String.replace("Elixir.", "") |> String.capitalize() |> String.to_atom()]
+          [element.module |> String.replace("Elixir.", "") |> String.to_atom()]
       end
 
     properties
@@ -93,7 +93,7 @@ defmodule TestHelpers do
 
     remaining_properties =
       Code.string_to_quoted(file)
-      |> IO.inspect()
+      # |> IO.inspect()
       # |> Macro.expand(__ENV__)
       |> Macro.prewalk(properties, fn
         {:__aliases__, meta, children}, properties ->
@@ -102,20 +102,19 @@ defmodule TestHelpers do
               IO.puts("Node with aliases")
               IO.inspect(children)
 
-              properties =
+              updated_aliases =
                 if aliases |> Enum.member?(children |> Enum.at(0)) do
-                  properties
-                  |> Map.update!(
-                    "aliases",
-                    fn aliases ->
-                      aliases |> Enum.reject(fn alias -> alias == children[0] end)
-                    end
-                  )
+                  IO.puts("Removing alias")
+                  List.delete(aliases, children |> Enum.at(0))
                 else
-                  properties
+                  aliases
                 end
 
-              {{:__aliases__, meta, children}, properties}
+              node_properties =
+                properties
+                |> Map.update!("aliases", fn aliases -> updated_aliases end)
+
+              {{:__aliases__, meta, children}, node_properties}
 
             _ ->
               {{:__aliases__, meta, children}, properties}
@@ -135,6 +134,8 @@ defmodule TestHelpers do
           {other, properties}
       end)
 
+    IO.puts("Remaining properties")
+    IO.inspect(remaining_properties)
     remaining_properties
   end
 end
