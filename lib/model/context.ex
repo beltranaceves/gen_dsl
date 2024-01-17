@@ -4,9 +4,11 @@ defmodule GenDSL.Model.Context do
 
   schema "Context" do
     field(:context, :string)
-    field(:no_schema, :boolean)
-    field(:merge_with_existing_context, :boolean)
-    field(:no_merge_with_existing_context, :boolean)
+    # TODO: Validate context is a valid module name (eg. capital letter at the beginning)
+    field(:no_schema, :boolean, default: false)
+    # TODO: validate XOR merge_with_existing_context or no_merge_with_existing_context
+    field(:merge_with_existing_context, :boolean, default: true)
+    field(:no_merge_with_existing_context, :boolean, default: false)
 
     # TODO: Check values with changeset for valid datatypes
     embeds_one(:schema, GenDSL.Model.Schema)
@@ -15,13 +17,17 @@ defmodule GenDSL.Model.Context do
   end
 
   @required_fields ~w[context]a
-  @optional_fields ~w[web no_context no_schema merge_with_existing_context no_merge_with_existing_context]a
-  @remainder_fields ~w[schema]a
+  @optional_fields ~w[no_schema merge_with_existing_context no_merge_with_existing_context]a
+  @remainder_fields ~w[]a
+
+  @flags ~w[no_schema merge_with_existing_context no_merge_with_existing_context]a
+  @named_arguments ~w[]a
+  @positional_arguments ~w[context]a
 
   def changeset(params \\ %{}) do
     %__MODULE__{}
     |> cast(params, @required_fields ++ @optional_fields ++ @remainder_fields, required: false)
-    |> cast_embed(:schema, required: false, with: &GenDSL.Model.Schema.changeset/1)
+    |> cast_embed(:schema, required: false, with: &GenDSL.Model.Schema.embedded_changeset/2) # TODO: make required key dependent on no_schema flag for all embedded schemas
     |> validate_required(@required_fields)
   end
 
@@ -44,6 +50,13 @@ defmodule GenDSL.Model.Context do
   def execute(context) do
     specs = []
 
-    Mix.Task.run(context.command, specs)
+    [valid_positional_arguments, valid_flags, valid_named_arguments, _valid_context] =
+      GenDSL.Model.get_valid_model!(context, @positional_arguments, @flags, @named_arguments)
+#
+    valid_schema_spec = GenDSL.Model.Schema.to_valid_spec(context.schema)
+
+    specs = (specs ++ valid_positional_arguments ++ valid_schema_spec ++ valid_named_arguments ++ valid_flags) |> List.flatten()
+    IO.inspect(specs)
+    # Mix.Task.rerun("phx." <> context.command, specs)
   end
 end
