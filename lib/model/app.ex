@@ -32,8 +32,8 @@ defmodule GenDSL.Model.App do
 
   @flags ~w[umbrella no_assets no_esbuild no_tailwind no_dashboard no_ecto no_gettext no_html no_live no_mailer binary_id verbose install no_install]a
   @named_arguments ~w[app module database]a
+  @positional_arguments ~w[path]a
 
-  @spec changeset(%{}) :: Ecto.Changeset.t()
   def changeset(params \\ %{}) do
     %__MODULE__{}
     |> cast(params, @required_fields ++ @optional_fields, required: false)
@@ -60,15 +60,13 @@ defmodule GenDSL.Model.App do
   end
 
   def execute(app) do
-    specs = [app.path]
+    specs = []
 
-    [valid_flags, valid_named_arguments, _valid_app] =
-      GenDSL.Model.validate_model(app, @flags, @named_arguments)
+    [valid_positional_arguments, valid_flags, valid_named_arguments, _valid_app] =
+      GenDSL.Model.get_valid_model!(app, @positional_arguments, @flags, @named_arguments)
 
-    specs = (specs ++ valid_flags ++ valid_named_arguments) |> List.flatten()
+    specs = (specs ++ valid_positional_arguments ++ valid_flags ++ valid_named_arguments) |> List.flatten()
     IO.inspect(specs)
-    # Mix.Task.reenable("phx" <> app.command)
     Mix.Task.rerun("phx." <> app.command, specs)
-    # Mix.Task.reenable("phx" <> app.command)
   end
 end
