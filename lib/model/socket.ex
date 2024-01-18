@@ -10,6 +10,10 @@ defmodule GenDSL.Model.Socket do
   @required_fields ~w[module]a
   @optional_fields ~w[]a
 
+  @flags ~w[]a
+  @named_arguments ~w[]a
+  @positional_arguments ~w[module]a
+
   def changeset(params \\ %{}) do
     %__MODULE__{}
     |> cast(params, @required_fields ++ @optional_fields, required: false)
@@ -35,6 +39,11 @@ defmodule GenDSL.Model.Socket do
   def execute(socket) do
     specs = []
 
-    Mix.Task.run(socket.command, specs)
+    [valid_positional_arguments, valid_flags, valid_named_arguments, _valid_socket] =
+      GenDSL.Model.get_valid_model!(socket, @positional_arguments, @flags, @named_arguments)
+
+    specs = (specs ++ valid_positional_arguments ++ valid_flags ++ valid_named_arguments) |> List.flatten()
+    IO.inspect(specs)
+    Mix.Task.rerun("phx.gen." <> socket.command, specs)
   end
 end
