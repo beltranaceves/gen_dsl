@@ -62,22 +62,31 @@ defmodule GenDSL.Model.Schema do
 
     valid_schema_spec = GenDSL.Model.Schema.to_valid_spec(schema)
 
-    specs = (specs ++ valid_schema_spec ) |> List.flatten()
+    specs = (specs ++ valid_schema_spec) |> List.flatten()
     IO.inspect(specs)
-    Mix.Task.run("phx.gen." <>schema.command, specs)
+    Mix.Task.run("phx.gen." <> schema.command, specs)
   end
 
   def to_valid_spec(schema) do
-    [valid_positional_arguments, valid_flags, valid_named_arguments, _valid_schema] = GenDSL.Model.get_valid_model!(schema, @positional_arguments, @flags, @named_arguments)
-    fields_specs = case schema |> Map.fetch(:fields) do
-      {:ok, fields} -> fields |> Enum.map(fn field -> GenDSL.Model.SchemaField.to_valid_spec(field) end)
-      :error -> []
-    end
+    [valid_positional_arguments, valid_flags, valid_named_arguments, _valid_schema] =
+      GenDSL.Model.get_valid_model!(schema, @positional_arguments, @flags, @named_arguments)
+
+    fields_specs =
+      case schema |> Map.fetch(:fields) do
+        {:ok, fields} ->
+          fields |> Enum.map(fn field -> GenDSL.Model.SchemaField.to_valid_spec(field) end)
+
+        :error ->
+          []
+      end
+
     IO.puts("Schema spec")
     IO.inspect(valid_positional_arguments, label: "valid_positional_arguments")
     IO.inspect(valid_flags, label: "valid_flags")
     IO.inspect(valid_named_arguments, label: "valid_named_arguments")
-    [valid_positional_arguments, valid_flags, valid_named_arguments] ++ fields_specs |> List.flatten()
+
+    ([valid_positional_arguments, valid_flags, valid_named_arguments] ++ fields_specs)
+    |> List.flatten()
   end
 end
 

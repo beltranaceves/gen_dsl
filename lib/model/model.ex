@@ -71,5 +71,4 @@ defmodule GenDSL.Model do
       filtered_model
     ]
   end
-
 end

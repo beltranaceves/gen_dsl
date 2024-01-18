@@ -27,7 +27,8 @@ defmodule GenDSL.Model.Context do
   def changeset(params \\ %{}) do
     %__MODULE__{}
     |> cast(params, @required_fields ++ @optional_fields ++ @remainder_fields, required: false)
-    |> cast_embed(:schema, required: false, with: &GenDSL.Model.Schema.embedded_changeset/2) # TODO: make required key dependent on no_schema flag for all embedded schemas
+    # TODO: make required key dependent on no_schema flag for all embedded schemas
+    |> cast_embed(:schema, required: false, with: &GenDSL.Model.Schema.embedded_changeset/2)
     |> validate_required(@required_fields)
   end
 
@@ -52,10 +53,15 @@ defmodule GenDSL.Model.Context do
 
     [valid_positional_arguments, valid_flags, valid_named_arguments, _valid_context] =
       GenDSL.Model.get_valid_model!(context, @positional_arguments, @flags, @named_arguments)
-#
+
+    #
     valid_schema_spec = GenDSL.Model.Schema.to_valid_spec(context.schema)
 
-    specs = (specs ++ valid_positional_arguments ++ valid_schema_spec ++ valid_named_arguments ++ valid_flags) |> List.flatten()
+    specs =
+      (specs ++
+         valid_positional_arguments ++ valid_schema_spec ++ valid_named_arguments ++ valid_flags)
+      |> List.flatten()
+
     IO.inspect(specs)
     Mix.Task.rerun("phx.gen." <> context.command, specs)
   end

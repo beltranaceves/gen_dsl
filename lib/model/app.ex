@@ -65,7 +65,10 @@ defmodule GenDSL.Model.App do
     [valid_positional_arguments, valid_flags, valid_named_arguments, _valid_app] =
       GenDSL.Model.get_valid_model!(app, @positional_arguments, @flags, @named_arguments)
 
-    specs = (specs ++ valid_positional_arguments ++ valid_flags ++ valid_named_arguments) |> List.flatten()
+    specs =
+      (specs ++ valid_positional_arguments ++ valid_flags ++ valid_named_arguments)
+      |> List.flatten()
+
     IO.inspect(specs)
     Mix.Task.rerun("phx." <> app.command, specs)
   end

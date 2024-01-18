@@ -43,7 +43,10 @@ defmodule GenDSL.Model.Presence do
     [valid_positional_arguments, valid_flags, valid_named_arguments, _valid_presence] =
       GenDSL.Model.get_valid_model!(presence, @positional_arguments, @flags, @named_arguments)
 
-    specs = (specs ++ valid_positional_arguments ++ valid_flags ++ valid_named_arguments) |> List.flatten()
+    specs =
+      (specs ++ valid_positional_arguments ++ valid_flags ++ valid_named_arguments)
+      |> List.flatten()
+
     IO.inspect(specs)
     Mix.Task.rerun("phx.gen." <> presence.command, specs)
   end

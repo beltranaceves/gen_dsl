@@ -44,7 +44,10 @@ defmodule GenDSL.Model.Release do
     [valid_positional_arguments, valid_flags, valid_named_arguments, _valid_release] =
       GenDSL.Model.get_valid_model!(release, @positional_arguments, @flags, @named_arguments)
 
-    specs = (specs ++ valid_positional_arguments ++ valid_flags ++ valid_named_arguments) |> List.flatten()
+    specs =
+      (specs ++ valid_positional_arguments ++ valid_flags ++ valid_named_arguments)
+      |> List.flatten()
+
     IO.inspect(specs)
     Mix.Task.rerun("phx.gen." <> release.command, specs)
   end

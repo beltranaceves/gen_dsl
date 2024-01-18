@@ -42,7 +42,10 @@ defmodule GenDSL.Model.Socket do
     [valid_positional_arguments, valid_flags, valid_named_arguments, _valid_socket] =
       GenDSL.Model.get_valid_model!(socket, @positional_arguments, @flags, @named_arguments)
 
-    specs = (specs ++ valid_positional_arguments ++ valid_flags ++ valid_named_arguments) |> List.flatten()
+    specs =
+      (specs ++ valid_positional_arguments ++ valid_flags ++ valid_named_arguments)
+      |> List.flatten()
+
     IO.inspect(specs)
     Mix.Task.rerun("phx.gen." <> socket.command, specs)
   end

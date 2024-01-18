@@ -51,7 +51,11 @@ defmodule GenDSL.Model.Json do
 
     valid_schema_spec = GenDSL.Model.Schema.to_valid_spec(json.schema)
 
-    specs = (specs ++ valid_positional_arguments ++ valid_schema_spec ++ valid_named_arguments ++ valid_flags) |> List.flatten()
+    specs =
+      (specs ++
+         valid_positional_arguments ++ valid_schema_spec ++ valid_named_arguments ++ valid_flags)
+      |> List.flatten()
+
     IO.inspect(specs)
     Mix.Task.run("phx.gen." <> json.command, specs)
   end
