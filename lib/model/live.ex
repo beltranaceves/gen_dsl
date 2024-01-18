@@ -15,14 +15,18 @@ defmodule GenDSL.Model.Live do
     field(:command, :string, default: "live")
   end
 
-  @required_fields ~w[]a
-  @optional_fields ~w[context web no_context no_schema context_app]a
-  @remainder_fields ~w[schema]a
+  @required_fields ~w[context]a
+  @optional_fields ~w[web no_context no_schema context_app]a
+  @remainder_fields ~w[]a
+
+  @flags ~w[no_context no_schema]a
+  @named_arguments ~w[web context_app]a
+  @positional_arguments ~w[context]a
 
   def changeset(params \\ %{}) do
     %__MODULE__{}
     |> cast(params, @required_fields ++ @optional_fields ++ @remainder_fields, required: false)
-    |> cast_embed(:schema, required: false, with: &GenDSL.Model.Schema.changeset/1)
+    |> cast_embed(:schema, required: false, with: &GenDSL.Model.Schema.embedded_changeset/2)
     |> validate_required(@required_fields)
   end
 
@@ -45,6 +49,13 @@ defmodule GenDSL.Model.Live do
   def execute(live) do
     specs = []
 
-    Mix.Task.run(live.command, specs)
+    [valid_positional_arguments, valid_flags, valid_named_arguments, _valid_live] =
+      GenDSL.Model.get_valid_model!(live, @positional_arguments, @flags, @named_arguments)
+
+    valid_schema_spec = GenDSL.Model.Schema.to_valid_spec(live.schema)
+
+    specs = (specs ++ valid_positional_arguments ++ valid_schema_spec ++ valid_named_arguments ++ valid_flags) |> List.flatten()
+    IO.inspect(specs)
+    Mix.Task.rerun("phx.gen." <> live.command, specs)
   end
 end
