@@ -10,6 +10,10 @@ defmodule GenDSL.Model.Secret do
   @required_fields ~w[]a
   @optional_fields ~w[length]a
 
+  @flags ~w[]a
+  @named_arguments ~w[]a
+  @positional_arguments ~w[length]a
+
   def changeset(params \\ %{}) do
     %__MODULE__{}
     |> cast(params, @required_fields ++ @optional_fields, required: false)
@@ -35,6 +39,11 @@ defmodule GenDSL.Model.Secret do
   def execute(secret) do
     specs = []
 
-    Mix.Task.run(secret.command, specs)
+    [valid_positional_arguments, valid_flags, valid_named_arguments, _valid_secret] =
+      GenDSL.Model.get_valid_model!(secret, @positional_arguments, @flags, @named_arguments)
+
+    specs = (specs ++ valid_positional_arguments ++ valid_flags ++ valid_named_arguments) |> List.flatten()
+    IO.inspect(specs)
+    Mix.Task.run("phx.gen." <> secret.command, specs)
   end
 end
