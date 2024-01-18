@@ -4,22 +4,26 @@ defmodule GenDSL.Model.Json do
 
   schema "Json" do
     field(:context, :string)
-    field(:api_prefix, :string)
+    field(:web, :string)
 
     # TODO: Check values with changeset for valid datatypes
     embeds_one(:schema, GenDSL.Model.Schema)
 
-    field(:command, :string, default: "secret")
+    field(:command, :string, default: "json")
   end
 
-  @required_fields ~w[]a
-  @optional_fields ~w[]a
-  @remainder_fields ~w[schema]a
+  @required_fields ~w[context]a
+  @optional_fields ~w[web]a
+  @remainder_fields ~w[]a
+
+  @flags ~w[]a
+  @named_arguments ~w[web]a
+  @positional_arguments ~w[context]a
 
   def changeset(params \\ %{}) do
     %__MODULE__{}
     |> cast(params, @required_fields ++ @optional_fields ++ @remainder_fields, required: false)
-    |> cast_embed(:schema, required: false, with: &GenDSL.Model.Schema.changeset/1)
+    |> cast_embed(:schema, required: false, with: &GenDSL.Model.Schema.embedded_changeset/2)
     |> validate_required(@required_fields)
   end
 
@@ -42,6 +46,13 @@ defmodule GenDSL.Model.Json do
   def execute(json) do
     specs = []
 
-    Mix.Task.run(json.command, specs)
+    [valid_positional_arguments, valid_flags, valid_named_arguments, _valid_json] =
+      GenDSL.Model.get_valid_model!(json, @positional_arguments, @flags, @named_arguments)
+
+    valid_schema_spec = GenDSL.Model.Schema.to_valid_spec(json.schema)
+
+    specs = (specs ++ valid_positional_arguments ++ valid_schema_spec ++ valid_named_arguments ++ valid_flags) |> List.flatten()
+    IO.inspect(specs)
+    Mix.Task.run("phx.gen." <> json.command, specs)
   end
 end
