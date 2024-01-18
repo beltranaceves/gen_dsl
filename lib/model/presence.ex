@@ -11,6 +11,10 @@ defmodule GenDSL.Model.Presence do
   @required_fields ~w[]a
   @optional_fields ~w[module]a
 
+  @flags ~w[]a
+  @named_arguments ~w[]a
+  @positional_arguments ~w[module]a
+
   def changeset(params \\ %{}) do
     %__MODULE__{}
     |> cast(params, @required_fields ++ @optional_fields, required: false)
@@ -36,6 +40,11 @@ defmodule GenDSL.Model.Presence do
   def execute(presence) do
     specs = []
 
-    Mix.Task.run(presence.command, specs)
+    [valid_positional_arguments, valid_flags, valid_named_arguments, _valid_presence] =
+      GenDSL.Model.get_valid_model!(presence, @positional_arguments, @flags, @named_arguments)
+
+    specs = (specs ++ valid_positional_arguments ++ valid_flags ++ valid_named_arguments) |> List.flatten()
+    IO.inspect(specs)
+    Mix.Task.rerun("phx.gen." <> presence.command, specs)
   end
 end
