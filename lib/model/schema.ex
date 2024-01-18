@@ -39,8 +39,6 @@ defmodule GenDSL.Model.Schema do
     |> cast(params, @required_fields ++ @optional_fields, required: false)
     |> cast_embed(:fields, required: false)
     |> validate_required(@required_fields)
-
-    # |> apply_changes()
   end
 
   def to_task(params) do
@@ -62,7 +60,11 @@ defmodule GenDSL.Model.Schema do
   def execute(schema) do
     specs = []
 
-    Mix.Task.run(schema.command, specs)
+    valid_schema_spec = GenDSL.Model.Schema.to_valid_spec(schema)
+
+    specs = (specs ++ valid_schema_spec ) |> List.flatten()
+    IO.inspect(specs)
+    # Mix.Task.run("phx.gen." <>schema.command, specs)
   end
 
   def to_valid_spec(schema) do
