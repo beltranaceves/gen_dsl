@@ -14,6 +14,10 @@ defmodule GenDSL.Model.Notifier do
   @required_fields ~w[context name message_names]a
   @optional_fields ~w[context_app]a
 
+  @flags ~w[]a
+  @named_arguments ~w[context_app]a
+  @positional_arguments ~w[context name message_names]a
+
   def changeset(params \\ %{}) do
     %__MODULE__{}
     |> cast(params, @required_fields ++ @optional_fields, required: false)
@@ -39,6 +43,11 @@ defmodule GenDSL.Model.Notifier do
   def execute(notifier) do
     specs = []
 
-    Mix.Task.run(notifier.command, specs)
+    [valid_positional_arguments, valid_flags, valid_named_arguments, _valid_notifier] =
+      GenDSL.Model.get_valid_model!(notifier, @positional_arguments, @flags, @named_arguments)
+
+    specs = (specs ++ valid_positional_arguments ++ valid_flags ++ valid_named_arguments) |> List.flatten()
+    IO.inspect(specs)
+    # Mix.Task.rerun("phx.gen." <> notifier.command, specs)
   end
 end
