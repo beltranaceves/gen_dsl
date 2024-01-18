@@ -57,6 +57,6 @@ defmodule GenDSL.Model.Context do
 
     specs = (specs ++ valid_positional_arguments ++ valid_schema_spec ++ valid_named_arguments ++ valid_flags) |> List.flatten()
     IO.inspect(specs)
-    # Mix.Task.rerun("phx." <> context.command, specs)
+    Mix.Task.rerun("phx.gen." <> context.command, specs)
   end
 end

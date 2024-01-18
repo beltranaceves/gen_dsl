@@ -42,6 +42,6 @@ defmodule GenDSL.Model.Embedded do
 
     specs = (specs ++ valid_schema_spec) |> List.flatten()
     IO.inspect(specs)
-    # Mix.Task.run("phx." <> embedded.command, specs)
+    Mix.Task.run("phx.gen." <> embedded.command, specs)
   end
 end

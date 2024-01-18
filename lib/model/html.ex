@@ -59,6 +59,6 @@ defmodule GenDSL.Model.Html do
 
     specs = (specs ++ valid_positional_arguments ++ valid_schema_spec ++ valid_named_arguments ++ valid_flags) |> List.flatten()
     IO.inspect(specs)
-    # Mix.Task.run("phx." <> html.command, specs)
+    Mix.Task.run("phx.gen." <> html.command, specs)
   end
 end

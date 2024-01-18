@@ -44,6 +44,6 @@ defmodule GenDSL.Model.Channel do
 
     specs = (specs ++ valid_positional_arguments ++ valid_flags ++ valid_named_arguments) |> List.flatten()
     IO.inspect(specs)
-    # Mix.Task.rerun("phx." <> channel.command, specs)
+    Mix.Task.rerun("phx.gen." <> channel.command, specs)
   end
 end
