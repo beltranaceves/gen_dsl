@@ -12,6 +12,10 @@ defmodule GenDSL.Model.Release do
   @required_fields ~w[]a
   @optional_fields ~w[docker no_ecto ecto]a
 
+  @flags ~w[docker no_ecto ecto]a
+  @named_arguments ~w[]a
+  @positional_arguments ~w[]a
+
   def changeset(params \\ %{}) do
     %__MODULE__{}
     |> cast(params, @required_fields ++ @optional_fields, required: false)
@@ -37,6 +41,11 @@ defmodule GenDSL.Model.Release do
   def execute(release) do
     specs = []
 
-    Mix.Task.run(release.command, specs)
+    [valid_positional_arguments, valid_flags, valid_named_arguments, _valid_release] =
+      GenDSL.Model.get_valid_model!(release, @positional_arguments, @flags, @named_arguments)
+
+    specs = (specs ++ valid_positional_arguments ++ valid_flags ++ valid_named_arguments) |> List.flatten()
+    IO.inspect(specs)
+    Mix.Task.rerun("phx.gen." <> release.command, specs)
   end
 end
