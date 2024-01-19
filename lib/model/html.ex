@@ -7,7 +7,7 @@ defmodule GenDSL.Model.Html do
     field(:web, :string)
     field(:no_context, :boolean, default: false)
     field(:no_schema, :boolean, default: false)
-    field(:context_app, :string)
+    field(:context_app, :string) # TODO: make is so that it only uses this on umbrella applications when supported
 
     # {name, table, fields, flags} # TODO: Check values with changeset for valid datatypes in fields
     embeds_one(:schema, GenDSL.Model.Schema)

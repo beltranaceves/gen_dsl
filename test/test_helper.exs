@@ -305,6 +305,50 @@ defmodule TestHelpers do
       ]
     )
   end
+
+  def generate_channel() do
+    StreamData.fixed_map(
+      %{
+        type: StreamData.constant("Channel"),
+        module:
+          StreamData.atom(:alias)
+          |> StreamData.map(&Atom.to_string/1)
+      }
+    )
+  end
+
+  def generate_embedded() do
+    StreamData.fixed_map(
+      %{
+        type: StreamData.constant("Embedded"),
+        schema: generate_schema(2)
+      }
+    )
+  end
+
+  def generate_html() do
+    StreamData.optional_map(
+      %{
+        type: StreamData.constant("Html"),
+        context:
+          StreamData.atom(:alias)
+          |> StreamData.map(&Atom.to_string/1),
+        web:
+          StreamData.string(Enum.concat([?a..?z, ?1..?9]), min_length: 3, max_lenght: 9)
+          |> StreamData.map(&("web_" <> &1)),
+        # no_context: StreamData.boolean(),
+        # no_schema: StreamData.boolean(),
+        # context_app:
+        #   StreamData.string(Enum.concat([?a..?z, ?1..?9]), min_length: 3, max_lenght: 9)
+        #   |> StreamData.map(&("app_" <> &1)),
+        schema: generate_schema(2)
+      },
+      [
+        :web
+      ]
+    )
+  end
+
 end
 
 ExUnit.start()
