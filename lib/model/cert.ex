@@ -13,6 +13,7 @@ defmodule GenDSL.Model.Cert do
 
   @required_fields ~w[]a
   @optional_fields ~w[app domain url output name]a
+  # TODO: validate that either no params are passed or app domain and url are passed
 
   @flags ~w[]a
   @named_arguments ~w[output name]a

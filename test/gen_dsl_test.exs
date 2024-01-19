@@ -176,6 +176,8 @@ defmodule GenDSLTest do
             TestHelpers.generate_schema(2),
           auth <-
             TestHelpers.generate_auth(),
+          cert <-
+            TestHelpers.generate_cert(),
           max_runs: 1
         )
       ) do
@@ -217,6 +219,7 @@ defmodule GenDSLTest do
         #        )
         IO.inspect(schema, label: "schema")
         IO.inspect(auth, label: "auth")
+        IO.inspect(cert, label: "cert")
         property_map_is_empty = property_map |> Map.keys() |> Enum.empty?()
 
         if property_map_is_empty do

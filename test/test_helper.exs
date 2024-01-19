@@ -277,6 +277,34 @@ defmodule TestHelpers do
       ]
     )
   end
+
+  def generate_cert() do
+    # Generate a valid StreamData.optional_map to represent a GenDSL.Model.App struct using StreamData functions
+    StreamData.optional_map(
+      %{
+        type: StreamData.constant("Cert"),
+        app:
+          StreamData.string(Enum.concat([?a..?z, ?1..?9]), min_length: 3, max_lenght: 9)
+          |> StreamData.map(&("app_" <> &1)),
+        domain:
+          StreamData.string(Enum.concat([?a..?z, ?1..?9]), min_length: 3, max_lenght: 9)
+          |> StreamData.map(&("domain_" <> &1)),
+        url:
+          StreamData.string(Enum.concat([?a..?z, ?1..?9]), min_length: 3, max_lenght: 9)
+          |> StreamData.map(&("www." <> &1 <> ".com")),
+        name:
+          StreamData.string(Enum.concat([?a..?z, ?1..?9]), min_length: 3, max_lenght: 9)
+          |> StreamData.map(&("cert_" <> &1)),
+        # output: # TODO: find a way to make the output field work with the correct subdirectory path
+      },
+      [
+        :app,
+        :domain,
+        :url,
+        :name
+      ]
+    )
+  end
 end
 
 ExUnit.start()
