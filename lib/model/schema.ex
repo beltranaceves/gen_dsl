@@ -64,7 +64,7 @@ defmodule GenDSL.Model.Schema do
 
     specs = (specs ++ valid_schema_spec) |> List.flatten()
     IO.inspect(specs)
-    Mix.Task.run("phx.gen." <> schema.command, specs)
+    Mix.Task.rerun("phx.gen." <> schema.command, specs)
   end
 
   def to_valid_spec(schema) do

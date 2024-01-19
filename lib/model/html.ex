@@ -63,6 +63,6 @@ defmodule GenDSL.Model.Html do
       |> List.flatten()
 
     IO.inspect(specs)
-    Mix.Task.run("phx.gen." <> html.command, specs)
+    Mix.Task.rerun("phx.gen." <> html.command, specs)
   end
 end

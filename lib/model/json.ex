@@ -57,6 +57,6 @@ defmodule GenDSL.Model.Json do
       |> List.flatten()
 
     IO.inspect(specs)
-    Mix.Task.run("phx.gen." <> json.command, specs)
+    Mix.Task.rerun("phx.gen." <> json.command, specs)
   end
 end

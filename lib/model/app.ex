@@ -69,7 +69,7 @@ defmodule GenDSL.Model.App do
       (specs ++ valid_positional_arguments ++ valid_flags ++ valid_named_arguments)
       |> List.flatten()
 
-    IO.inspect(specs)
+    # IO.inspect(specs)
     Mix.Task.rerun("phx." <> app.command, specs)
   end
 end

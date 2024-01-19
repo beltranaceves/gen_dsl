@@ -47,6 +47,6 @@ defmodule GenDSL.Model.Secret do
       |> List.flatten()
 
     IO.inspect(specs)
-    Mix.Task.run("phx.gen." <> secret.command, specs)
+    Mix.Task.rerun("phx.gen." <> secret.command, specs)
   end
 end
