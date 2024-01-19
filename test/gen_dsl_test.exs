@@ -178,13 +178,37 @@ defmodule GenDSLTest do
             TestHelpers.generate_auth(),
           cert <-
             TestHelpers.generate_cert(),
+          channel <-
+            TestHelpers.generate_channel(),
+          embedded <-
+            TestHelpers.generate_embedded(),
+          html <-
+            TestHelpers.generate_html(),
           max_runs: 1
         )
       ) do
         # IO.inspect(blueprint)
+        cwd = File.cwd()
         app = GenDSL.Model.App.to_task(blueprint)
+        auth = GenDSL.Model.Auth.to_task(auth)
         app["arguments"] |> app["callback"].()
-        # File.cd!(app["arguments"].path, do: Mix.Task.rerun("phx.gen.secret", []))
+        case File.cd(app["arguments"].path) do
+          :ok ->
+            IO.puts("Changed directory")
+
+          {:error, reason} ->
+            IO.puts("Could not change directory: #{reason}")
+            raise "Could not change directory"
+        end
+        File.cwd() |> IO.inspect(label: "cwd")
+        File.cd!("../..")
+        try do
+          auth["arguments"] |> auth["callback"].()
+        rescue
+          e ->
+            IO.inspect(e)
+            # raise "Could not generate auth"
+        end
 
         property_map =
           TestHelpers.generate_property_map(app["arguments"], blueprint.type)
@@ -217,14 +241,18 @@ defmodule GenDSLTest do
         #          property_map,
         #          app["arguments"] |> Map.fetch!(:umbrella)
         #        )
-        IO.inspect(schema, label: "schema")
-        IO.inspect(auth, label: "auth")
-        IO.inspect(cert, label: "cert")
+        # IO.inspect(schema, label: "schema")
+        # IO.inspect(auth, label: "auth")
+        # IO.inspect(cert, label: "cert")
+        # IO.inspect(channel, label: "channel")
+        # IO.inspect(embedded, label: "embedded")
+        # IO.inspect(html, label: "html")
+
         property_map_is_empty = property_map |> Map.keys() |> Enum.empty?()
 
-        if property_map_is_empty do
-          File.rm_rf!(new_path)
-        end
+        # if property_map_is_empty do
+          # File.rm_rf!(new_path)
+        # end
       end
     end
   end

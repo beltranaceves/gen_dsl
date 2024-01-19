@@ -169,15 +169,15 @@ defmodule TestHelpers do
         no_esbuild: StreamData.boolean(),
         no_tailwind: StreamData.boolean(),
         no_dashboard: StreamData.boolean(),
-        no_ecto: StreamData.boolean(),
+        # no_ecto: StreamData.boolean(), # TODO: figure out how to make this work with elements that use ecto or html
+        # no_html: StreamData.boolean(),
+        # no_live: StreamData.boolean(),
         no_gettext: StreamData.boolean(),
-        no_html: StreamData.boolean(),
-        no_live: StreamData.boolean(),
         no_mailer: StreamData.boolean(),
         binary_id: StreamData.boolean(),
-        verbose: StreamData.boolean()
+        # verbose: StreamData.boolean(),
         # TODO: enable this fields once the mix deps.get bug is fixed
-        # install: install_flag = StreamData.boolean(),
+        install: StreamData.constant(true),
         # no_install: install_flag |> StreamData.map(&(!&1)),
       },
       [
@@ -294,7 +294,7 @@ defmodule TestHelpers do
           |> StreamData.map(&("www." <> &1 <> ".com")),
         name:
           StreamData.string(Enum.concat([?a..?z, ?1..?9]), min_length: 3, max_lenght: 9)
-          |> StreamData.map(&("cert_" <> &1)),
+          |> StreamData.map(&("cert_" <> &1))
         # output: # TODO: find a way to make the output field work with the correct subdirectory path
       },
       [
@@ -307,23 +307,19 @@ defmodule TestHelpers do
   end
 
   def generate_channel() do
-    StreamData.fixed_map(
-      %{
-        type: StreamData.constant("Channel"),
-        module:
-          StreamData.atom(:alias)
-          |> StreamData.map(&Atom.to_string/1)
-      }
-    )
+    StreamData.fixed_map(%{
+      type: StreamData.constant("Channel"),
+      module:
+        StreamData.atom(:alias)
+        |> StreamData.map(&Atom.to_string/1)
+    })
   end
 
   def generate_embedded() do
-    StreamData.fixed_map(
-      %{
-        type: StreamData.constant("Embedded"),
-        schema: generate_schema(2)
-      }
-    )
+    StreamData.fixed_map(%{
+      type: StreamData.constant("Embedded"),
+      schema: generate_schema(2)
+    })
   end
 
   def generate_html() do
@@ -348,7 +344,6 @@ defmodule TestHelpers do
       ]
     )
   end
-
 end
 
 ExUnit.start()

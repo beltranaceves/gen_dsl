@@ -7,7 +7,8 @@ defmodule GenDSL.Model.Html do
     field(:web, :string)
     field(:no_context, :boolean, default: false)
     field(:no_schema, :boolean, default: false)
-    field(:context_app, :string) # TODO: make is so that it only uses this on umbrella applications when supported
+    # TODO: make is so that it only uses this on umbrella applications when supported
+    field(:context_app, :string)
 
     # {name, table, fields, flags} # TODO: Check values with changeset for valid datatypes in fields
     embeds_one(:schema, GenDSL.Model.Schema)
@@ -62,7 +63,7 @@ defmodule GenDSL.Model.Html do
          valid_positional_arguments ++ valid_schema_spec ++ valid_named_arguments ++ valid_flags)
       |> List.flatten()
 
-    IO.inspect(specs)
+    # IO.inspect(specs)
     Mix.Task.rerun("phx.gen." <> html.command, specs)
   end
 end
