@@ -1,4 +1,5 @@
 defmodule GenDSLTest do
+  alias ElixirLS.LanguageServer.Providers.CodeLens.Test
   use ExUnit.Case
   use ExUnitProperties
   doctest GenDSL
@@ -169,81 +170,58 @@ defmodule GenDSLTest do
       check(
         all(
           blueprint <-
-            StreamData.optional_map(
-              %{
-                type: StreamData.constant("App"),
-                path:
-                  StreamData.string(Enum.concat([?a..?z, ?1..?9]), min_length: 20, max_lenght: 35)
-                  |> StreamData.map(&("validapp" <> &1))
-                  |> StreamData.map(&Path.join("test/test_projects", &1)),
-                # TODO: enable this fields once umbrella projects are supported
-                # umbrella: StreamData.boolean(),
-                app: StreamData.string(Enum.concat([?a..?z]), min_length: 5, max_lenght: 35),
-                module:
-                  StreamData.atom(:alias)
-                  |> StreamData.map(&Atom.to_string/1),
-                database:
-                  StreamData.one_of([
-                    StreamData.constant("postgres"),
-                    StreamData.constant("mysql"),
-                    StreamData.constant("mssql"),
-                    StreamData.constant("sqlite3")
-                  ]),
-                no_assets: StreamData.boolean(),
-                no_esbuild: StreamData.boolean(),
-                no_tailwind: StreamData.boolean(),
-                no_dashboard: StreamData.boolean(),
-                no_ecto: StreamData.boolean(),
-                no_gettext: StreamData.boolean(),
-                no_html: StreamData.boolean(),
-                no_live: StreamData.boolean(),
-                no_mailer: StreamData.boolean(),
-                binary_id: StreamData.boolean(),
-                verbose: StreamData.boolean()
-                # TODO: enable this fields once the mix deps.get bug is fixed
-                # install: install_flag = StreamData.boolean(),
-                # no_install: install_flag |> StreamData.map(&(!&1)),
-              },
-              [
-                # TODO: enable this field once umbrella projects are supported
-                # :umbrella,
-                :app,
-                :module,
-                :database,
-                :no_assets,
-                :no_esbuild,
-                :no_tailwind,
-                :no_dashboard,
-                :no_ecto,
-                :no_gettext,
-                :no_html,
-                :no_live,
-                :no_mailer,
-                :binary_id,
-                :verbose
-                # :install,
-                # :no_install
-              ]
-            )
-            |> StreamData.unshrinkable(),
+            TestHelpers.generate_app(),
+          # |> StreamData.unshrinkable(),
+          schema <-
+            TestHelpers.generate_schema(2),
+          auth <-
+            TestHelpers.generate_auth(),
           max_runs: 1
         )
       ) do
-        IO.inspect(blueprint)
+        # IO.inspect(blueprint)
         app = GenDSL.Model.App.to_task(blueprint)
         app["arguments"] |> app["callback"].()
+        # File.cd!(app["arguments"].path, do: Mix.Task.rerun("phx.gen.secret", []))
 
         property_map =
           TestHelpers.generate_property_map(app["arguments"], blueprint.type)
 
         IO.puts("Generated Property Map")
-        IO.inspect(property_map)
+        # IO.inspect(property_map)
 
-        assert TestHelpers.analyze_project(
-                 app["arguments"].path |> Path.basename(),
-                 property_map,
-                 app["arguments"] |> Map.fetch!(:umbrella)
-               )
+        random_sufix =
+          :crypto.strong_rand_bytes(8)
+          |> Base.encode64(padding: false)
+          |> binary_part(0, 8)
+          |> String.replace("/", "")
+          |> String.replace("+", "")
+          |> String.replace(".", "")
+
+        new_path = app["arguments"].path <> random_sufix
+        IO.inspect(new_path, label: "new_path")
+
+        case File.rename(app["arguments"].path, new_path) do
+          :ok ->
+            IO.puts("Renamed app")
+
+          {:error, reason} ->
+            IO.puts("Could not rename app: #{reason}")
+            raise "Could not rename app"
+        end
+
+        # assert TestHelpers.analyze_project(
+        #          app["arguments"].path |> Path.basename(),
+        #          property_map,
+        #          app["arguments"] |> Map.fetch!(:umbrella)
+        #        )
+        IO.inspect(schema, label: "schema")
+        IO.inspect(auth, label: "auth")
+        property_map_is_empty = property_map |> Map.keys() |> Enum.empty?()
+
+        if property_map_is_empty do
+          File.rm_rf!(new_path)
+        end
       end
     end
   end

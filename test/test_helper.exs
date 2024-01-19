@@ -1,4 +1,7 @@
 defmodule TestHelpers do
+  # use ExUnit.Case
+  # use ExUnitProperties
+
   def read_blueprint(filepath) do
     case File.read(filepath) do
       {:ok, body} -> Poison.decode!(body)
@@ -137,6 +140,142 @@ defmodule TestHelpers do
     IO.puts("Remaining properties")
     IO.inspect(remaining_properties)
     remaining_properties
+  end
+
+  def generate_app() do
+    # Generate a valid StreamData.optional_map to represent a GenDSL.Model.App struct using StreamData functions
+    StreamData.optional_map(
+      %{
+        type: StreamData.constant("App"),
+        path:
+          StreamData.string(Enum.concat([?a..?z, ?1..?9]), min_length: 20, max_lenght: 35)
+          |> StreamData.map(&("validapp_" <> &1))
+          |> StreamData.map(&Path.join("test/test_projects", &1))
+          |> StreamData.unshrinkable(),
+        # TODO: enable this fields once umbrella projects are supported
+        # umbrella: StreamData.boolean(),
+        app: StreamData.string(Enum.concat([?a..?z]), min_length: 5, max_lenght: 35),
+        module:
+          StreamData.atom(:alias)
+          |> StreamData.map(&Atom.to_string/1),
+        database:
+          StreamData.one_of([
+            StreamData.constant("postgres"),
+            StreamData.constant("mysql"),
+            StreamData.constant("mssql"),
+            StreamData.constant("sqlite3")
+          ]),
+        no_assets: StreamData.boolean(),
+        no_esbuild: StreamData.boolean(),
+        no_tailwind: StreamData.boolean(),
+        no_dashboard: StreamData.boolean(),
+        no_ecto: StreamData.boolean(),
+        no_gettext: StreamData.boolean(),
+        no_html: StreamData.boolean(),
+        no_live: StreamData.boolean(),
+        no_mailer: StreamData.boolean(),
+        binary_id: StreamData.boolean(),
+        verbose: StreamData.boolean()
+        # TODO: enable this fields once the mix deps.get bug is fixed
+        # install: install_flag = StreamData.boolean(),
+        # no_install: install_flag |> StreamData.map(&(!&1)),
+      },
+      [
+        # TODO: enable this field once umbrella projects are supported
+        # :umbrella,
+        :app,
+        :module,
+        :database,
+        :no_assets,
+        :no_esbuild,
+        :no_tailwind,
+        :no_dashboard,
+        :no_ecto,
+        :no_gettext,
+        :no_html,
+        :no_live,
+        :no_mailer,
+        :binary_id,
+        :verbose
+        # :install,
+        # :no_install
+      ]
+    )
+  end
+
+  def generate_schema(field_count) do
+    # TODO: expand this section to include all datatypes
+    fields =
+      case field_count do
+        0 ->
+          []
+
+        _ ->
+          for _i <- 1..field_count do
+            StreamData.fixed_map(%{
+              field_name:
+                StreamData.string(Enum.concat([?a..?z, ?1..?9]), min_length: 5, max_lenght: 9)
+                |> StreamData.map(&("field_name_" <> &1)),
+              datatype: :string
+            })
+          end
+      end
+
+    schema =
+      StreamData.optional_map(
+        %{
+          type: StreamData.constant("Schema"),
+          module:
+            StreamData.atom(:alias)
+            |> StreamData.map(&Atom.to_string/1),
+          name:
+            StreamData.string(Enum.concat([?a..?z, ?1..?9]), min_length: 5, max_lenght: 9)
+            |> StreamData.map(&("table_name_" <> &1)),
+          table:
+            StreamData.string(Enum.concat([?a..?z, ?1..?9]), min_length: 5, max_lenght: 9)
+            |> StreamData.map(&("table_name_" <> &1)),
+          # repo: # TODO: find a way to make the repo field work with the app module
+          # migration_dir: # TODO: find a way to make the migration_dir field work with the correct subdirectory path
+          prefix:
+            StreamData.string(Enum.concat([?a..?z, ?1..?9]), min_length: 5, max_lenght: 9)
+            |> StreamData.map(&("schema_prefix_" <> &1)),
+          binary_id: StreamData.boolean(),
+          fields: StreamData.fixed_list(fields)
+        },
+        [
+          :table,
+          :prefix,
+          :binary_id
+        ]
+      )
+  end
+
+  def generate_auth() do
+    # Generate a valid StreamData.optional_map to represent a GenDSL.Model.App struct using StreamData functions
+    StreamData.optional_map(
+      %{
+        type: StreamData.constant("Auth"),
+        context:
+          StreamData.atom(:alias)
+          |> StreamData.map(&Atom.to_string/1),
+        web:
+          StreamData.string(Enum.concat([?a..?z, ?1..?9]), min_length: 3, max_lenght: 9)
+          |> StreamData.map(&("web_" <> &1)),
+        hashing_lib:
+          StreamData.one_of([
+            StreamData.constant("bcrypt"),
+            StreamData.constant("pbkdf2"),
+            StreamData.constant("argon2")
+          ]),
+        binary_id: StreamData.boolean(),
+        schema: generate_schema(0)
+      },
+      [
+        :web,
+        :hashing_lib,
+        :binary_id
+      ]
+    )
   end
 end
 
