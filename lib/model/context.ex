@@ -63,6 +63,7 @@ defmodule GenDSL.Model.Context do
       |> List.flatten()
 
     IO.inspect(specs)
-    Mix.Task.rerun("phx.gen." <> context.command, specs)
+    # Mix.Task.rerun("phx.gen." <> context.command, specs)
+    Mix.shell().cmd("mix phx.gen." <> context.command <> " " <> (specs |> Enum.join(" ")))
   end
 end

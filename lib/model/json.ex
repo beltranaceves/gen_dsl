@@ -56,7 +56,8 @@ defmodule GenDSL.Model.Json do
          valid_positional_arguments ++ valid_schema_spec ++ valid_named_arguments ++ valid_flags)
       |> List.flatten()
 
-    IO.inspect(specs)
-    Mix.Task.rerun("phx.gen." <> json.command, specs)
+    # IO.inspect(specs)
+    # Mix.Task.rerun("phx.gen." <> json.command, specs)
+    Mix.shell().cmd("mix phx.gen." <> json.command <> " " <> (specs |> Enum.join(" ")))
   end
 end

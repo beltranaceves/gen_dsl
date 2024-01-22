@@ -47,7 +47,8 @@ defmodule GenDSL.Model.Presence do
       (specs ++ valid_positional_arguments ++ valid_flags ++ valid_named_arguments)
       |> List.flatten()
 
-    IO.inspect(specs)
-    Mix.Task.rerun("phx.gen." <> presence.command, specs)
+    # IO.inspect(specs)
+    # Mix.Task.rerun("phx.gen." <> presence.command, specs)
+    Mix.shell().cmd("mix phx.gen." <> presence.command <> " " <> (specs |> Enum.join(" ")))
   end
 end

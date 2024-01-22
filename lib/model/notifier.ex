@@ -50,7 +50,8 @@ defmodule GenDSL.Model.Notifier do
       (specs ++ valid_positional_arguments ++ valid_flags ++ valid_named_arguments)
       |> List.flatten()
 
-    IO.inspect(specs)
-    Mix.Task.rerun("phx.gen." <> notifier.command, specs)
+    # IO.inspect(specs)
+    # Mix.Task.rerun("phx.gen." <> notifier.command, specs)
+    Mix.shell().cmd("mix phx.gen." <> notifier.command <> " " <> (specs |> Enum.join(" ")))
   end
 end

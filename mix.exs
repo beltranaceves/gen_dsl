@@ -4,9 +4,9 @@ defmodule GenDSL.MixProject do
   def project do
     [
       app: :gen_dsl,
-      description: "Model, parser and serializer for gen_CLI",
-      version: "0.1.0",
-      elixir: "~> 1.14",
+      description: "Model, parser and serializer for gen_dsl",
+      version: "0.1.1",
+      elixir: "~> 1.15",
       start_permanent: Mix.env() == :prod,
       deps: deps(),
       source_url: "https://github.com/beltranaceves/gen_dsl",
@@ -41,8 +41,8 @@ defmodule GenDSL.MixProject do
       {:phoenix, "~> 1.7.10"},
       {:ecto_sql, "~> 3.10"},
       {:phx_new, "~> 1.7.10"},
-      {:phoenix_html, "~> 3.3"},
-      {:gen_dsl_plugin, path: "../gen_dsl_plugin"}
+      {:phoenix_html, "~> 3.3"}
+      # {:gen_dsl_plugin, path: "../gen_dsl_plugin"}
     ]
   end
 end

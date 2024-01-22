@@ -41,7 +41,8 @@ defmodule GenDSL.Model.Embedded do
     valid_schema_spec = GenDSL.Model.Schema.to_valid_spec(embedded.schema)
 
     specs = (specs ++ valid_schema_spec) |> List.flatten()
-    IO.inspect(specs)
-    Mix.Task.rerun("phx.gen." <> embedded.command, specs)
+    # IO.inspect(specs)
+    # Mix.Task.rerun("phx.gen." <> embedded.command, specs)
+    Mix.shell().cmd("mix phx.gen." <> embedded.command <> " " <> (specs |> Enum.join(" ")))
   end
 end

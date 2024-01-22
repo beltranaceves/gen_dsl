@@ -21,7 +21,7 @@ defmodule GenDSL.Model.App do
     field(:verbose, :boolean)
     # TODO: validate install and no_install are not both true
     field(:install, :boolean)
-    field(:no_install, :boolean, default: true)
+    field(:no_install, :boolean)
     # Alternative way to build the install field flag
     # field(:install, Ecto.Enum, values: [:"--install", :"--no-install"], default: :"--install")
     field(:command, :string, default: "new")
@@ -71,5 +71,6 @@ defmodule GenDSL.Model.App do
 
     # IO.inspect(specs)
     Mix.Task.rerun("phx." <> app.command, specs)
+    # Mix.shell().cmd("mix phx.gen." <> app.command <> " " <> (specs |> Enum.join(" ")))
   end
 end

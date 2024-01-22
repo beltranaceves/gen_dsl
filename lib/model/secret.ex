@@ -46,7 +46,8 @@ defmodule GenDSL.Model.Secret do
       (specs ++ valid_positional_arguments ++ valid_flags ++ valid_named_arguments)
       |> List.flatten()
 
-    IO.inspect(specs)
-    Mix.Task.rerun("phx.gen." <> secret.command, specs)
+    # IO.inspect(specs)
+    # Mix.Task.rerun("phx.gen." <> secret.command, specs)
+    Mix.shell().cmd("mix phx.gen." <> secret.command <> " " <> (specs |> Enum.join(" ")))
   end
 end

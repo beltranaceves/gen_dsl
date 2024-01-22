@@ -63,8 +63,9 @@ defmodule GenDSL.Model.Schema do
     valid_schema_spec = GenDSL.Model.Schema.to_valid_spec(schema)
 
     specs = (specs ++ valid_schema_spec) |> List.flatten()
-    IO.inspect(specs)
-    Mix.Task.rerun("phx.gen." <> schema.command, specs)
+    # IO.inspect(specs)
+    # Mix.Task.rerun("phx.gen." <> schema.command, specs)
+    Mix.shell().cmd("mix phx.gen." <> schema.command <> " " <> (specs |> Enum.join(" ")))
   end
 
   def to_valid_spec(schema) do

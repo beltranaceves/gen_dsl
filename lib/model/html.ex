@@ -64,6 +64,7 @@ defmodule GenDSL.Model.Html do
       |> List.flatten()
 
     # IO.inspect(specs)
-    Mix.Task.rerun("phx.gen." <> html.command, specs)
+    # Mix.Task.rerun("phx.gen." <> html.command, specs)
+    Mix.shell().cmd("mix phx.gen." <> html.command <> " " <> (specs |> Enum.join(" ")))
   end
 end

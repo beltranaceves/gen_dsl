@@ -48,7 +48,8 @@ defmodule GenDSL.Model.Release do
       (specs ++ valid_positional_arguments ++ valid_flags ++ valid_named_arguments)
       |> List.flatten()
 
-    IO.inspect(specs)
-    Mix.Task.rerun("phx.gen." <> release.command, specs)
+    # IO.inspect(specs)
+    # Mix.Task.rerun("phx.gen." <> release.command, specs)
+    Mix.shell().cmd("mix phx.gen." <> release.command <> " " <> (specs |> Enum.join(" ")))
   end
 end

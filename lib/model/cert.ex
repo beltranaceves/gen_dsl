@@ -52,6 +52,7 @@ defmodule GenDSL.Model.Cert do
       |> List.flatten()
 
     IO.inspect(specs)
-    Mix.Task.rerun("phx.gen." <> cert.command, specs)
+    # Mix.Task.rerun("phx.gen." <> cert.command, specs)
+    Mix.shell().cmd("mix phx.gen." <> cert.command <> " " <> (specs |> Enum.join(" ")))
   end
 end
