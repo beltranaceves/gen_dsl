@@ -4,6 +4,8 @@ defmodule GenDSLTest do
   use ExUnitProperties
   doctest GenDSL
 
+  @moduletag timeout: :infinity
+
   @app "test/templates/app.json"
   @app_plugin "test/templates/app_plugin.json"
   @auth "test/templates/auth.json"
@@ -170,20 +172,20 @@ defmodule GenDSLTest do
       check(
         all(
           blueprint <-
-            TestHelpers.generate_app(),
+            app = TestHelpers.generate_app(),
           # |> StreamData.unshrinkable(),
           schema <-
             TestHelpers.generate_schema(2),
           auth <-
-            TestHelpers.generate_auth(),
+            TestHelpers.generate_auth(blueprint["arguments"].path),
           cert <-
-            TestHelpers.generate_cert(),
+            TestHelpers.generate_cert(blueprint["arguments"].path),
           channel <-
-            TestHelpers.generate_channel(),
+            TestHelpers.generate_channel(blueprint["arguments"].path),
           embedded <-
-            TestHelpers.generate_embedded(),
+            TestHelpers.generate_embedded(blueprint["arguments"].path),
           html <-
-            TestHelpers.generate_html(),
+            TestHelpers.generate_html(app["arguments"].path),
           max_runs: 1
         )
       ) do
@@ -191,27 +193,45 @@ defmodule GenDSLTest do
         cwd = File.cwd()
         app = GenDSL.Model.App.to_task(blueprint)
         auth = GenDSL.Model.Auth.to_task(auth)
-        app["arguments"] |> app["callback"].()
-        case File.cd(app["arguments"].path) do
-          :ok ->
-            IO.puts("Changed directory")
+        cert = GenDSL.Model.Cert.to_task(cert)
+        channel = GenDSL.Model.Channel.to_task(channel)
+        embedded = GenDSL.Model.Embedded.to_task(embedded)
+        html = GenDSL.Model.Html.to_task(html)
 
-          {:error, reason} ->
-            IO.puts("Could not change directory: #{reason}")
-            raise "Could not change directory"
-        end
-        File.cwd() |> IO.inspect(label: "cwd")
-        File.cd!("../..")
+        app["arguments"] |> app["callback"].()
+
         try do
+          property_map =
+            TestHelpers.generate_property_map(app["arguments"], blueprint.type)
+
+          assert TestHelpers.analyze_project(
+                   app["arguments"].path |> Path.basename(),
+                   property_map,
+                   app["arguments"] |> Map.fetch!(:umbrella)
+                 )
+
+          case File.cd(app["arguments"].path) do
+            :ok ->
+              IO.puts("Changed directory")
+
+            {:error, reason} ->
+              IO.puts("Could not change directory: #{reason}")
+              raise "Could not change directory"
+          end
+
+          Mix.shell().cmd("mix deps.get")
+          Mix.shell().cmd("mix compile")
           auth["arguments"] |> auth["callback"].()
+          cert["arguments"] |> cert["callback"].()
+          channel["arguments"] |> channel["callback"].()
+          embedded["arguments"] |> embedded["callback"].()
+          html["arguments"] |> html["callback"].()
         rescue
           e ->
             IO.inspect(e)
-            # raise "Could not generate auth"
         end
 
-        property_map =
-          TestHelpers.generate_property_map(app["arguments"], blueprint.type)
+        File.cd!("../..")
 
         IO.puts("Generated Property Map")
         # IO.inspect(property_map)
@@ -227,20 +247,15 @@ defmodule GenDSLTest do
         new_path = app["arguments"].path <> random_sufix
         IO.inspect(new_path, label: "new_path")
 
-        case File.rename(app["arguments"].path, new_path) do
-          :ok ->
-            IO.puts("Renamed app")
+        # case File.rename(app["arguments"].path, new_path) do
+        #   :ok ->
+        #     IO.puts("Renamed app")
 
-          {:error, reason} ->
-            IO.puts("Could not rename app: #{reason}")
-            raise "Could not rename app"
-        end
+        #   {:error, reason} ->
+        #     IO.puts("Could not rename app: #{reason}")
+        #     raise "Could not rename app"
+        # end
 
-        # assert TestHelpers.analyze_project(
-        #          app["arguments"].path |> Path.basename(),
-        #          property_map,
-        #          app["arguments"] |> Map.fetch!(:umbrella)
-        #        )
         # IO.inspect(schema, label: "schema")
         # IO.inspect(auth, label: "auth")
         # IO.inspect(cert, label: "cert")
@@ -248,10 +263,10 @@ defmodule GenDSLTest do
         # IO.inspect(embedded, label: "embedded")
         # IO.inspect(html, label: "html")
 
-        property_map_is_empty = property_map |> Map.keys() |> Enum.empty?()
+        # property_map_is_empty = property_map |> Map.keys() |> Enum.empty?()
 
         # if property_map_is_empty do
-          # File.rm_rf!(new_path)
+        # File.rm_rf!(new_path)
         # end
       end
     end

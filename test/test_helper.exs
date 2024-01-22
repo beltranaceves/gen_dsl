@@ -94,38 +94,19 @@ defmodule TestHelpers do
   def analyze_file(file, properties) do
     IO.puts("Analyzing file:")
 
-    remaining_properties =
+    {ast, remaining_properties} =
       Code.string_to_quoted(file)
       # |> IO.inspect()
       # |> Macro.expand(__ENV__)
-      |> Macro.prewalk(properties, fn
+      |> Macro.prewalk([], fn
         {:__aliases__, meta, children}, properties ->
-          case properties |> Map.fetch("aliases") do
-            {:ok, aliases} ->
-              IO.puts("Node with aliases")
-              IO.inspect(children)
-
-              updated_aliases =
-                if aliases |> Enum.member?(children |> Enum.at(0)) do
-                  IO.puts("Removing alias")
-                  List.delete(aliases, children |> Enum.at(0))
-                else
-                  aliases
-                end
-
-              node_properties =
-                properties
-                |> Map.update!("aliases", fn aliases -> updated_aliases end)
-
-              {{:__aliases__, meta, children}, node_properties}
-
-            _ ->
-              {{:__aliases__, meta, children}, properties}
-          end
+          IO.inspect(properties, label: "Properties")
+          {{:__aliases__, meta, children}, properties ++ [children |> Enum.at(0)]}
 
         {marker, meta, children}, properties ->
           # IO.puts("Node")
           # IO.inspect(marker)
+          IO.inspect(properties, label: "Properties")
           {{marker, meta, children}, properties}
 
         # IO.inspect(meta)
@@ -134,11 +115,13 @@ defmodule TestHelpers do
         other, properties ->
           # IO.puts("Other")
           # IO.inspect(other)
+          IO.inspect(properties, label: "Properties")
           {other, properties}
       end)
 
     IO.puts("Remaining properties")
     IO.inspect(remaining_properties)
+    File.write("./ast.txt", remaining_properties)
     remaining_properties
   end
 
@@ -177,7 +160,8 @@ defmodule TestHelpers do
         binary_id: StreamData.boolean(),
         # verbose: StreamData.boolean(),
         # TODO: enable this fields once the mix deps.get bug is fixed
-        install: StreamData.constant(true),
+        # install: StreamData.constant(true),
+        install: StreamData.constant(false)
         # no_install: install_flag |> StreamData.map(&(!&1)),
       },
       [
@@ -203,7 +187,7 @@ defmodule TestHelpers do
     )
   end
 
-  def generate_schema(field_count) do
+  def generate_schema(field_count, app_path) do
     # TODO: expand this section to include all datatypes
     fields =
       case field_count do
@@ -240,6 +224,7 @@ defmodule TestHelpers do
             StreamData.string(Enum.concat([?a..?z, ?1..?9]), min_length: 5, max_lenght: 9)
             |> StreamData.map(&("schema_prefix_" <> &1)),
           binary_id: StreamData.boolean(),
+          path: StreamData.constant(app_path),
           fields: StreamData.fixed_list(fields)
         },
         [
@@ -250,7 +235,7 @@ defmodule TestHelpers do
       )
   end
 
-  def generate_auth() do
+  def generate_auth(app_path) do
     # Generate a valid StreamData.optional_map to represent a GenDSL.Model.App struct using StreamData functions
     StreamData.optional_map(
       %{
@@ -268,7 +253,8 @@ defmodule TestHelpers do
             StreamData.constant("argon2")
           ]),
         binary_id: StreamData.boolean(),
-        schema: generate_schema(0)
+        path: StreamData.constant(app_path),
+        schema: generate_schema(0, app_path)
       },
       [
         :web,
@@ -278,7 +264,7 @@ defmodule TestHelpers do
     )
   end
 
-  def generate_cert() do
+  def generate_cert(app_path) do
     # Generate a valid StreamData.optional_map to represent a GenDSL.Model.App struct using StreamData functions
     StreamData.optional_map(
       %{
@@ -292,37 +278,40 @@ defmodule TestHelpers do
         url:
           StreamData.string(Enum.concat([?a..?z, ?1..?9]), min_length: 3, max_lenght: 9)
           |> StreamData.map(&("www." <> &1 <> ".com")),
+        path: StreamData.constant(app_path),
         name:
           StreamData.string(Enum.concat([?a..?z, ?1..?9]), min_length: 3, max_lenght: 9)
           |> StreamData.map(&("cert_" <> &1))
         # output: # TODO: find a way to make the output field work with the correct subdirectory path
       },
       [
-        :app,
-        :domain,
-        :url,
-        :name
+        # :app,
+        # :domain,
+        # :url,
+        # :name
       ]
     )
   end
 
-  def generate_channel() do
+  def generate_channel(app_path) do
     StreamData.fixed_map(%{
       type: StreamData.constant("Channel"),
+      path: StreamData.constant(app_path),
       module:
         StreamData.atom(:alias)
         |> StreamData.map(&Atom.to_string/1)
     })
   end
 
-  def generate_embedded() do
+  def generate_embedded(app_path) do
     StreamData.fixed_map(%{
       type: StreamData.constant("Embedded"),
-      schema: generate_schema(2)
+      path: StreamData.constant(app_path),
+      schema: generate_schema(2, app_path)
     })
   end
 
-  def generate_html() do
+  def generate_html(app_path) do
     StreamData.optional_map(
       %{
         type: StreamData.constant("Html"),
@@ -332,12 +321,13 @@ defmodule TestHelpers do
         web:
           StreamData.string(Enum.concat([?a..?z, ?1..?9]), min_length: 3, max_lenght: 9)
           |> StreamData.map(&("web_" <> &1)),
+        path: StreamData.constant(app_path),
         # no_context: StreamData.boolean(),
         # no_schema: StreamData.boolean(),
         # context_app:
         #   StreamData.string(Enum.concat([?a..?z, ?1..?9]), min_length: 3, max_lenght: 9)
         #   |> StreamData.map(&("app_" <> &1)),
-        schema: generate_schema(2)
+        schema: generate_schema(2, app_path)
       },
       [
         :web
