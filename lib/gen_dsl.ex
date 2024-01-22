@@ -17,17 +17,22 @@ defmodule GenDSL do
     :world
   end
 
-  def generate(filename) do
+  def generate_from_filepath(filename) do
     filename
     |> read_blueprint()
     |> case do
       {:ok, blueprint} ->
         blueprint
-        |> process_blueprint()
-        |> execute_blueprint()
+        |> generate_from_blueprint()
 
       {:error, reason} ->
         IO.puts(reason)
     end
+  end
+
+  def generate_from_blueprint(blueprint) do
+    blueprint
+    |> process_blueprint()
+    |> execute_blueprint()
   end
 end
