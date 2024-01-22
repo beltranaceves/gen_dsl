@@ -7,7 +7,7 @@ defmodule GenDSL.Model.Auth do
     # TODO: Validate context is a valid module name (eg. capital letter at the beginning)
     field(:web, :string)
     field(:hashing_lib, Ecto.Enum, values: [bcrypt: "bcrypt", pbkdf2: "pbkdf2", argon2: "argon2"])
-    field(:no_live, :boolean, default: false)
+    field(:no_live, :boolean, default: false) # TODO: document enabling this breaks non-interactive project generation
     field(:live, :boolean, default: true)
     # TODO: Validate XOR live and no_live flags
     field(:binary_id, :boolean, default: false)
@@ -46,6 +46,9 @@ defmodule GenDSL.Model.Auth do
             changeset |> Ecto.Changeset.apply_changes()
 
           false ->
+            IO.puts("Invalid changeset")
+            IO.inspect(params, label: "params")
+            IO.inspect(changeset, label: "changeset")
             IO.inspect(changeset.errors)
             raise "Invalid changeset"
         end

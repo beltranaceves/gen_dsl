@@ -6,7 +6,7 @@
             "type": "App",
             "path": "NEW_NAME",
             "umbrella": false,
-            "app": "TestAppName",
+            "app": "test_app_name",
             "module": "TestModule",
             "database": "postgres",
             "no_assets": false,
@@ -20,8 +20,34 @@
             "no_mailer": false,
             "binary_id": false,
             "verbose": false,
-            "install": false,
+            "install": true,
             "no_install": false
+        },
+        {
+            "type": "Auth",
+            "path": "NEW_NAME",
+            "context": "Auth_context",
+            "web": "web_prefix",
+            "hashing_lib": "bcrypt",
+            "schema": {
+                "type": "Schema",
+                "path": "NEW_NAME",
+                "module": "module_name",
+                "name": "schema_name",
+                "no_migration": false,
+                "table": null,
+                "binary_id": false,
+                "fields": [
+                    {
+                        "field_name": "username",
+                        "datatype": "string"
+                    },
+                    {
+                        "field_name": "password",
+                        "datatype": "string"
+                    }
+                ]
+            }
         }
     ],
     "posttasks": []
