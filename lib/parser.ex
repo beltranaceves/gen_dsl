@@ -14,7 +14,7 @@ defmodule GenDSL.Parser do
     IO.puts("Decoding Blueprint")
 
     elements_changesets =
-      Poison.decode!(blueprint)
+      Jason.decode!(blueprint)
       |> Enum.map(fn blueprint_map ->
         IO.inspect(blueprint_map)
 
