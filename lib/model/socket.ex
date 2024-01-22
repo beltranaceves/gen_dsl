@@ -4,10 +4,12 @@ defmodule GenDSL.Model.Socket do
 
   schema "Socket" do
     field(:module, :string)
+
+    field(:path, :string)
     field(:command, :string, default: "socket")
   end
 
-  @required_fields ~w[module]a
+  @required_fields ~w[module path]a
   @optional_fields ~w[]a
 
   @flags ~w[]a
@@ -48,6 +50,7 @@ defmodule GenDSL.Model.Socket do
 
     # IO.inspect(specs)
     # Mix.Task.rerun("phx.gen." <> socket.command, specs)
+    File.cd!(socket.path)
     Mix.shell().cmd("mix phx.gen." <> socket.command <> " " <> (specs |> Enum.join(" ")))
   end
 end

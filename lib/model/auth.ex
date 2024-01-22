@@ -14,10 +14,11 @@ defmodule GenDSL.Model.Auth do
     # TODO: Check values with changeset for valid datatypes
     embeds_one(:schema, GenDSL.Model.Schema)
 
+    field(:path, :string)
     field(:command, :string, default: "auth")
   end
 
-  @required_fields ~w[context]a
+  @required_fields ~w[context path]a
   @optional_fields ~w[web hashing_lib no_live live binary_id]a
   @remainder_fields ~w[]a
 
@@ -70,6 +71,7 @@ defmodule GenDSL.Model.Auth do
 
     # IO.inspect(specs)
     # Mix.Task.rerun("phx.gen." <> auth.command, specs)
+    File.cd!(auth.path)
     Mix.shell().cmd("mix phx.gen." <> auth.command <> " " <> (specs |> Enum.join(" ")))
   end
 end

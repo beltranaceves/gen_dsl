@@ -5,10 +5,11 @@ defmodule GenDSL.Model.Embedded do
   schema "Embededd" do
     # TODO: Check values with changeset for valid datatypes
     embeds_one(:schema, GenDSL.Model.Schema)
+    field(:path, :string)
     field(:command, :string, default: "embededd")
   end
 
-  @required_fields ~w[]a
+  @required_fields ~w[path]a
   @optional_fields ~w[]a
   @remainder_fields ~w[]a
 
@@ -43,6 +44,7 @@ defmodule GenDSL.Model.Embedded do
     specs = (specs ++ valid_schema_spec) |> List.flatten()
     # IO.inspect(specs)
     # Mix.Task.rerun("phx.gen." <> embedded.command, specs)
+    File.cd!(embedded.path)
     Mix.shell().cmd("mix phx.gen." <> embedded.command <> " " <> (specs |> Enum.join(" ")))
   end
 end

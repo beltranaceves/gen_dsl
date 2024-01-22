@@ -9,10 +9,11 @@ defmodule GenDSL.Model.Json do
     # TODO: Check values with changeset for valid datatypes
     embeds_one(:schema, GenDSL.Model.Schema)
 
+    field(:path, :string)
     field(:command, :string, default: "json")
   end
 
-  @required_fields ~w[context]a
+  @required_fields ~w[context path]a
   @optional_fields ~w[web]a
   @remainder_fields ~w[]a
 
@@ -58,6 +59,7 @@ defmodule GenDSL.Model.Json do
 
     # IO.inspect(specs)
     # Mix.Task.rerun("phx.gen." <> json.command, specs)
+    File.cd!(json.path)
     Mix.shell().cmd("mix phx.gen." <> json.command <> " " <> (specs |> Enum.join(" ")))
   end
 end

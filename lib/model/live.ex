@@ -12,10 +12,11 @@ defmodule GenDSL.Model.Live do
     # TODO: Check values with changeset for valid datatypes
     embeds_one(:schema, GenDSL.Model.Schema)
 
+    field(:path, :string)
     field(:command, :string, default: "live")
   end
 
-  @required_fields ~w[context]a
+  @required_fields ~w[context path]a
   @optional_fields ~w[web no_context no_schema context_app]a
   @remainder_fields ~w[]a
 
@@ -61,6 +62,7 @@ defmodule GenDSL.Model.Live do
 
     # IO.inspect(specs)
     # Mix.Task.rerun("phx.gen." <> live.command, specs)
+    File.cd!(live.path)
     Mix.shell().cmd("mix phx.gen." <> live.command <> " " <> (specs |> Enum.join(" ")))
   end
 end

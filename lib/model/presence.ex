@@ -5,10 +5,11 @@ defmodule GenDSL.Model.Presence do
   schema "Presence" do
     field(:module, :string, default: "Presence")
 
+    field(:path, :string)
     field(:command, :string, default: "presence")
   end
 
-  @required_fields ~w[]a
+  @required_fields ~w[path]a
   @optional_fields ~w[module]a
 
   @flags ~w[]a
@@ -49,6 +50,7 @@ defmodule GenDSL.Model.Presence do
 
     # IO.inspect(specs)
     # Mix.Task.rerun("phx.gen." <> presence.command, specs)
+    File.cd!(presence.path)
     Mix.shell().cmd("mix phx.gen." <> presence.command <> " " <> (specs |> Enum.join(" ")))
   end
 end

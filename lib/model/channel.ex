@@ -6,10 +6,11 @@ defmodule GenDSL.Model.Channel do
     field(:module, :string)
 
     # TODO: enable use of this feature when the appropiate task in Phoenix accepts a flag to make it non-interactive
+    field(:path, :string)
     field(:command, :string, default: "channel")
   end
 
-  @required_fields ~w[module]a
+  @required_fields ~w[module path]a
   @optional_fields ~w[]a
 
   @flags ~w[]a
@@ -50,6 +51,7 @@ defmodule GenDSL.Model.Channel do
 
     IO.inspect(specs)
     # Mix.Task.rerun("phx.gen." <> channel.command, specs)
+    File.cd!(channel.path)
     Mix.shell().cmd("mix phx.gen." <> channel.command <> " " <> (specs |> Enum.join(" ")))
   end
 end

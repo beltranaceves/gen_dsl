@@ -6,10 +6,12 @@ defmodule GenDSL.Model.Release do
     field(:docker, :boolean)
     field(:no_ecto, :boolean)
     field(:ecto, :boolean)
+
+    field(:path, :string)
     field(:command, :string, default: "release")
   end
 
-  @required_fields ~w[]a
+  @required_fields ~w[path]a
   @optional_fields ~w[docker no_ecto ecto]a
 
   @flags ~w[docker no_ecto ecto]a
@@ -50,6 +52,7 @@ defmodule GenDSL.Model.Release do
 
     # IO.inspect(specs)
     # Mix.Task.rerun("phx.gen." <> release.command, specs)
+    File.cd!(release.path)
     Mix.shell().cmd("mix phx.gen." <> release.command <> " " <> (specs |> Enum.join(" ")))
   end
 end

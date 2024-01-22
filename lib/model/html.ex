@@ -13,12 +13,13 @@ defmodule GenDSL.Model.Html do
     # {name, table, fields, flags} # TODO: Check values with changeset for valid datatypes in fields
     embeds_one(:schema, GenDSL.Model.Schema)
 
+    field(:path, :string)
     field(:command, :string, default: "html")
 
     # TODO: check XOR schema/no_schema with constraints
   end
 
-  @required_fields ~w[context]a
+  @required_fields ~w[context path]a
   @optional_fields ~w[web context_app no_context no_schema]a
   # TODO: revise list when a method to XOR fields is introduced
   @remainder_fields ~w[]a
@@ -65,6 +66,7 @@ defmodule GenDSL.Model.Html do
 
     # IO.inspect(specs)
     # Mix.Task.rerun("phx.gen." <> html.command, specs)
+    File.cd!(html.path)
     Mix.shell().cmd("mix phx.gen." <> html.command <> " " <> (specs |> Enum.join(" ")))
   end
 end

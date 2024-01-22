@@ -14,12 +14,14 @@ defmodule GenDSL.Model.Schema do
     field(:prefix, :string)
     field(:no_migration, :boolean)
     field(:binary_id, :boolean)
+
+    field(:path, :string)
     field(:command, :string, default: "schema")
 
     embeds_many(:fields, GenDSL.Model.SchemaField)
   end
 
-  @required_fields ~w[module name]a
+  @required_fields ~w[module name path]a
   @optional_fields ~w[no_migration table binary_id repo migration_dir prefix]a
   # @remainder_fields ~w[]a
 
@@ -65,6 +67,7 @@ defmodule GenDSL.Model.Schema do
     specs = (specs ++ valid_schema_spec) |> List.flatten()
     # IO.inspect(specs)
     # Mix.Task.rerun("phx.gen." <> schema.command, specs)
+    File.cd!(schema.path)
     Mix.shell().cmd("mix phx.gen." <> schema.command <> " " <> (specs |> Enum.join(" ")))
   end
 

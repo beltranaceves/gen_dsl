@@ -8,10 +8,11 @@ defmodule GenDSL.Model.Notifier do
     field(:message_names, {:array, :string})
     field(:context_app, :string)
 
+    field(:path, :string)
     field(:command, :string, default: "notifier")
   end
 
-  @required_fields ~w[context name message_names]a
+  @required_fields ~w[context name message_names path]a
   @optional_fields ~w[context_app]a
 
   @flags ~w[]a
@@ -52,6 +53,7 @@ defmodule GenDSL.Model.Notifier do
 
     # IO.inspect(specs)
     # Mix.Task.rerun("phx.gen." <> notifier.command, specs)
+    File.cd!(notifier.path)
     Mix.shell().cmd("mix phx.gen." <> notifier.command <> " " <> (specs |> Enum.join(" ")))
   end
 end

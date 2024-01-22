@@ -4,10 +4,12 @@ defmodule GenDSL.Model.Secret do
 
   schema "Secret" do
     field(:length, :integer, default: 32)
+
+    field(:path, :string)
     field(:command, :string, default: "secret")
   end
 
-  @required_fields ~w[]a
+  @required_fields ~w[path]a
   @optional_fields ~w[length]a
 
   @flags ~w[]a
@@ -48,6 +50,7 @@ defmodule GenDSL.Model.Secret do
 
     # IO.inspect(specs)
     # Mix.Task.rerun("phx.gen." <> secret.command, specs)
+    File.cd!(secret.path)
     Mix.shell().cmd("mix phx.gen." <> secret.command <> " " <> (specs |> Enum.join(" ")))
   end
 end

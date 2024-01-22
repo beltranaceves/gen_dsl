@@ -11,12 +11,13 @@ defmodule GenDSL.Model.Context do
     field(:no_merge_with_existing_context, :boolean, default: false)
 
     # TODO: Check values with changeset for valid datatypes
+    field(:path, :string)
     embeds_one(:schema, GenDSL.Model.Schema)
 
     field(:command, :string, default: "context")
   end
 
-  @required_fields ~w[context]a
+  @required_fields ~w[context path]a
   @optional_fields ~w[no_schema merge_with_existing_context no_merge_with_existing_context]a
   @remainder_fields ~w[]a
 
@@ -64,6 +65,7 @@ defmodule GenDSL.Model.Context do
 
     IO.inspect(specs)
     # Mix.Task.rerun("phx.gen." <> context.command, specs)
+    File.cd!(context.path)
     Mix.shell().cmd("mix phx.gen." <> context.command <> " " <> (specs |> Enum.join(" ")))
   end
 end

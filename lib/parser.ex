@@ -3,6 +3,7 @@ defmodule GenDSL.Parser do
 
   @file_path "sample_blueprint.ex"
 
+  # TODO: remove @file_path default value
   def read_blueprint(blueprint_path \\ @file_path) do
     case File.read(blueprint_path) do
       {:ok, body} -> {:ok, parse_blueprint(body)}
