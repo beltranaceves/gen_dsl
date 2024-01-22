@@ -13,9 +13,7 @@ defmodule GenDSL.Parser do
 
   def parse_blueprint(blueprint) do
     IO.puts("Parsing blueprint")
-
-    parse_blueprint = Poison.decode!(blueprint)
-
+    parse_blueprint = Jason.decode!(blueprint)
     parse_blueprint
   end
 
