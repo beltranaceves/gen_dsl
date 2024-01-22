@@ -41,7 +41,6 @@ defmodule GenDSL.MixProject do
       {:ecto_sql, "~> 3.10"},
       {:phx_new, "~> 1.7.10"},
       {:phoenix_html, "~> 3.3"}
-      # {:gen_dsl_plugin, path: "../gen_dsl_plugin"}
     ]
   end
 end

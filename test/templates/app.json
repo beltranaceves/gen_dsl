@@ -33,20 +33,7 @@
                 "type": "Schema",
                 "path": "NEW_NAME",
                 "module": "Module_name",
-                "name": "schema_name",
-                "no_migration": false,
-                "table": "users",
-                "binary_id": false,
-                "fields": [
-                    {
-                        "field_name": "username",
-                        "datatype": "string"
-                    },
-                    {
-                        "field_name": "password",
-                        "datatype": "string"
-                    }
-                ]
+                "name": "schema_name"
             }
         }
     ],

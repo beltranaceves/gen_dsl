@@ -84,11 +84,6 @@ defmodule GenDSL.Model.Schema do
           []
       end
 
-    IO.puts("Schema spec")
-    IO.inspect(valid_positional_arguments, label: "valid_positional_arguments")
-    IO.inspect(valid_flags, label: "valid_flags")
-    IO.inspect(valid_named_arguments, label: "valid_named_arguments")
-
     ([valid_positional_arguments, valid_flags, valid_named_arguments] ++ fields_specs)
     |> List.flatten()
   end

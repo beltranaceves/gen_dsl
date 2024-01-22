@@ -72,7 +72,7 @@ defmodule GenDSL.Model.Auth do
          valid_positional_arguments ++ valid_schema_spec ++ valid_named_arguments ++ valid_flags)
       |> List.flatten()
 
-    # IO.inspect(specs)
+    IO.inspect(specs)
     # Mix.Task.rerun("phx.gen." <> auth.command, specs)
     File.cd!(auth.path)
     Mix.shell().cmd("mix phx.gen." <> auth.command <> " " <> (specs |> Enum.join(" ")))
