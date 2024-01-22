@@ -35,8 +35,8 @@ defmodule GenDSL.MixProject do
       # {:dep_from_git, git: "https://github.com/elixir-lang/my_dep.git", tag: "0.1.0"}
       {:ex_doc, "~> 0.27", only: :dev, runtime: false},
       {:stream_data, "~> 0.6.0", only: :test},
-      {:poison, "~> 5.0"},
       {:exconstructor, "~> 1.2"},
+      {:jason, "~> 1.4"},
       {:ecto, "~> 3.9"}
     ]
   end

@@ -20,6 +20,6 @@ defmodule GenDSL do
   # and returns a map.
   def read_json(filename) do
     {:ok, json} = File.read(filename)
-    Poison.decode!(json)
+    Jason.decode!(json)
   end
 end
