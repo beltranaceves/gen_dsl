@@ -3,7 +3,7 @@
     "pretasks": [],
     "generable_elements": [
         {
-            "type": "App",
+            "type": "AppPlugin",
             "path": "NEW_NAME",
             "umbrella": false,
             "app": "TestAppName",

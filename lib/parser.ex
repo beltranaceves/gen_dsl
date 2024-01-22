@@ -1,88 +1,101 @@
 defmodule GenDSL.Parser do
-  @moduledoc "Module to parse custom DSL"
+  @moduledoc "Module to parse_blueprint custom DSL"
 
   @file_path "sample_blueprint.ex"
 
+  # TODO: remove @file_path default value
   def read_blueprint(blueprint_path \\ @file_path) do
     case File.read(blueprint_path) do
-      {:ok, body} -> parse(body)
-      {:error, reason} -> IO.puts(reason)
+      {:ok, body} -> {:ok, parse_blueprint(body)}
+      {:error, reason} -> {:error, reason}
     end
   end
 
-  def parse(blueprint) do
-    IO.puts("Decoding Blueprint")
-
-    elements_changesets =
-      Jason.decode!(blueprint)
-      |> Enum.map(fn blueprint_map ->
-        IO.inspect(blueprint_map)
-
-        apply(String.to_existing_atom("Elixir.GenDSL.Model." <> blueprint_map["type"]), :changeset, [
-          blueprint_map
-        ])
-      end)
-
-    elements =
-      elements_changesets
-      |> Enum.map(fn changeset ->
-        changeset |> Ecto.Changeset.apply_changes()
-      end)
-
-    IO.inspect(elements)
-    elements
+  def parse_blueprint(blueprint) do
+    IO.puts("Parsing blueprint")
+    parse_blueprint = Jason.decode!(blueprint)
+    parse_blueprint
   end
 
-  #   def struct_to_command(element = %:Html{}) do
-  #     IO.puts(element)
-  #   end
+  def process_blueprint(blueprint) do
+    IO.puts("Processing blueprint")
 
-  #   def struct_to_command(element = %:Schema{}) do
-  #     IO.puts(element)
-  #   end
+    blueprint
+    |> Map.keys()
+    |> Enum.map(fn section_key ->
+      {section_key, process_section(blueprint[section_key], section_key)}
+    end)
+    |> Enum.into(%{})
+  end
 
-  #   def struct_to_command(element = %:Notifier{}) do
-  #     IO.puts(element)
-  #   end
+  def execute_blueprint(blueprint) do
+    IO.puts("Executing blueprint")
 
-  #   def struct_to_command(element = %:Secret{}) do
-  #     IO.puts(element)
-  #   end
+    # TODO: check if this loads all plugins
+    Mix.Task.load_all()
 
-  #   def struct_to_command(element = %:Json{}) do
-  #     IO.puts(element)
-  #   end
+    blueprint
+    |> Map.keys()
+    |> Enum.each(fn section_key ->
+      execute_section(blueprint[section_key], section_key)
+    end)
+  end
 
-  #   def struct_to_command(element = %:Embedded{}) do
-  #     IO.puts(element)
-  #   end
+  def process_section(section, type) when type == "dependencies" do
+    section
+  end
 
-  #   def struct_to_command(element = %:Release{}) do
-  #     [element.command]
-  #     # ++ element.docker_flag ++ element.no_ecto_flag ++ element.ecto_flag
-  #   end
+  def process_section(section, type) when type == "pretasks" do
+    section
+  end
 
-  #   def struct_to_command(element = %:Socket{}) do
-  #     IO.puts(element)
-  #   end
+  def process_section(section, type) when type == "generable_elements" do
+    IO.puts("Processing generable elements")
 
-  #   def struct_to_command(element = %:Live{}) do
-  #     IO.puts(element)
-  #   end
+    element_tasks =
+      section
+      |> Enum.map(fn generable_element ->
+        apply(
+          String.to_existing_atom("Elixir.GenDSL.Model." <> generable_element["type"]),
+          :to_task,
+          [
+            generable_element
+          ]
+        )
+      end)
 
-  #   def struct_to_command(element = %:Presence{}) do
-  #     IO.puts(element)
-  #   end
+    element_tasks
+  end
 
-  #   def struct_to_command(element = %:Context{}) do
-  #     IO.puts(element)
-  #   end
+  def process_section(section, type) when type == "posttasks" do
+    section
+  end
 
-  #   def struct_to_command(element = %:Cert{}) do
-  #     IO.puts(element)
-  #   end
+  # TODO: Add support for all section types
+  def execute_section(section, type) when type == "dependencies" do
+    section
+    |> Enum.each(fn depenency ->
+      Mix.install(depenency)
+    end)
+  end
 
-  #   def struct_to_command(element = %:Auth{}) do
-  #     IO.puts(element)
-  #   end
+  def execute_section(section, type) when type == "pretasks" do
+    section
+  end
+
+  def execute_section(section, type) when type == "generable_elements" do
+    section
+    |> Enum.each(fn generable_element ->
+      apply(
+        generable_element["callback"],
+        [
+          generable_element["arguments"]
+        ]
+      )
+    end)
+  end
+
+  def execute_section(section, type) when type == "posttasks" do
+    section
+  end
 end

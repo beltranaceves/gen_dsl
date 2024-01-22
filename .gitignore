@@ -24,3 +24,6 @@ hex_template-*.tar
 
 # Temporary files, for example, from tests.
 /tmp/
+
+# Generated test projects
+/test/test_projects/*   

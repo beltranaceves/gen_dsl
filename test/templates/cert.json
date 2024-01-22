@@ -1,0 +1,14 @@
+{
+    "dependencies": [],
+    "pretasks": [],
+    "generable_elements": [
+        {
+            "type": "Cert",
+            "app": "my_app",
+            "domain": "my_app.com",
+            "url": "http://my_app.com",
+            "output": "my_app.com"
+        }
+    ],
+    "posttasks": []
+}
