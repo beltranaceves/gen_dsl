@@ -32,10 +32,10 @@
             "schema": {
                 "type": "Schema",
                 "path": "NEW_NAME",
-                "module": "module_name",
+                "module": "Module_name",
                 "name": "schema_name",
                 "no_migration": false,
-                "table": null,
+                "table": "users",
                 "binary_id": false,
                 "fields": [
                     {
