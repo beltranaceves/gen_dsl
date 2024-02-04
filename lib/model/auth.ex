@@ -10,7 +10,6 @@ defmodule GenDSL.Model.Auth do
     field(:no_live, :boolean, default: false) # TODO: document enabling this breaks non-interactive project generation
     field(:live, :boolean, default: true)
     # TODO: Validate XOR live and no_live flags
-    field(:binary_id, :boolean, default: false)
     # TODO: Check values with changeset for valid datatypes
     embeds_one(:schema, GenDSL.Model.Schema)
 
@@ -19,10 +18,10 @@ defmodule GenDSL.Model.Auth do
   end
 
   @required_fields ~w[context path]a
-  @optional_fields ~w[web hashing_lib no_live live binary_id]a
+  @optional_fields ~w[web hashing_lib no_live live]a
   @remainder_fields ~w[]a
 
-  @flags ~w[no_live live binary_id]a
+  @flags ~w[no_live live]a
   @named_arguments ~w[web hashing_lib]a
   @positional_arguments ~w[context]a
 

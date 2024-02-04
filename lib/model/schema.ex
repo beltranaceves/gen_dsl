@@ -14,6 +14,7 @@ defmodule GenDSL.Model.Schema do
     field(:prefix, :string)
     field(:no_migration, :boolean)
     field(:binary_id, :boolean)
+    field(:context_app, :string)
 
     field(:path, :string)
     field(:command, :string, default: "schema")
@@ -22,11 +23,11 @@ defmodule GenDSL.Model.Schema do
   end
 
   @required_fields ~w[module name path]a
-  @optional_fields ~w[no_migration table binary_id repo migration_dir prefix]a
+  @optional_fields ~w[no_migration table binary_id repo migration_dir prefix context_app]a
   # @remainder_fields ~w[]a
 
   @flags ~w[no_migration binary_id]a
-  @named_arguments ~w[table repo migration_dir prefix]a
+  @named_arguments ~w[table repo migration_dir prefix context_app]a
   @positional_arguments ~w[module name]a
 
   def changeset(params \\ %{}) do

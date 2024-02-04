@@ -5,6 +5,7 @@ defmodule GenDSL.Model.Json do
   schema "Json" do
     field(:context, :string)
     field(:web, :string)
+    field(:context_app, :string)
 
     # TODO: Check values with changeset for valid datatypes
     embeds_one(:schema, GenDSL.Model.Schema)
@@ -14,11 +15,11 @@ defmodule GenDSL.Model.Json do
   end
 
   @required_fields ~w[context path]a
-  @optional_fields ~w[web]a
+  @optional_fields ~w[web context_app]a
   @remainder_fields ~w[]a
 
   @flags ~w[]a
-  @named_arguments ~w[web]a
+  @named_arguments ~w[web context_app]a
   @positional_arguments ~w[context]a
 
   def changeset(params \\ %{}) do
