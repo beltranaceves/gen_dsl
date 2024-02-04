@@ -7,6 +7,7 @@ defmodule GenDSL.Model.Live do
     field(:web, :string)
     field(:no_context, :boolean)
     field(:no_schema, :boolean)
+    field(:merge_with_existing_context, :boolean, default: true)
     field(:context_app, :string)
 
     # TODO: Check values with changeset for valid datatypes
@@ -17,10 +18,10 @@ defmodule GenDSL.Model.Live do
   end
 
   @required_fields ~w[context path]a
-  @optional_fields ~w[web no_context no_schema context_app]a
+  @optional_fields ~w[web no_context no_schema context_app merge_with_existing_context]a
   @remainder_fields ~w[]a
 
-  @flags ~w[no_context no_schema]a
+  @flags ~w[no_context no_schema merge_with_existing_context]a
   @named_arguments ~w[web context_app]a
   @positional_arguments ~w[context]a
 

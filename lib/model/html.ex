@@ -7,6 +7,7 @@ defmodule GenDSL.Model.Html do
     field(:web, :string)
     field(:no_context, :boolean, default: false)
     field(:no_schema, :boolean, default: false)
+    field(:merge_with_existing_context, :boolean, default: true)
     # TODO: make is so that it only uses this on umbrella applications when supported
     field(:context_app, :string)
 
@@ -20,11 +21,11 @@ defmodule GenDSL.Model.Html do
   end
 
   @required_fields ~w[context path]a
-  @optional_fields ~w[web context_app no_context no_schema]a
+  @optional_fields ~w[web context_app no_context no_schema merge_with_existing_context]a
   # TODO: revise list when a method to XOR fields is introduced
   @remainder_fields ~w[]a
 
-  @flags ~w[no_context no_schema]a
+  @flags ~w[no_context no_schema merge_with_existing_context]a
   @named_arguments ~w[web context_app]a
   @positional_arguments ~w[context]a
 
