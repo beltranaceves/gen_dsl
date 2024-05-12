@@ -50,6 +50,10 @@ defmodule TestHelpers do
     IO.inspect(properties)
   end
 
+  def zip_directory(path) do
+    # Create a zip file containing the project directory using the :zip erlang module
+
+  end
   # def analyze_file1(file, properties) do
   #   contents =
   #     file
