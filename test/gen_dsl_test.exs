@@ -175,7 +175,7 @@ defmodule GenDSLTest do
             app = TestHelpers.generate_app(),
           # |> StreamData.unshrinkable(),
           schema <-
-            TestHelpers.generate_schema(2),
+            TestHelpers.generate_schema(2, blueprint["arguments"].path),
           auth <-
             TestHelpers.generate_auth(blueprint["arguments"].path),
           cert <-
@@ -185,7 +185,7 @@ defmodule GenDSLTest do
           embedded <-
             TestHelpers.generate_embedded(blueprint["arguments"].path),
           html <-
-            TestHelpers.generate_html(app["arguments"].path),
+            TestHelpers.generate_html(blueprint["arguments"].path),
           max_runs: 1
         )
       ) do

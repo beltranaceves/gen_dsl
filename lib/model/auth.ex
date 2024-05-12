@@ -7,10 +7,10 @@ defmodule GenDSL.Model.Auth do
     # TODO: Validate context is a valid module name (eg. capital letter at the beginning)
     field(:web, :string)
     field(:hashing_lib, Ecto.Enum, values: [bcrypt: "bcrypt", pbkdf2: "pbkdf2", argon2: "argon2"])
-    field(:no_live, :boolean, default: false)
+    field(:no_live, :boolean, default: false) # TODO: document enabling this breaks non-interactive project generation
     field(:live, :boolean, default: true)
+    field(:merge_with_existing_context, :boolean, default: true)
     # TODO: Validate XOR live and no_live flags
-    field(:binary_id, :boolean, default: false)
     # TODO: Check values with changeset for valid datatypes
     embeds_one(:schema, GenDSL.Model.Schema)
 
@@ -19,10 +19,10 @@ defmodule GenDSL.Model.Auth do
   end
 
   @required_fields ~w[context path]a
-  @optional_fields ~w[web hashing_lib no_live live binary_id]a
+  @optional_fields ~w[web hashing_lib no_live live merge_with_existing_context]a
   @remainder_fields ~w[]a
 
-  @flags ~w[no_live live binary_id]a
+  @flags ~w[no_live live merge_with_existing_context]a
   @named_arguments ~w[web hashing_lib]a
   @positional_arguments ~w[context]a
 
@@ -46,6 +46,9 @@ defmodule GenDSL.Model.Auth do
             changeset |> Ecto.Changeset.apply_changes()
 
           false ->
+            IO.puts("Invalid changeset")
+            IO.inspect(params, label: "params")
+            IO.inspect(changeset, label: "changeset")
             IO.inspect(changeset.errors)
             raise "Invalid changeset"
         end
@@ -69,7 +72,7 @@ defmodule GenDSL.Model.Auth do
          valid_positional_arguments ++ valid_schema_spec ++ valid_named_arguments ++ valid_flags)
       |> List.flatten()
 
-    # IO.inspect(specs)
+    IO.inspect(specs)
     # Mix.Task.rerun("phx.gen." <> auth.command, specs)
     File.cd!(auth.path)
     Mix.shell().cmd("mix phx.gen." <> auth.command <> " " <> (specs |> Enum.join(" ")))

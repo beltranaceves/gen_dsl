@@ -6,6 +6,7 @@ defmodule GenDSL.Model.Notifier do
     field(:context, :string)
     field(:name, :string)
     field(:message_names, {:array, :string})
+    field(:merge_with_existing_context, :boolean, default: true)
     field(:context_app, :string)
 
     field(:path, :string)
@@ -13,9 +14,9 @@ defmodule GenDSL.Model.Notifier do
   end
 
   @required_fields ~w[context name message_names path]a
-  @optional_fields ~w[context_app]a
+  @optional_fields ~w[context_app merge_with_existing_context]a
 
-  @flags ~w[]a
+  @flags ~w[merge_with_existing_context]a
   @named_arguments ~w[context_app]a
   @positional_arguments ~w[context name message_names]a
 

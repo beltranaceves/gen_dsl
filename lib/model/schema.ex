@@ -14,6 +14,7 @@ defmodule GenDSL.Model.Schema do
     field(:prefix, :string)
     field(:no_migration, :boolean)
     field(:binary_id, :boolean)
+    field(:context_app, :string)
 
     field(:path, :string)
     field(:command, :string, default: "schema")
@@ -22,11 +23,11 @@ defmodule GenDSL.Model.Schema do
   end
 
   @required_fields ~w[module name path]a
-  @optional_fields ~w[no_migration table binary_id repo migration_dir prefix]a
+  @optional_fields ~w[no_migration table binary_id repo migration_dir prefix context_app]a
   # @remainder_fields ~w[]a
 
   @flags ~w[no_migration binary_id]a
-  @named_arguments ~w[table repo migration_dir prefix]a
+  @named_arguments ~w[table repo migration_dir prefix context_app]a
   @positional_arguments ~w[module name]a
 
   def changeset(params \\ %{}) do
@@ -83,11 +84,6 @@ defmodule GenDSL.Model.Schema do
         :error ->
           []
       end
-
-    IO.puts("Schema spec")
-    IO.inspect(valid_positional_arguments, label: "valid_positional_arguments")
-    IO.inspect(valid_flags, label: "valid_flags")
-    IO.inspect(valid_named_arguments, label: "valid_named_arguments")
 
     ([valid_positional_arguments, valid_flags, valid_named_arguments] ++ fields_specs)
     |> List.flatten()
