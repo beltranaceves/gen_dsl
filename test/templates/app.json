@@ -1,0 +1,41 @@
+{
+    "dependencies": [],
+    "pretasks": [],
+    "generable_elements": [
+        {
+            "type": "App",
+            "path": "NEW_NAME",
+            "umbrella": false,
+            "app": "test_app_name",
+            "module": "TestModule",
+            "database": "postgres",
+            "no_assets": false,
+            "no_esbuild": false,
+            "no_tailwind": false,
+            "no_dashboard": false,
+            "no_ecto": false,
+            "no_gettext": false,
+            "no_html": false,
+            "no_live": false,
+            "no_mailer": false,
+            "binary_id": false,
+            "verbose": false,
+            "install": true,
+            "no_install": false
+        },
+        {
+            "type": "Auth",
+            "path": "NEW_NAME",
+            "context": "Auth_context",
+            "web": "web_prefix",
+            "hashing_lib": "bcrypt",
+            "schema": {
+                "type": "Schema",
+                "path": "NEW_NAME",
+                "module": "Module_name",
+                "name": "schema_name"
+            }
+        }
+    ],
+    "posttasks": []
+}

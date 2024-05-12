@@ -1,0 +1,11 @@
+{
+    "dependencies": [],
+    "pretasks": [],
+    "generable_elements": [
+        {
+            "type": "Channel",
+            "module": "my_module"
+        }
+    ],
+    "posttasks": []
+}
