@@ -6,7 +6,7 @@ defmodule GenDSL.Model.Schema do
   schema ":Schema" do
     field(:module, :string)
     # TODO: validate module is a valid module name (eg. uppercase letter at the beginning)
-    field(:name, :string)
+    field(:plural, :string)
     # TODO: validate name is a valid module name (eg. lowercase)
     field(:table, :string)
     field(:repo, :string)
@@ -22,13 +22,13 @@ defmodule GenDSL.Model.Schema do
     embeds_many(:fields, GenDSL.Model.SchemaField)
   end
 
-  @required_fields ~w[module name path]a
+  @required_fields ~w[module plural path]a
   @optional_fields ~w[no_migration table binary_id repo migration_dir prefix context_app]a
   # @remainder_fields ~w[]a
 
   @flags ~w[no_migration binary_id]a
   @named_arguments ~w[table repo migration_dir prefix context_app]a
-  @positional_arguments ~w[module name]a
+  @positional_arguments ~w[module plural]a
 
   def changeset(params \\ %{}) do
     %__MODULE__{}
@@ -69,6 +69,7 @@ defmodule GenDSL.Model.Schema do
     # IO.inspect(specs)
     # Mix.Task.rerun("phx.gen." <> schema.command, specs)
     File.cd!(schema.path)
+    IO.puts("mix phx.gen." <> schema.command <> " " <> (specs |> Enum.join(" ")))
     Mix.shell().cmd("mix phx.gen." <> schema.command <> " " <> (specs |> Enum.join(" ")))
   end
 
