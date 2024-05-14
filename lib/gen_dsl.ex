@@ -16,7 +16,7 @@ defmodule GenDSL do
   def hello do
     :world
   end
-  
+
   def generate_from_filepath(filename) do
     filename
     |> read_blueprint()
@@ -27,6 +27,7 @@ defmodule GenDSL do
 
       {:error, reason} ->
         IO.puts(reason)
+        {:error, reason}
     end
   end
 
