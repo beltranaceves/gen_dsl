@@ -75,6 +75,14 @@ defmodule GenDSL.Model.Auth do
     IO.inspect(specs)
     # Mix.Task.rerun("phx.gen." <> auth.command, specs)
     File.cd!(auth.path)
+    IO.puts("mix phx.gen." <> auth.command <> " " <> (specs |> Enum.join(" ")))
     Mix.shell().cmd("mix phx.gen." <> auth.command <> " " <> (specs |> Enum.join(" ")))
+    # Mix.Shell.IO.cmd("mix phx.gen." <> auth.command <> " " <> (specs |> Enum.join(" ")))
+    # System.cmd("mix phx.gen." <> auth.command <> " " <> (specs |> Enum.join(" ")))
+    receive do
+      {:mix_shell, :info, [msg]} ->
+        IO.puts("captured PID message")
+        msg
+    end
   end
 end
