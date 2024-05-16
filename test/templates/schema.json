@@ -25,6 +25,8 @@
         },
         {
             "type": "Schema",
+            "path": "test_project",
+            "plural": "schema_plural",
             "module": "Module.Name",
             "name": "schema_name",
             "no_migration": false,
