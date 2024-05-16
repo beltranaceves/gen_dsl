@@ -29,7 +29,12 @@ defmodule GenDSL.Model.Secret do
       |> then(fn changeset ->
         case changeset.valid? do
           true -> changeset |> Ecto.Changeset.apply_changes()
-          false -> raise "Invalid changeset"
+          false ->
+            IO.puts("Invalid changeset")
+            IO.inspect(params, label: "params")
+            IO.inspect(changeset, label: "changeset")
+            IO.inspect(changeset.errors)
+            raise "Invalid changeset"
         end
       end)
 

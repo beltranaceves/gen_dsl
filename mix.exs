@@ -37,7 +37,8 @@ defmodule GenDSL.MixProject do
       {:stream_data, "~> 0.6.0", only: :test},
       {:jason, "~> 1.4"},
       {:ecto, "~> 3.11.1"},
-      {:phx_new, "~> 1.7.10"}
+      {:phx_new, "~> 1.7.10"},
+      {:rambo, "~> 0.3.2"}
     ]
   end
 end
