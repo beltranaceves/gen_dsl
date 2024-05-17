@@ -58,7 +58,7 @@ defmodule GenDSL.Model.Channel do
 
     IO.inspect(specs)
     # Mix.Task.rerun("phx.gen." <> channel.command, specs)
-    File.cd!(channel.path)
+    # File.cd!(channel.path)
     Mix.shell().cmd("mix phx.gen." <> channel.command <> " " <> (specs |> Enum.join(" ")) <> pipe_command)
   end
 end

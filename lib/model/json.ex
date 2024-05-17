@@ -69,7 +69,7 @@ defmodule GenDSL.Model.Json do
 
     # IO.inspect(specs)
     # Mix.Task.rerun("phx.gen." <> json.command, specs)
-    File.cd!(json.path)
+    # File.cd!(json.path)
     Mix.shell().cmd("mix phx.gen." <> json.command <> " " <> (specs |> Enum.join(" ")) <> pipe_command)
   end
 end

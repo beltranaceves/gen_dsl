@@ -53,7 +53,7 @@ defmodule GenDSL.Model.Embedded do
 
     # IO.inspect(specs)
     # Mix.Task.rerun("phx.gen." <> embedded.command, specs)
-    File.cd!(embedded.path)
+    # File.cd!(embedded.path)
     Mix.shell().cmd("mix phx.gen." <> embedded.command <> " " <> (specs |> Enum.join(" ")) <> pipe_command)
   end
 end

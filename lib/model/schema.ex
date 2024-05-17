@@ -77,7 +77,7 @@ defmodule GenDSL.Model.Schema do
 
     # IO.inspect(specs)
     # Mix.Task.rerun("phx.gen." <> schema.command, specs)
-    File.cd!(schema.path)
+    # File.cd!(schema.path)
     IO.puts("mix phx.gen." <> schema.command <> " " <> (specs |> Enum.join(" ")))
     Mix.shell().cmd("mix phx.gen." <> schema.command <> " " <> (specs |> Enum.join(" ")) <> pipe_command)
   end

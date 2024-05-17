@@ -58,7 +58,7 @@ defmodule GenDSL.Model.Secret do
 
     # IO.inspect(specs)
     # Mix.Task.rerun("phx.gen." <> secret.command, specs)
-    File.cd!(secret.path)
+    # File.cd!(secret.path)
     Mix.shell().cmd("mix phx.gen." <> secret.command <> " " <> (specs |> Enum.join(" ")) <> pipe_command)
   end
 end

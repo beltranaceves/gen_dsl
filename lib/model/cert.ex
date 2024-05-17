@@ -63,7 +63,7 @@ defmodule GenDSL.Model.Cert do
 
     IO.inspect(specs)
     # Mix.Task.rerun("phx.gen." <> cert.command, specs)
-    File.cd!(cert.path)
+    # File.cd!(cert.path)
     Mix.shell().cmd("mix phx.gen." <> cert.command <> " " <> (specs |> Enum.join(" ")) <> pipe_command)
   end
 end

@@ -73,11 +73,21 @@ defmodule GenDSL.Model.Auth do
          valid_positional_arguments ++ valid_schema_spec ++ valid_named_arguments ++ valid_flags)
       |> List.flatten()
 
-    pipe_command = " >> " <> auth.log_filepath # TODO: select the correct pipe command based on the OS with a case statement
+    pipe_command = " >> " <> auth.log_filepath
 
     IO.inspect(specs)
+    cwd = File.cwd!()
+    # IO.puts("Current working directory: " <> cwd)
+    # IO.puts("Auth path: " <> auth.path)
+    # IO.puts("Path.basename(cwd): " <> Path.basename(cwd))
+    if Path.basename(cwd) == auth.path do
+      IO.puts("Already in the correct directory")
+    else
+      # File.cd!(auth.path)
+      IO.puts("Directory change is disabled")
+    end
     # Mix.Task.rerun("phx.gen." <> auth.command, specs)
-    File.cd!(auth.path)
+    # File.cd!(auth.path)
     IO.puts("mix phx.gen." <> auth.command <> " " <> (specs |> Enum.join(" ")))
     Mix.shell().cmd("mix phx.gen." <> auth.command <> " " <> (specs |> Enum.join(" ")) <> pipe_command)
   end

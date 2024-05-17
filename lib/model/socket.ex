@@ -57,7 +57,7 @@ defmodule GenDSL.Model.Socket do
     pipe_command = " >> " <> socket.log_filepath # TODO: select the correct pipe command based on the OS with a case statement
     # IO.inspect(specs)
     # Mix.Task.rerun("phx.gen." <> socket.command, specs)
-    File.cd!(socket.path)
+    # File.cd!(socket.path)
     Mix.shell().cmd("mix phx.gen." <> socket.command <> " " <> (specs |> Enum.join(" ")) <> pipe_command)
   end
 end

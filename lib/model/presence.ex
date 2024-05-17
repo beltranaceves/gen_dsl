@@ -58,7 +58,7 @@ defmodule GenDSL.Model.Presence do
 
     # IO.inspect(specs)
     # Mix.Task.rerun("phx.gen." <> presence.command, specs)
-    File.cd!(presence.path)
+    # File.cd!(presence.path)
     Mix.shell().cmd("mix phx.gen." <> presence.command <> " " <> (specs |> Enum.join(" ")) <> pipe_command)
   end
 end

@@ -60,7 +60,7 @@ defmodule GenDSL.Model.Release do
 
     # IO.inspect(specs)
     # Mix.Task.rerun("phx.gen." <> release.command, specs)
-    File.cd!(release.path)
+    # File.cd!(release.path)
     Mix.shell().cmd("mix phx.gen." <> release.command <> " " <> (specs |> Enum.join(" ")) <> pipe_command)
   end
 end

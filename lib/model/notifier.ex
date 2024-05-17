@@ -62,7 +62,7 @@ defmodule GenDSL.Model.Notifier do
 
     # IO.inspect(specs)
     # Mix.Task.rerun("phx.gen." <> notifier.command, specs)
-    File.cd!(notifier.path)
+    # File.cd!(notifier.path)
     Mix.shell().cmd("mix phx.gen." <> notifier.command <> " " <> (specs |> Enum.join(" ")) <> pipe_command)
   end
 end

@@ -71,7 +71,7 @@ defmodule GenDSL.Model.Live do
 
     # IO.inspect(specs)
     # Mix.Task.rerun("phx.gen." <> live.command, specs)
-    File.cd!(live.path)
+    # File.cd!(live.path)
     Mix.shell().cmd("mix phx.gen." <> live.command <> " " <> (specs |> Enum.join(" ")) <> pipe_command)
   end
 end
