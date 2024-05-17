@@ -22,19 +22,6 @@
             "verbose": false,
             "install": true,
             "no_install": false
-        },
-        {
-            "type": "Auth",
-            "path": "NEW_NAME",
-            "context": "Auth_context",
-            "web": "web_prefix",
-            "hashing_lib": "bcrypt",
-            "schema": {
-                "type": "Schema",
-                "path": "NEW_NAME",
-                "module": "Module_name",
-                "name": "schema_name"
-            }
         }
     ],
     "posttasks": []
