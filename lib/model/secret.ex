@@ -54,9 +54,11 @@ defmodule GenDSL.Model.Secret do
       (specs ++ valid_positional_arguments ++ valid_flags ++ valid_named_arguments)
       |> List.flatten()
 
+    pipe_command = " >> " <> secret.log_filepath # TODO: select the correct pipe command based on the OS with a case statement
+
     # IO.inspect(specs)
     # Mix.Task.rerun("phx.gen." <> secret.command, specs)
     File.cd!(secret.path)
-    Mix.shell().cmd("mix phx.gen." <> secret.command <> " " <> (specs |> Enum.join(" ")))
+    Mix.shell().cmd("mix phx.gen." <> secret.command <> " " <> (specs |> Enum.join(" ")) <> pipe_command)
   end
 end

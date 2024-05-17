@@ -72,11 +72,14 @@ defmodule GenDSL.Model.Schema do
     valid_schema_spec = GenDSL.Model.Schema.to_valid_spec(schema)
 
     specs = (specs ++ valid_schema_spec) |> List.flatten()
+
+    pipe_command = " >> " <> schema.log_filepath # TODO: select the correct pipe command based on the OS with a case statement
+
     # IO.inspect(specs)
     # Mix.Task.rerun("phx.gen." <> schema.command, specs)
     File.cd!(schema.path)
     IO.puts("mix phx.gen." <> schema.command <> " " <> (specs |> Enum.join(" ")))
-    Mix.shell().cmd("mix phx.gen." <> schema.command <> " " <> (specs |> Enum.join(" ")))
+    Mix.shell().cmd("mix phx.gen." <> schema.command <> " " <> (specs |> Enum.join(" ")) <> pipe_command)
   end
 
   def to_valid_spec(schema) do

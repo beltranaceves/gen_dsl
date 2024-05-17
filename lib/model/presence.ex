@@ -54,9 +54,11 @@ defmodule GenDSL.Model.Presence do
       (specs ++ valid_positional_arguments ++ valid_flags ++ valid_named_arguments)
       |> List.flatten()
 
+    pipe_command = " >> " <> presence.log_filepath # TODO: select the correct pipe command based on the OS with a case statement
+
     # IO.inspect(specs)
     # Mix.Task.rerun("phx.gen." <> presence.command, specs)
     File.cd!(presence.path)
-    Mix.shell().cmd("mix phx.gen." <> presence.command <> " " <> (specs |> Enum.join(" ")))
+    Mix.shell().cmd("mix phx.gen." <> presence.command <> " " <> (specs |> Enum.join(" ")) <> pipe_command)
   end
 end
