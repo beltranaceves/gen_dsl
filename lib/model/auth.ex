@@ -15,6 +15,7 @@ defmodule GenDSL.Model.Auth do
     embeds_one(:schema, GenDSL.Model.Schema)
 
     field(:path, :string)
+    field(:log_filepath, :string, default: "INSTRUCTIONS.md")
     field(:command, :string, default: "auth")
   end
 
@@ -72,17 +73,12 @@ defmodule GenDSL.Model.Auth do
          valid_positional_arguments ++ valid_schema_spec ++ valid_named_arguments ++ valid_flags)
       |> List.flatten()
 
+    pipe_command = " >> " <> auth.log_filepath # TODO: select the correct pipe command based on the OS with a case statement
+
     IO.inspect(specs)
     # Mix.Task.rerun("phx.gen." <> auth.command, specs)
     File.cd!(auth.path)
     IO.puts("mix phx.gen." <> auth.command <> " " <> (specs |> Enum.join(" ")))
-    Mix.shell().cmd("mix phx.gen." <> auth.command <> " " <> (specs |> Enum.join(" ")))
-    # Mix.Shell.IO.cmd("mix phx.gen." <> auth.command <> " " <> (specs |> Enum.join(" ")))
-    # System.cmd("mix phx.gen." <> auth.command <> " " <> (specs |> Enum.join(" ")))
-    receive do
-      {:mix_shell, :info, [msg]} ->
-        IO.puts("captured PID message")
-        msg
-    end
+    Mix.shell().cmd("mix phx.gen." <> auth.command <> " " <> (specs |> Enum.join(" ")) <> pipe_command)
   end
 end

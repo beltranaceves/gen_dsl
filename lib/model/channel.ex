@@ -4,9 +4,9 @@ defmodule GenDSL.Model.Channel do
 
   schema "Channel" do
     field(:module, :string)
-
     # TODO: enable use of this feature when the appropiate task in Phoenix accepts a flag to make it non-interactive
     field(:path, :string)
+    field(:log_filepath, :string, default: "INSTRUCTIONS.md")
     field(:command, :string, default: "channel")
   end
 

@@ -10,6 +10,7 @@ defmodule GenDSL.Model.Notifier do
     field(:context_app, :string)
 
     field(:path, :string)
+    field(:log_filepath, :string, default: "INSTRUCTIONS.md")
     field(:command, :string, default: "notifier")
   end
 

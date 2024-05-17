@@ -12,6 +12,7 @@ defmodule GenDSL.Model.Context do
 
     # TODO: Check values with changeset for valid datatypes
     field(:path, :string)
+    field(:log_filepath, :string, default: "INSTRUCTIONS.md")
     embeds_one(:schema, GenDSL.Model.Schema)
 
     field(:command, :string, default: "context")

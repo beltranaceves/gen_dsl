@@ -6,6 +6,7 @@ defmodule GenDSL.Model.Presence do
     field(:module, :string, default: "Presence")
 
     field(:path, :string)
+    field(:log_filepath, :string, default: "INSTRUCTIONS.md")
     field(:command, :string, default: "presence")
   end
 

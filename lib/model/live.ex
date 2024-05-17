@@ -14,6 +14,7 @@ defmodule GenDSL.Model.Live do
     embeds_one(:schema, GenDSL.Model.Schema)
 
     field(:path, :string)
+    field(:log_filepath, :string, default: "INSTRUCTIONS.md")
     field(:command, :string, default: "live")
   end
 

@@ -10,6 +10,7 @@ defmodule GenDSL.Model.Cert do
     field(:name, :string)
 
     field(:path, :string)
+    field(:log_filepath, :string, default: "INSTRUCTIONS.md")
     field(:command, :string, default: "cert")
   end
 

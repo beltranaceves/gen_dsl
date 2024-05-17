@@ -6,6 +6,7 @@ defmodule GenDSL.Model.Embedded do
     # TODO: Check values with changeset for valid datatypes
     embeds_one(:schema, GenDSL.Model.Schema)
     field(:path, :string)
+    field(:log_filepath, :string, default: "INSTRUCTIONS.md")
     field(:command, :string, default: "embededd")
   end
 

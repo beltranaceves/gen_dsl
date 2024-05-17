@@ -6,6 +6,7 @@ defmodule GenDSL.Model.Socket do
     field(:module, :string)
 
     field(:path, :string)
+    field(:log_filepath, :string, default: "INSTRUCTIONS.md")
     field(:command, :string, default: "socket")
   end
 

@@ -6,6 +6,7 @@ defmodule GenDSL.Model.Secret do
     field(:length, :integer, default: 32)
 
     field(:path, :string)
+    field(:log_filepath, :string, default: "INSTRUCTIONS.md")
     field(:command, :string, default: "secret")
   end
 

@@ -24,6 +24,7 @@ defmodule GenDSL.Model.App do
     field(:no_install, :boolean)
     # Alternative way to build the install field flag
     # field(:install, Ecto.Enum, values: [:"--install", :"--no-install"], default: :"--install")
+    field(:log_filepath, :string, default: "INSTRUCTIONS.md")
     field(:command, :string, default: "new")
   end
 

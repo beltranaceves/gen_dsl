@@ -15,6 +15,7 @@ defmodule GenDSL.Model.Html do
     embeds_one(:schema, GenDSL.Model.Schema)
 
     field(:path, :string)
+    field(:log_filepath, :string, default: "INSTRUCTIONS.md")
     field(:command, :string, default: "html")
 
     # TODO: check XOR schema/no_schema with constraints

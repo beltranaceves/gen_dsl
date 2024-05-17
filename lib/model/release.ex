@@ -8,6 +8,7 @@ defmodule GenDSL.Model.Release do
     field(:ecto, :boolean)
 
     field(:path, :string)
+    field(:log_filepath, :string, default: "INSTRUCTIONS.md")
     field(:command, :string, default: "release")
   end
 
