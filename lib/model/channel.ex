@@ -54,9 +54,11 @@ defmodule GenDSL.Model.Channel do
       (specs ++ valid_positional_arguments ++ valid_flags ++ valid_named_arguments)
       |> List.flatten()
 
+    pipe_command = " >> " <> channel.log_filepath # TODO: select the correct pipe command based on the OS with a case statement
+
     IO.inspect(specs)
     # Mix.Task.rerun("phx.gen." <> channel.command, specs)
     File.cd!(channel.path)
-    Mix.shell().cmd("mix phx.gen." <> channel.command <> " " <> (specs |> Enum.join(" ")))
+    Mix.shell().cmd("mix phx.gen." <> channel.command <> " " <> (specs |> Enum.join(" ")) <> pipe_command)
   end
 end

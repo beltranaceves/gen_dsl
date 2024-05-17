@@ -65,9 +65,11 @@ defmodule GenDSL.Model.Json do
          valid_positional_arguments ++ valid_schema_spec ++ valid_named_arguments ++ valid_flags)
       |> List.flatten()
 
+    pipe_command = " >> " <> json.log_filepath # TODO: select the correct pipe command based on the OS with a case statement
+
     # IO.inspect(specs)
     # Mix.Task.rerun("phx.gen." <> json.command, specs)
     File.cd!(json.path)
-    Mix.shell().cmd("mix phx.gen." <> json.command <> " " <> (specs |> Enum.join(" ")))
+    Mix.shell().cmd("mix phx.gen." <> json.command <> " " <> (specs |> Enum.join(" ")) <> pipe_command)
   end
 end

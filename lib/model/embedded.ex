@@ -48,9 +48,12 @@ defmodule GenDSL.Model.Embedded do
     valid_schema_spec = GenDSL.Model.Schema.to_valid_spec(embedded.schema)
 
     specs = (specs ++ valid_schema_spec) |> List.flatten()
+
+    pipe_command = " >> " <> embedded.log_filepath # TODO: select the correct pipe command based on the OS with a case statement
+
     # IO.inspect(specs)
     # Mix.Task.rerun("phx.gen." <> embedded.command, specs)
     File.cd!(embedded.path)
-    Mix.shell().cmd("mix phx.gen." <> embedded.command <> " " <> (specs |> Enum.join(" ")))
+    Mix.shell().cmd("mix phx.gen." <> embedded.command <> " " <> (specs |> Enum.join(" ")) <> pipe_command)
   end
 end

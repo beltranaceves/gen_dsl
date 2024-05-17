@@ -59,9 +59,11 @@ defmodule GenDSL.Model.Cert do
       (specs ++ valid_positional_arguments ++ valid_flags ++ valid_named_arguments)
       |> List.flatten()
 
+    pipe_command = " >> " <> cert.log_filepath # TODO: select the correct pipe command based on the OS with a case statement
+
     IO.inspect(specs)
     # Mix.Task.rerun("phx.gen." <> cert.command, specs)
     File.cd!(cert.path)
-    Mix.shell().cmd("mix phx.gen." <> cert.command <> " " <> (specs |> Enum.join(" ")))
+    Mix.shell().cmd("mix phx.gen." <> cert.command <> " " <> (specs |> Enum.join(" ")) <> pipe_command)
   end
 end

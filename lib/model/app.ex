@@ -70,8 +70,10 @@ defmodule GenDSL.Model.App do
       (specs ++ valid_positional_arguments ++ valid_flags ++ valid_named_arguments)
       |> List.flatten()
 
+    pipe_command = " >> " <> app.log_filepath # TODO: select the correct pipe command based on the OS with a case statement
+
     # IO.inspect(specs)
-    Mix.Task.rerun("phx." <> app.command, specs)
-    # Mix.shell().cmd("mix phx.gen." <> app.command <> " " <> (specs |> Enum.join(" ")))
+    # Mix.Task.rerun("phx." <> app.command, specs)
+    Mix.shell().cmd("mix phx.gen." <> app.command <> " " <> (specs |> Enum.join(" ")) <> pipe_command)
   end
 end
