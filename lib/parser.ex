@@ -14,6 +14,7 @@ defmodule GenDSL.Parser do
   def parse_blueprint(blueprint) do
     IO.puts("Parsing blueprint")
     parse_blueprint = Jason.decode!(blueprint)
+    IO.inspect(parse_blueprint, label: "Parsed blueprint")
     parse_blueprint
   end
 
@@ -97,5 +98,11 @@ defmodule GenDSL.Parser do
 
   def execute_section(section, type) when type == "posttasks" do
     section
+  end
+
+  def sanitize_blueprint(blueprint) do
+    blueprint
+    |> Jason.encode!()
+    |> Jason.decode!(keys: :atoms)
   end
 end

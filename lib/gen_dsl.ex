@@ -32,7 +32,9 @@ defmodule GenDSL do
   end
 
   def generate_from_blueprint(blueprint) do
+
     blueprint
+    |> sanitize_blueprint()
     |> process_blueprint()
     |> execute_blueprint()
   end
