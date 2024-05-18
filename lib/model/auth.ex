@@ -76,19 +76,13 @@ defmodule GenDSL.Model.Auth do
     pipe_command = " >> " <> auth.log_filepath
 
     IO.inspect(specs)
-    cwd = File.cwd!()
-    # IO.puts("Current working directory: " <> cwd)
-    # IO.puts("Auth path: " <> auth.path)
-    # IO.puts("Path.basename(cwd): " <> Path.basename(cwd))
-    if Path.basename(cwd) == auth.path do
-      IO.puts("Already in the correct directory")
-    else
-      # File.cd!(auth.path)
-      IO.puts("Directory change is disabled")
+    case File.cd(auth.path) do
+      :ok -> IO.puts("Changed directory to " <> auth.path)
+      {:error, _} -> IO.puts("Failed to change directory to " <> auth.path)
     end
     # Mix.Task.rerun("phx.gen." <> auth.command, specs)
-    # File.cd!(auth.path)
     IO.puts("mix phx.gen." <> auth.command <> " " <> (specs |> Enum.join(" ")))
     Mix.shell().cmd("mix phx.gen." <> auth.command <> " " <> (specs |> Enum.join(" ")) <> pipe_command)
+    # Mix.shell().cmd("mix deps.get " <> pipe_command)
   end
 end

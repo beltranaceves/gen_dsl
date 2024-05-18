@@ -78,6 +78,10 @@ defmodule GenDSL.Model.Schema do
     # IO.inspect(specs)
     # Mix.Task.rerun("phx.gen." <> schema.command, specs)
     # File.cd!(schema.path)
+    case File.cd(schema.path) do
+      :ok -> IO.puts("Changed directory to " <> schema.path)
+      {:error, _} -> IO.puts("Failed to change directory to " <> schema.path)
+    end
     IO.puts("mix phx.gen." <> schema.command <> " " <> (specs |> Enum.join(" ")))
     Mix.shell().cmd("mix phx.gen." <> schema.command <> " " <> (specs |> Enum.join(" ")) <> pipe_command)
   end
