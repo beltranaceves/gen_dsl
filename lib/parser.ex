@@ -2,6 +2,7 @@ defmodule GenDSL.Parser do
   @moduledoc "Module to parse_blueprint custom DSL"
 
   @file_path "sample_blueprint.ex"
+  @accepted_keys ~w(dependencies pretasks generable_elements posttasks)a
 
   # TODO: remove @file_path default value
   def read_blueprint(blueprint_path \\ @file_path) do
@@ -72,6 +73,10 @@ defmodule GenDSL.Parser do
     section
   end
 
+  def process_section(_section, _type) do
+    []
+  end
+
   # TODO: Add support for all section types
   def execute_section(section, type) when type == "dependencies" do
     section
@@ -101,8 +106,9 @@ defmodule GenDSL.Parser do
   end
 
   def sanitize_blueprint(blueprint) do
-    blueprint
+    # drop all keys that are not in list of accepted keys
+    Map.take(blueprint, @accepted_keys)
     |> Jason.encode!()
-    |> Jason.decode!(keys: :atoms)
+    |> Jason.decode!(keys: :strings)
   end
 end

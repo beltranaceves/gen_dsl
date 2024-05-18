@@ -35,6 +35,7 @@ defmodule GenDSL do
 
     blueprint
     |> sanitize_blueprint()
+    |> IO.inspect()
     |> process_blueprint()
     |> execute_blueprint()
   end
