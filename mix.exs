@@ -5,7 +5,7 @@ defmodule GenDSL.MixProject do
     [
       app: :gen_dsl,
       description: "Model, parser and serializer for gen_dsl",
-      version: "0.2.1",
+      version: "0.2.3",
       elixir: "~> 1.15",
       start_permanent: Mix.env() == :prod,
       deps: deps(),
@@ -33,6 +33,7 @@ defmodule GenDSL.MixProject do
     [
       # {:dep_from_hexpm, "~> 0.3.0"},
       # {:dep_from_git, git: "https://github.com/elixir-lang/my_dep.git", tag: "0.1.0"}
+      {:phx_new, "~> 1.7"},
       {:ex_doc, "~> 0.27", only: :dev, runtime: false},
       {:stream_data, "~> 0.6.0", only: :test},
       {:jason, "~> 1.4"},
