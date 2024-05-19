@@ -3,6 +3,7 @@ defmodule GenDSL.Parser do
 
   @file_path "sample_blueprint.ex"
   @accepted_keys ~w(dependencies pretasks generable_elements posttasks)a
+  @accepted_strings ~w(dependencies pretasks generable_elements posttasks)s
 
   # TODO: remove @file_path default value
   def read_blueprint(blueprint_path \\ @file_path) do
@@ -126,7 +127,7 @@ defmodule GenDSL.Parser do
   end
 
   def sanitize_blueprint(blueprint) do
-    Map.take(blueprint, @accepted_keys)
+    Map.take(blueprint, @accepted_keys ++ @accepted_strings)
     |> Jason.encode!()
     |> Jason.decode!(keys: :strings)
   end
