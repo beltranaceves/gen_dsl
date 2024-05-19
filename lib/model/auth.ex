@@ -7,7 +7,8 @@ defmodule GenDSL.Model.Auth do
     # TODO: Validate context is a valid module name (eg. capital letter at the beginning)
     field(:web, :string)
     field(:hashing_lib, Ecto.Enum, values: [bcrypt: "bcrypt", pbkdf2: "pbkdf2", argon2: "argon2"])
-    field(:no_live, :boolean, default: false) # TODO: document enabling this breaks non-interactive project generation
+    # TODO: document enabling this breaks non-interactive project generation
+    field(:no_live, :boolean, default: false)
     field(:live, :boolean, default: true)
     field(:merge_with_existing_context, :boolean, default: true)
     # TODO: Validate XOR live and no_live flags
@@ -76,13 +77,19 @@ defmodule GenDSL.Model.Auth do
     pipe_command = " >> " <> auth.log_filepath
 
     IO.inspect(specs)
+
     case File.cd(auth.path) do
       :ok -> IO.puts("Changed directory to " <> auth.path)
       {:error, _} -> IO.puts("Failed to change directory to " <> auth.path)
     end
+
     # Mix.Task.rerun("phx.gen." <> auth.command, specs)
     IO.puts("mix phx.gen." <> auth.command <> " " <> (specs |> Enum.join(" ")))
-    Mix.shell().cmd("mix phx.gen." <> auth.command <> " " <> (specs |> Enum.join(" ")) <> pipe_command)
+
+    Mix.shell().cmd(
+      "mix phx.gen." <> auth.command <> " " <> (specs |> Enum.join(" ")) <> pipe_command
+    )
+
     # Mix.shell().cmd("mix deps.get " <> pipe_command)
   end
 end

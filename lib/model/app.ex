@@ -70,10 +70,15 @@ defmodule GenDSL.Model.App do
       (specs ++ valid_positional_arguments ++ valid_flags ++ valid_named_arguments)
       |> List.flatten()
 
-    pipe_command = " | tee -a " <> Path.join(app.path, app.log_filepath) # TODO: select the correct pipe command based on the OS with a case statement
+    # TODO: select the correct pipe command based on the OS with a case statement
+    pipe_command = " | tee -a " <> Path.join(app.path, app.log_filepath)
 
     # IO.inspect(specs)
     # Mix.Task.rerun("phx." <> app.command, specs)
-    Mix.shell().cmd("mkdir " <> app.path <> "| yes | mix phx." <> app.command <> " " <> (specs |> Enum.join(" ")) <> pipe_command)
+    Mix.shell().cmd(
+      "mkdir " <>
+        app.path <>
+        "| yes | mix phx." <> app.command <> " " <> (specs |> Enum.join(" ")) <> pipe_command
+    )
   end
 end

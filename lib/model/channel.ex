@@ -4,6 +4,7 @@ defmodule GenDSL.Model.Channel do
 
   schema "Channel" do
     field(:module, :string)
+
     # TODO: enable use of this feature when the appropiate task in Phoenix accepts a flag to make it non-interactive
     field(:path, :string)
     field(:log_filepath, :string, default: "INSTRUCTIONS.md")
@@ -29,7 +30,9 @@ defmodule GenDSL.Model.Channel do
       |> changeset()
       |> then(fn changeset ->
         case changeset.valid? do
-          true -> changeset |> Ecto.Changeset.apply_changes()
+          true ->
+            changeset |> Ecto.Changeset.apply_changes()
+
           false ->
             IO.puts("Invalid changeset")
             IO.inspect(params, label: "params")
@@ -54,11 +57,14 @@ defmodule GenDSL.Model.Channel do
       (specs ++ valid_positional_arguments ++ valid_flags ++ valid_named_arguments)
       |> List.flatten()
 
-    pipe_command = " >> " <> channel.log_filepath # TODO: select the correct pipe command based on the OS with a case statement
+    # TODO: select the correct pipe command based on the OS with a case statement
+    pipe_command = " >> " <> channel.log_filepath
 
     IO.inspect(specs)
     # Mix.Task.rerun("phx.gen." <> channel.command, specs)
     # File.cd!(channel.path)
-    Mix.shell().cmd("mix phx.gen." <> channel.command <> " " <> (specs |> Enum.join(" ")) <> pipe_command)
+    Mix.shell().cmd(
+      "mix phx.gen." <> channel.command <> " " <> (specs |> Enum.join(" ")) <> pipe_command
+    )
   end
 end

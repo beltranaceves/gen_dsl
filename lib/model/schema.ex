@@ -51,7 +51,9 @@ defmodule GenDSL.Model.Schema do
       |> changeset()
       |> then(fn changeset ->
         case changeset.valid? do
-          true -> changeset |> Ecto.Changeset.apply_changes()
+          true ->
+            changeset |> Ecto.Changeset.apply_changes()
+
           false ->
             IO.puts("Invalid changeset")
             IO.inspect(params, label: "params")
@@ -73,7 +75,8 @@ defmodule GenDSL.Model.Schema do
 
     specs = (specs ++ valid_schema_spec) |> List.flatten()
 
-    pipe_command = " >> " <> schema.log_filepath # TODO: select the correct pipe command based on the OS with a case statement
+    # TODO: select the correct pipe command based on the OS with a case statement
+    pipe_command = " >> " <> schema.log_filepath
 
     # IO.inspect(specs)
     # Mix.Task.rerun("phx.gen." <> schema.command, specs)
@@ -82,8 +85,12 @@ defmodule GenDSL.Model.Schema do
       :ok -> IO.puts("Changed directory to " <> schema.path)
       {:error, _} -> IO.puts("Failed to change directory to " <> schema.path)
     end
+
     IO.puts("mix phx.gen." <> schema.command <> " " <> (specs |> Enum.join(" ")))
-    Mix.shell().cmd("mix phx.gen." <> schema.command <> " " <> (specs |> Enum.join(" ")) <> pipe_command)
+
+    Mix.shell().cmd(
+      "mix phx.gen." <> schema.command <> " " <> (specs |> Enum.join(" ")) <> pipe_command
+    )
   end
 
   def to_valid_spec(schema) do

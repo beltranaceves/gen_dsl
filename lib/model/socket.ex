@@ -29,7 +29,9 @@ defmodule GenDSL.Model.Socket do
       |> changeset()
       |> then(fn changeset ->
         case changeset.valid? do
-          true -> changeset |> Ecto.Changeset.apply_changes()
+          true ->
+            changeset |> Ecto.Changeset.apply_changes()
+
           false ->
             IO.puts("Invalid changeset")
             IO.inspect(params, label: "params")
@@ -54,10 +56,13 @@ defmodule GenDSL.Model.Socket do
       (specs ++ valid_positional_arguments ++ valid_flags ++ valid_named_arguments)
       |> List.flatten()
 
-    pipe_command = " >> " <> socket.log_filepath # TODO: select the correct pipe command based on the OS with a case statement
+    # TODO: select the correct pipe command based on the OS with a case statement
+    pipe_command = " >> " <> socket.log_filepath
     # IO.inspect(specs)
     # Mix.Task.rerun("phx.gen." <> socket.command, specs)
     # File.cd!(socket.path)
-    Mix.shell().cmd("mix phx.gen." <> socket.command <> " " <> (specs |> Enum.join(" ")) <> pipe_command)
+    Mix.shell().cmd(
+      "mix phx.gen." <> socket.command <> " " <> (specs |> Enum.join(" ")) <> pipe_command
+    )
   end
 end

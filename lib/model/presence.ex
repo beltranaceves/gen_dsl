@@ -29,7 +29,9 @@ defmodule GenDSL.Model.Presence do
       |> changeset()
       |> then(fn changeset ->
         case changeset.valid? do
-          true -> changeset |> Ecto.Changeset.apply_changes()
+          true ->
+            changeset |> Ecto.Changeset.apply_changes()
+
           false ->
             IO.puts("Invalid changeset")
             IO.inspect(params, label: "params")
@@ -54,11 +56,14 @@ defmodule GenDSL.Model.Presence do
       (specs ++ valid_positional_arguments ++ valid_flags ++ valid_named_arguments)
       |> List.flatten()
 
-    pipe_command = " >> " <> presence.log_filepath # TODO: select the correct pipe command based on the OS with a case statement
+    # TODO: select the correct pipe command based on the OS with a case statement
+    pipe_command = " >> " <> presence.log_filepath
 
     # IO.inspect(specs)
     # Mix.Task.rerun("phx.gen." <> presence.command, specs)
     # File.cd!(presence.path)
-    Mix.shell().cmd("mix phx.gen." <> presence.command <> " " <> (specs |> Enum.join(" ")) <> pipe_command)
+    Mix.shell().cmd(
+      "mix phx.gen." <> presence.command <> " " <> (specs |> Enum.join(" ")) <> pipe_command
+    )
   end
 end

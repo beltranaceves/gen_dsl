@@ -33,7 +33,9 @@ defmodule GenDSL.Model.Notifier do
       |> changeset()
       |> then(fn changeset ->
         case changeset.valid? do
-          true -> changeset |> Ecto.Changeset.apply_changes()
+          true ->
+            changeset |> Ecto.Changeset.apply_changes()
+
           false ->
             IO.puts("Invalid changeset")
             IO.inspect(params, label: "params")
@@ -58,11 +60,14 @@ defmodule GenDSL.Model.Notifier do
       (specs ++ valid_positional_arguments ++ valid_flags ++ valid_named_arguments)
       |> List.flatten()
 
-    pipe_command = " >> " <> notifier.log_filepath # TODO: select the correct pipe command based on the OS with a case statement
+    # TODO: select the correct pipe command based on the OS with a case statement
+    pipe_command = " >> " <> notifier.log_filepath
 
     # IO.inspect(specs)
     # Mix.Task.rerun("phx.gen." <> notifier.command, specs)
     # File.cd!(notifier.path)
-    Mix.shell().cmd("mix phx.gen." <> notifier.command <> " " <> (specs |> Enum.join(" ")) <> pipe_command)
+    Mix.shell().cmd(
+      "mix phx.gen." <> notifier.command <> " " <> (specs |> Enum.join(" ")) <> pipe_command
+    )
   end
 end
