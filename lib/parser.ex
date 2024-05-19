@@ -48,7 +48,15 @@ defmodule GenDSL.Parser do
   end
 
   def process_section(section, type) when type == "pretasks" do
-    section
+    IO.puts("Processing pretasks")
+
+    element_tasks =
+      section
+      |> Enum.map(fn generable_element ->
+          to_callbacks(generable_element)
+      end)
+
+    element_tasks
   end
 
   def process_section(section, type) when type == "generable_elements" do
@@ -57,13 +65,7 @@ defmodule GenDSL.Parser do
     element_tasks =
       section
       |> Enum.map(fn generable_element ->
-        apply(
-          String.to_existing_atom("Elixir.GenDSL.Model." <> generable_element["type"]),
-          :to_task,
-          [
-            generable_element
-          ]
-        )
+          to_callbacks(generable_element)
       end)
 
     element_tasks
@@ -87,11 +89,19 @@ defmodule GenDSL.Parser do
 
   def execute_section(section, type) when type == "pretasks" do
     section
+    |> Enum.each(fn generable_element -> # TODO: encapsulate this in a private function
+      apply(
+        generable_element["callback"],
+        [
+          generable_element["arguments"]
+        ]
+      )
+    end)
   end
 
   def execute_section(section, type) when type == "generable_elements" do
     section
-    |> Enum.each(fn generable_element ->
+    |> Enum.each(fn generable_element -> # TODO: encapsulate this in a private function
       apply(
         generable_element["callback"],
         [
@@ -105,10 +115,35 @@ defmodule GenDSL.Parser do
     section
   end
 
+  defp to_callbacks(element) do
+    apply(
+      String.to_existing_atom("Elixir.GenDSL.Model." <> element["type"]),
+      :to_task,
+      [
+        element
+      ]
+    )
+  end
+
   def sanitize_blueprint(blueprint) do
-    # drop all keys that are not in list of accepted keys
     Map.take(blueprint, @accepted_keys)
     |> Jason.encode!()
     |> Jason.decode!(keys: :strings)
+  end
+
+  def add_prerequisites(tasks) do
+    IO.inspect(tasks, label: "Tasks")
+    # Sample blueprint
+    prerequisites = %{
+      "pretasks" => [
+        %{
+          "type" => "Hex"
+        }
+      ]
+    }
+
+    tasks
+    |> Map.merge(prerequisites)
+    |> IO.inspect(label: "Tasks with prerequisites")
   end
 end
