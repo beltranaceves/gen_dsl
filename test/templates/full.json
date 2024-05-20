@@ -159,6 +159,53 @@
           }
         ]
       }
+    },
+    {
+      "type": "Notifier",
+      "path": "NEW_NAME",
+      "context": "notifier_context",
+      "name": "my_notifier",
+      "message_names": ["my_app.com", "my_message.com"]
+    },
+    {
+      "type": "Presence",
+      "path": "NEW_NAME",
+      "module": "PresenceNotDefault"
+    },
+    {
+      "type": "Release",
+      "path": "NEW_NAME",
+      "docker": true
+    },
+    {
+      "type": "Schema",
+      "path": "NEW_NAME",
+      "plural": "schema_plural_two",
+      "module": "Module.Name.Two",
+      "name": "schema_name_two",
+      "no_migration": false,
+      "table": null,
+      "binary_id": false,
+      "fields": [
+        {
+          "field_name": "username",
+          "datatype": "string"
+        },
+        {
+          "field_name": "password",
+          "datatype": "string"
+        }
+      ]
+    },
+    {
+      "type": "Secret",
+      "path": "NEW_NAME",
+      "length": 32
+    },
+    {
+      "type": "Socket",
+      "path": "NEW_NAME",
+      "module": "Socket"
     }
   ],
   "posttasks": []

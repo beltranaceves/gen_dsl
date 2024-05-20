@@ -4,7 +4,7 @@
     "generable_elements": [
         {
             "type": "Presence",
-            "module": "presence_not_default"
+            "module": "PresenceNotDefault"
         }
     ],
     "posttasks": []
