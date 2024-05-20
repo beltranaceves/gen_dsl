@@ -65,6 +65,11 @@ defmodule GenDSL.Model.Cert do
     pipe_command = " >> " <> cert.log_filepath
 
     IO.inspect(specs)
+
+    case File.cd(cert.path) do
+      :ok -> IO.puts("Changed directory to " <> cert.path)
+      {:error, _} -> IO.puts("Failed to change directory to " <> cert.path)
+    end
     # Mix.Task.rerun("phx.gen." <> cert.command, specs)
     # File.cd!(cert.path)
     Mix.shell().cmd(

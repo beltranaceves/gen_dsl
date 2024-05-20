@@ -70,7 +70,11 @@ defmodule GenDSL.Model.Json do
     # TODO: select the correct pipe command based on the OS with a case statement
     pipe_command = " >> " <> json.log_filepath
 
-    # IO.inspect(specs)
+    IO.inspect(specs)
+    case File.cd(json.path) do
+      :ok -> IO.puts("Changed directory to " <> json.path)
+      {:error, _} -> IO.puts("Failed to change directory to " <> json.path)
+    end
     # Mix.Task.rerun("phx.gen." <> json.command, specs)
     # File.cd!(json.path)
     Mix.shell().cmd(

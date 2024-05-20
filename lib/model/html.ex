@@ -76,7 +76,11 @@ defmodule GenDSL.Model.Html do
     # TODO: select the correct pipe command based on the OS with a case statement
     pipe_command = " >> " <> html.log_filepath
 
-    # IO.inspect(specs)
+    IO.inspect(specs)
+    case File.cd(html.path) do
+      :ok -> IO.puts("Changed directory to " <> html.path)
+      {:error, _} -> IO.puts("Failed to change directory to " <> html.path)
+    end
     # Mix.Task.rerun("phx.gen." <> html.command, specs)
     # File.cd!(html.path)
     Mix.shell().cmd(

@@ -61,6 +61,10 @@ defmodule GenDSL.Model.Channel do
     pipe_command = " >> " <> channel.log_filepath
 
     IO.inspect(specs)
+    case File.cd(channel.path) do
+      :ok -> IO.puts("Changed directory to " <> channel.path)
+      {:error, _} -> IO.puts("Failed to change directory to " <> channel.path)
+    end
     # Mix.Task.rerun("phx.gen." <> channel.command, specs)
     # File.cd!(channel.path)
     Mix.shell().cmd(

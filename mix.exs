@@ -38,8 +38,6 @@ defmodule GenDSL.MixProject do
       {:jason, "~> 1.4"},
       {:ecto, "~> 3.11.1"},
       {:phx_new, "~> 1.7.10"},
-      {:rambo, "~> 0.3.2"},
-      {:loki, "~> 1.2"}
     ]
   end
 end
