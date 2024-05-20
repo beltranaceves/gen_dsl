@@ -35,6 +35,7 @@ defmodule GenDSL do
     blueprint # TODO: implement an add_postrequisites function. At least ad a task to log: "Please check INSTRUCTIONS.md to complete installation."
     |> sanitize_blueprint()
     |> add_prerequisites()
+    |> add_postrequisites()
     |> process_blueprint()
     |> execute_blueprint()
   end

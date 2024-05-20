@@ -133,8 +133,6 @@ defmodule GenDSL.Parser do
   end
 
   def add_prerequisites(tasks) do
-    IO.inspect(tasks, label: "Tasks")
-    # Sample blueprint
     prerequisites = %{
       "pretasks" => [
         %{
@@ -145,6 +143,18 @@ defmodule GenDSL.Parser do
 
     tasks
     |> Map.merge(prerequisites)
-    |> IO.inspect(label: "Tasks with prerequisites")
+  end
+
+  def add_postrequisites(tasks) do
+    prerequisites = %{
+      "pretasks" => [
+        %{
+          "type" => "ReturnDir"
+        }
+      ]
+    }
+
+    tasks
+    |> Map.merge(prerequisites)
   end
 end
