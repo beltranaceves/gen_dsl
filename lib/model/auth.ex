@@ -15,7 +15,7 @@ defmodule GenDSL.Model.Auth do
     # TODO: Check values with changeset for valid datatypes
     embeds_one(:schema, GenDSL.Model.Schema)
 
-    field(:path, :string)
+    field(:path, :string) # TODO: rework all entities except app to make path optional, only change directory if not null. That avoids clutering bluprints
     field(:log_filepath, :string, default: "INSTRUCTIONS.md")
     field(:command, :string, default: "auth")
   end
