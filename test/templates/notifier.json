@@ -4,11 +4,11 @@
     "generable_elements": [
         {
             "type": "Notifier",
-            "context": "notifier_context",
-            "name": "my_notifier",
+            "context": "NotifierContext",
+            "module": "MyNotifier",
             "message_names": [
-                "my_app.com",
-                "my_message.com"
+                "my_app",
+                "my_message"
             ],
             "context_app": "notification_context_app"
         }

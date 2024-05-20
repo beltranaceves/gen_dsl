@@ -163,9 +163,9 @@
     {
       "type": "Notifier",
       "path": "NEW_NAME",
-      "context": "notifier_context",
-      "name": "my_notifier",
-      "message_names": ["my_app.com", "my_message.com"]
+      "context": "NotifierContext",
+      "module": "MyNotifier",
+      "message_names": ["my_app", "my_message"]
     },
     {
       "type": "Presence",

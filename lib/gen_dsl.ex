@@ -32,7 +32,7 @@ defmodule GenDSL do
   end
 
   def generate_from_blueprint(blueprint) do
-    blueprint
+    blueprint # TODO: implement an add_postrequisites function. At least ad a task to log: "Please check INSTRUCTIONS.md to complete installation."
     |> sanitize_blueprint()
     |> add_prerequisites()
     |> process_blueprint()

@@ -4,7 +4,7 @@ defmodule GenDSL.Model.Notifier do
 
   schema "Notifier" do
     field(:context, :string)
-    field(:name, :string)
+    field(:module, :string)
     field(:message_names, {:array, :string})
     field(:merge_with_existing_context, :boolean, default: true)
     field(:context_app, :string)
@@ -14,12 +14,12 @@ defmodule GenDSL.Model.Notifier do
     field(:command, :string, default: "notifier")
   end
 
-  @required_fields ~w[context name message_names path]a
+  @required_fields ~w[context module message_names path]a
   @optional_fields ~w[context_app merge_with_existing_context]a
 
   @flags ~w[merge_with_existing_context]a
   @named_arguments ~w[context_app]a
-  @positional_arguments ~w[context name message_names]a
+  @positional_arguments ~w[context module message_names]a
 
   def changeset(params \\ %{}) do
     %__MODULE__{}
