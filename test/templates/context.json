@@ -1,0 +1,30 @@
+{
+  "dependencies": [],
+  "pretasks": [],
+  "generable_elements": [
+    {
+      "type": "Context",
+      "context": "MyContext",
+      "schema": {
+        "type": "Schema",
+        "plural": "schema_plural",
+        "module": "Module.Name",
+        "name": "schema_name",
+        "no_migration": false,
+        "table": null,
+        "binary_id": false,
+        "fields": [
+          {
+            "field_name": "username",
+            "datatype": "string"
+          },
+          {
+            "field_name": "password",
+            "datatype": "string"
+          }
+        ]
+      }
+    }
+  ],
+  "posttasks": []
+}

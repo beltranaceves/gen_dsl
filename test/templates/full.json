@@ -1,36 +1,115 @@
 {
-    "dependencies": [],
-    "pretasks": [],
-    "generable_elements": [
-        {
-            "type": "App",
-            "path": "NEW_NAME",
-            "umbrella": false,
-            "app": "test_app_name",
-            "module": "TestModule",
-            "database": "postgres",
-            "no_assets": false,
-            "no_esbuild": false,
-            "no_tailwind": false,
-            "no_dashboard": false,
-            "no_ecto": false,
-            "no_gettext": false,
-            "no_html": false,
-            "no_live": false,
-            "no_mailer": false,
-            "binary_id": false,
-            "verbose": false,
-            "install": true,
-            "no_install": false
-        },
-        {
-            "type": "Cert",
-            "path": "NEW_NAME",
-            "app": "my_app",
-            "domain": "my_app.com",
-            "url": "http://my_app.com",
-            "output": "my_app.com"
-        }
-    ],
-    "posttasks": []
+  "dependencies": [],
+  "pretasks": [],
+  "generable_elements": [
+    {
+      "type": "App",
+      "path": "NEW_NAME",
+      "umbrella": false,
+      "app": "test_app_name",
+      "module": "TestModule",
+      "database": "postgres",
+      "no_assets": false,
+      "no_esbuild": false,
+      "no_tailwind": false,
+      "no_dashboard": false,
+      "no_ecto": false,
+      "no_gettext": false,
+      "no_html": false,
+      "no_live": false,
+      "no_mailer": false,
+      "binary_id": false,
+      "verbose": false,
+      "install": true,
+      "no_install": false
+    },
+    {
+      "type": "Cert",
+      "path": "NEW_NAME",
+      "app": "my_app",
+      "domain": "my_app.com",
+      "url": "http://my_app.com",
+      "output": "my_app.com"
+    },
+    {
+      "type": "Channel",
+      "path": "NEW_NAME",
+      "module": "MyModule"
+    },
+    {
+      "type": "Context",
+      "path": "NEW_NAME",
+      "context": "MyContext",
+      "schema": {
+        "type": "Schema",
+        "path": "NEW_NAME",
+        "plural": "schema_plural",
+        "module": "Module.Name",
+        "name": "schema_name",
+        "no_migration": false,
+        "table": null,
+        "binary_id": false,
+        "fields": [
+          {
+            "field_name": "username",
+            "datatype": "string"
+          },
+          {
+            "field_name": "password",
+            "datatype": "string"
+          }
+        ]
+      }
+    },
+    {
+      "type": "Embedded",
+      "path": "NEW_NAME",
+      "schema": {
+        "type": "Schema",
+        "path": "NEW_NAME",
+        "plural": "schema_plural_space",
+        "module": "Module.Name.Space",
+        "name": "schema_name_space",
+        "no_migration": false,
+        "table": null,
+        "binary_id": false,
+        "fields": [
+          {
+            "field_name": "username",
+            "datatype": "string"
+          },
+          {
+            "field_name": "password",
+            "datatype": "string"
+          }
+        ]
+      }
+    },
+    {
+      "type": "Html",
+      "path": "NEW_NAME",
+      "context": "MyWebContext",
+      "schema": {
+        "type": "Schema",
+        "path": "NEW_NAME",
+        "plural": "schema_plural_html",
+        "module": "Module.Name.Html",
+        "name": "schema_name_html",
+        "no_migration": false,
+        "table": null,
+        "binary_id": false,
+        "fields": [
+          {
+            "field_name": "username",
+            "datatype": "string"
+          },
+          {
+            "field_name": "password",
+            "datatype": "string"
+          }
+        ]
+      }
+    }
+  ],
+  "posttasks": []
 }

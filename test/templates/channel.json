@@ -4,7 +4,7 @@
     "generable_elements": [
         {
             "type": "Channel",
-            "module": "my_module"
+            "module": "MyModule"
         }
     ],
     "posttasks": []

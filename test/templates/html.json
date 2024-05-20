@@ -1,0 +1,30 @@
+{
+  "dependencies": [],
+  "pretasks": [],
+  "generable_elements": [
+    {
+      "type": "Html",
+      "context": "MyWebContext",
+      "schema": {
+        "type": "Schema",
+        "plural": "schema_plural_html",
+        "module": "Module.Name.Html",
+        "name": "schema_name_html",
+        "no_migration": false,
+        "table": null,
+        "binary_id": false,
+        "fields": [
+          {
+            "field_name": "username",
+            "datatype": "string"
+          },
+          {
+            "field_name": "password",
+            "datatype": "string"
+          }
+        ]
+      }
+    }
+  ],
+  "posttasks": []
+}
