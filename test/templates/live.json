@@ -1,0 +1,30 @@
+{
+  "dependencies": [],
+  "pretasks": [],
+  "generable_elements": [
+    {
+      "type": "Live",
+      "context": "MyLiveContext",
+      "schema": {
+        "type": "Schema",
+        "plural": "schema_plural_live",
+        "module": "Module.Name.Live",
+        "name": "schema_name_live",
+        "no_migration": false,
+        "table": null,
+        "binary_id": false,
+        "fields": [
+          {
+            "field_name": "username",
+            "datatype": "string"
+          },
+          {
+            "field_name": "password",
+            "datatype": "string"
+          }
+        ]
+      }
+    }
+  ],
+  "posttasks": []
+}

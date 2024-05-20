@@ -109,6 +109,56 @@
           }
         ]
       }
+    },
+    {
+      "type": "Json",
+      "path": "NEW_NAME",
+      "context": "MyApiContext",
+      "schema": {
+        "type": "Schema",
+        "path": "NEW_NAME",
+        "plural": "schema_plural_json",
+        "module": "Module.Name.Json",
+        "name": "schema_name_json",
+        "no_migration": false,
+        "table": null,
+        "binary_id": false,
+        "fields": [
+          {
+            "field_name": "username",
+            "datatype": "string"
+          },
+          {
+            "field_name": "password",
+            "datatype": "string"
+          }
+        ]
+      }
+    },
+    {
+      "type": "Live",
+      "path": "NEW_NAME",
+      "context": "MyLiveContext",
+      "schema": {
+        "type": "Schema",
+        "path": "NEW_NAME",
+        "plural": "schema_plural_live",
+        "module": "Module.Name.Live",
+        "name": "schema_name_live",
+        "no_migration": false,
+        "table": null,
+        "binary_id": false,
+        "fields": [
+          {
+            "field_name": "username",
+            "datatype": "string"
+          },
+          {
+            "field_name": "password",
+            "datatype": "string"
+          }
+        ]
+      }
     }
   ],
   "posttasks": []

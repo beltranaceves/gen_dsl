@@ -1,0 +1,30 @@
+{
+  "dependencies": [],
+  "pretasks": [],
+  "generable_elements": [
+    {
+      "type": "Json",
+      "context": "MyApiContext",
+      "schema": {
+        "type": "Schema",
+        "plural": "schema_plural_json",
+        "module": "Module.Name.Json",
+        "name": "schema_name_json",
+        "no_migration": false,
+        "table": null,
+        "binary_id": false,
+        "fields": [
+          {
+            "field_name": "username",
+            "datatype": "string"
+          },
+          {
+            "field_name": "password",
+            "datatype": "string"
+          }
+        ]
+      }
+    }
+  ],
+  "posttasks": []
+}
