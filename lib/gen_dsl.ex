@@ -32,12 +32,9 @@ defmodule GenDSL do
   end
 
   def generate_from_blueprint(blueprint) do
-    IO.inspect(blueprint, label: "Raw Blueprint")
     blueprint
     |> sanitize_blueprint()
-    |> IO.inspect(label: "Sanitized Blueprint")
     |> add_prerequisites()
-    |> IO.inspect(label: "Blueprint")
     |> process_blueprint()
     |> execute_blueprint()
   end
