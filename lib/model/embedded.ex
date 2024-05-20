@@ -7,7 +7,7 @@ defmodule GenDSL.Model.Embedded do
     embeds_one(:schema, GenDSL.Model.Schema)
     field(:path, :string)
     field(:log_filepath, :string, default: "INSTRUCTIONS.md")
-    field(:command, :string, default: "embededd")
+    field(:command, :string, default: "embedded")
   end
 
   @required_fields ~w[path]a
