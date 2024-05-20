@@ -60,7 +60,7 @@ defmodule GenDSL.Model.App do
     %{"arguments" => app, "callback" => task}
   end
 
-  def execute(app) do
+  def execute(app) do # TODO: split app creation and fetching deps into separate commands/entities, such that I can capture the output separatelly and log instructions to the CLI
     specs = []
 
     [valid_positional_arguments, valid_flags, valid_named_arguments, _valid_app] =
@@ -71,14 +71,24 @@ defmodule GenDSL.Model.App do
       |> List.flatten()
 
     # TODO: select the correct pipe command based on the OS with a case statement
-    pipe_command = " | tee -a " <> Path.join(app.path, app.log_filepath)
+    output_path = Path.join(app.path, app.log_filepath)
+    _pipe_command = " | tee -a " <> output_path
 
-    # IO.inspect(specs)
+    IO.puts("Generating project and fetching deps")
     # Mix.Task.rerun("phx." <> app.command, specs)
-    Mix.shell().cmd(
-      "mkdir " <>
-        app.path <>
-        "| yes | mix phx." <> app.command <> " " <> (specs |> Enum.join(" ")) <> pipe_command
-    )
+    Mix.shell().cmd("rm -rf " <> app.path)
+    # Mix.Tasks.Phx.New.run(specs)
+    output = ExUnit.CaptureIO.capture_io(fn ->
+      Mix.Tasks.Phx.New.run(specs)
+    end)
+    IO.puts(output)
+    # Write the output to the specified file
+    File.write!(output_path, output)
+    # GenDSL.generate_from_filepath("test/templates/app.json")
+    # Mix.shell().cmd(
+    #   "mkdir " <>
+    #     app.path <>
+    #     "| yes | mix phx." <> app.command <> " " <> (specs |> Enum.join(" ")) <> pipe_command
+    # )
   end
 end
