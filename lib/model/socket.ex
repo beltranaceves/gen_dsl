@@ -58,7 +58,11 @@ defmodule GenDSL.Model.Socket do
 
     # TODO: select the correct pipe command based on the OS with a case statement
     pipe_command = " >> " <> socket.log_filepath
-    # IO.inspect(specs)
+    IO.inspect(specs)
+    case File.cd(socket.path) do
+      :ok -> IO.puts("Changed directory to " <> socket.path)
+      {:error, _} -> IO.puts("Failed to change directory to " <> socket.path)
+    end
     # Mix.Task.rerun("phx.gen." <> socket.command, specs)
     # File.cd!(socket.path)
     Mix.shell().cmd(

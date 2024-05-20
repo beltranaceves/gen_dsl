@@ -59,9 +59,11 @@ defmodule GenDSL.Model.Presence do
     # TODO: select the correct pipe command based on the OS with a case statement
     pipe_command = " >> " <> presence.log_filepath
 
-    # IO.inspect(specs)
-    # Mix.Task.rerun("phx.gen." <> presence.command, specs)
-    # File.cd!(presence.path)
+    IO.inspect(specs)
+    case File.cd(presence.path) do
+      :ok -> IO.puts("Changed directory to " <> presence.path)
+      {:error, _} -> IO.puts("Failed to change directory to " <> presence.path)
+    end
     Mix.shell().cmd(
       "mix phx.gen." <> presence.command <> " " <> (specs |> Enum.join(" ")) <> pipe_command
     )
