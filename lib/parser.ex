@@ -2,8 +2,9 @@ defmodule GenDSL.Parser do
   @moduledoc "Module to parse_blueprint custom DSL"
 
   @file_path "sample_blueprint.ex"
-  @accepted_keys ~w(dependencies pretasks generable_elements posttasks)a
-  @accepted_strings ~w(dependencies pretasks generable_elements posttasks)s
+  @sections ~w(app dependencies pretasks generable_elements posttasks)s
+  @accepted_keys ~w(app dependencies pretasks generable_elements posttasks)a
+  @accepted_strings ~w(app dependencies pretasks generable_elements posttasks)s
 
   # TODO: remove @file_path default value
   def read_blueprint(blueprint_path \\ @file_path) do
@@ -37,15 +38,29 @@ defmodule GenDSL.Parser do
     # TODO: check if this loads all plugins
     Mix.Task.load_all()
 
-    blueprint
-    |> Map.keys()
-    |> Enum.each(fn section_key ->
-      execute_section(blueprint[section_key], section_key)
+    # blueprint
+    # |> Map.keys()
+    # |> Enum.each(fn section_key ->
+    #   execute_section(blueprint[section_key], section_key)
+    # end)
+    # IO.inspect(blueprint, label: "Blueprint")
+    @sections
+    |> Enum.each(fn section ->
+      execute_section(blueprint[section], section)
     end)
   end
 
   def process_section(section, type) when type == "dependencies" do
     section
+  end
+
+  def process_section(section, type) when type == "app" do
+    IO.puts("Processing App")
+
+    element_tasks =
+      to_callbacks(section)
+
+    element_tasks
   end
 
   def process_section(section, type) when type == "pretasks" do
@@ -54,7 +69,7 @@ defmodule GenDSL.Parser do
     element_tasks =
       section
       |> Enum.map(fn generable_element ->
-          to_callbacks(generable_element)
+        to_callbacks(generable_element)
       end)
 
     element_tasks
@@ -66,7 +81,7 @@ defmodule GenDSL.Parser do
     element_tasks =
       section
       |> Enum.map(fn generable_element ->
-          to_callbacks(generable_element)
+        to_callbacks(generable_element)
       end)
 
     element_tasks
@@ -80,17 +95,27 @@ defmodule GenDSL.Parser do
     []
   end
 
+  def execute_section(section, type) when type == "app" do
+    apply(
+      section["callback"],
+      [
+        section["arguments"]
+      ]
+    )
+  end
+
   # TODO: Add support for all section types
   def execute_section(section, type) when type == "dependencies" do
     section
     |> Enum.each(fn depenency ->
-      Mix.install(depenency)
+      Mix.install(depenency |> String.to_atom())
     end)
   end
 
   def execute_section(section, type) when type == "pretasks" do
     section
-    |> Enum.each(fn generable_element -> # TODO: encapsulate this in a private function
+    # TODO: encapsulate this in a private function
+    |> Enum.each(fn generable_element ->
       apply(
         generable_element["callback"],
         [
@@ -102,7 +127,8 @@ defmodule GenDSL.Parser do
 
   def execute_section(section, type) when type == "generable_elements" do
     section
-    |> Enum.each(fn generable_element -> # TODO: encapsulate this in a private function
+    # TODO: encapsulate this in a private function
+    |> Enum.each(fn generable_element ->
       apply(
         generable_element["callback"],
         [

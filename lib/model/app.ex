@@ -60,7 +60,8 @@ defmodule GenDSL.Model.App do
     %{"arguments" => app, "callback" => task}
   end
 
-  def execute(app) do # TODO: split app creation and fetching deps into separate commands/entities, such that I can capture the output separatelly and log instructions to the CLI
+  # TODO: split app creation and fetching deps into separate commands/entities, such that I can capture the output separatelly and log instructions to the CLI
+  def execute(app) do
     specs = []
 
     [valid_positional_arguments, valid_flags, valid_named_arguments, _valid_app] =
@@ -78,12 +79,20 @@ defmodule GenDSL.Model.App do
     # Mix.Task.rerun("phx." <> app.command, specs)
     Mix.shell().cmd("rm -rf " <> app.path)
     # Mix.Tasks.Phx.New.run(specs)
-    output = ExUnit.CaptureIO.capture_io(fn ->
-      Mix.Tasks.Phx.New.run(specs)
-    end)
+    output =
+      ExUnit.CaptureIO.capture_io(fn ->
+        Mix.Tasks.Phx.New.run(specs)
+      end)
+
     IO.puts(output)
     # Write the output to the specified file
     File.write!(output_path, output)
+
+    # case File.cd(app.path) do
+    #   :ok -> IO.puts("Changed directory to " <> app.path)
+    #   {:error, _} -> IO.puts("Failed to change directory to " <> app.path)
+    # end
+
     # GenDSL.generate_from_filepath("test/templates/app.json")
     # Mix.shell().cmd(
     #   "mkdir " <>
