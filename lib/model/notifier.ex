@@ -64,10 +64,12 @@ defmodule GenDSL.Model.Notifier do
     pipe_command = " >> " <> notifier.log_filepath
 
     IO.inspect(specs)
+
     case File.cd(notifier.path) do
       :ok -> IO.puts("Changed directory to " <> notifier.path)
       {:error, _} -> IO.puts("Failed to change directory to " <> notifier.path)
     end
+
     # Mix.Task.rerun("phx.gen." <> notifier.command, specs)
     # File.cd!(notifier.path)
     Mix.shell().cmd(

@@ -55,10 +55,12 @@ defmodule GenDSL.Model.Embedded do
     pipe_command = " >> " <> embedded.log_filepath
 
     IO.inspect(specs)
+
     case File.cd(embedded.path) do
       :ok -> IO.puts("Changed directory to " <> embedded.path)
       {:error, _} -> IO.puts("Failed to change directory to " <> embedded.path)
     end
+
     # Mix.Task.rerun("phx.gen." <> embedded.command, specs)
     # File.cd!(embedded.path)
     Mix.shell().cmd(

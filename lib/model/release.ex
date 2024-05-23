@@ -62,10 +62,12 @@ defmodule GenDSL.Model.Release do
     pipe_command = " >> " <> release.log_filepath
 
     IO.inspect(specs)
+
     case File.cd(release.path) do
       :ok -> IO.puts("Changed directory to " <> release.path)
       {:error, _} -> IO.puts("Failed to change directory to " <> release.path)
     end
+
     # Mix.Task.rerun("phx.gen." <> release.command, specs)
     # File.cd!(release.path)
     Mix.shell().cmd(

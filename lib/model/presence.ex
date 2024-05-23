@@ -60,10 +60,12 @@ defmodule GenDSL.Model.Presence do
     pipe_command = " >> " <> presence.log_filepath
 
     IO.inspect(specs)
+
     case File.cd(presence.path) do
       :ok -> IO.puts("Changed directory to " <> presence.path)
       {:error, _} -> IO.puts("Failed to change directory to " <> presence.path)
     end
+
     Mix.shell().cmd(
       "mix phx.gen." <> presence.command <> " " <> (specs |> Enum.join(" ")) <> pipe_command
     )

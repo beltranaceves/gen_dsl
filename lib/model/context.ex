@@ -75,10 +75,12 @@ defmodule GenDSL.Model.Context do
     pipe_command = " >> " <> context.log_filepath
 
     IO.inspect(specs)
+
     case File.cd(context.path) do
       :ok -> IO.puts("Changed directory to " <> context.path)
       {:error, _} -> IO.puts("Failed to change directory to " <> context.path)
     end
+
     # Mix.Task.rerun("phx.gen." <> context.command, specs)
     # File.cd!(context.path)
     Mix.shell().cmd(

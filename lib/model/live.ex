@@ -73,10 +73,12 @@ defmodule GenDSL.Model.Live do
     pipe_command = " >> " <> live.log_filepath
 
     IO.inspect(specs)
+
     case File.cd(live.path) do
       :ok -> IO.puts("Changed directory to " <> live.path)
       {:error, _} -> IO.puts("Failed to change directory to " <> live.path)
     end
+
     # Mix.Task.rerun("phx.gen." <> live.command, specs)
     # File.cd!(live.path)
     Mix.shell().cmd(

@@ -60,10 +60,12 @@ defmodule GenDSL.Model.Secret do
     pipe_command = " >> " <> secret.log_filepath
 
     IO.inspect(specs)
+
     case File.cd(secret.path) do
       :ok -> IO.puts("Changed directory to " <> secret.path)
       {:error, _} -> IO.puts("Failed to change directory to " <> secret.path)
     end
+
     # Mix.Task.rerun("phx.gen." <> secret.command, specs)
     # File.cd!(secret.path)
     Mix.shell().cmd(
