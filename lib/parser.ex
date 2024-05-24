@@ -46,7 +46,9 @@ defmodule GenDSL.Parser do
     # IO.inspect(blueprint, label: "Blueprint")
     @sections
     |> Enum.each(fn section ->
-      execute_section(blueprint[section], section)
+      if Map.has_key?(blueprint, section) do
+        execute_section(blueprint[section], section)
+      end
     end)
   end
 
