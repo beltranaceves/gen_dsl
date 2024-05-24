@@ -21,8 +21,8 @@
     "no_install": false
   },
   "dependencies": [
-    "phoenix", 
-    "loki"
+    { "package": "phoenix", "version": "~> 1.7" },
+    { "package": "jason", "version": "~> 1.4" }
   ],
   "pretasks": [],
   "generable_elements": [

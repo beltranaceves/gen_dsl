@@ -2,7 +2,7 @@ defmodule GenDSL.Parser do
   @moduledoc "Module to parse_blueprint custom DSL"
 
   @file_path "sample_blueprint.ex"
-  @sections ~w(app dependencies pretasks generable_elements posttasks)s
+  @sections ~w(dependencies app pretasks generable_elements posttasks)s
   @accepted_keys ~w(app dependencies pretasks generable_elements posttasks)a
   @accepted_strings ~w(app dependencies pretasks generable_elements posttasks)s
 
@@ -108,7 +108,7 @@ defmodule GenDSL.Parser do
   def execute_section(section, type) when type == "dependencies" do
     section
     |> Enum.each(fn depenency ->
-      Mix.install(depenency |> String.to_atom())
+      Mix.install([{depenency["package"] |> String.to_atom(), depenency["version"]}])
     end)
   end
 

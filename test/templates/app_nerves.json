@@ -1,0 +1,13 @@
+{
+  "app": {
+    "type": "Nerves",
+    "path": "NEW_NAME"
+  },
+  "dependencies": [
+    "nerves_bootstrap"
+  ],
+  "pretasks": [],
+  "generable_elements": [
+  ],
+  "posttasks": []
+}
