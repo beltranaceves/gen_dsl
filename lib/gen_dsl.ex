@@ -26,6 +26,7 @@ defmodule GenDSL do
         |> generate_from_blueprint()
 
       {:error, reason} ->
+        IO.puts("Error generating from filepath")
         IO.puts(reason)
         {:error, reason}
     end

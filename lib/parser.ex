@@ -52,6 +52,9 @@ defmodule GenDSL.Parser do
 
   def process_section(section, type) when type == "dependencies" do
     section
+    |> Enum.map(fn depenency ->
+      {depenency["package"] |> String.to_atom(), depenency["version"]}
+    end)
   end
 
   def process_section(section, type) when type == "app" do
@@ -106,10 +109,10 @@ defmodule GenDSL.Parser do
 
   # TODO: Add support for all section types
   def execute_section(section, type) when type == "dependencies" do
+    IO.puts("Installing dependencies")
+
     section
-    |> Enum.each(fn depenency ->
-      Mix.install([{depenency["package"] |> String.to_atom(), depenency["version"]}])
-    end)
+    |> Mix.install(consolidate_protocols: true)
   end
 
   def execute_section(section, type) when type == "pretasks" do
@@ -173,7 +176,7 @@ defmodule GenDSL.Parser do
 
   def add_postrequisites(tasks) do
     prerequisites = %{
-      "pretasks" => [
+      "posttasks" => [
         %{
           "type" => "ReturnDir"
         }
