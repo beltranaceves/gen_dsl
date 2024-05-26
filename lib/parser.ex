@@ -32,7 +32,7 @@ defmodule GenDSL.Parser do
     |> Enum.into(%{})
   end
 
-  def execute_blueprint(blueprint) do
+  def execute_blueprint(blueprint, get_deps) do
     IO.puts("Executing blueprint")
 
     # TODO: check if this loads all plugins
@@ -47,7 +47,10 @@ defmodule GenDSL.Parser do
     @sections
     |> Enum.each(fn section ->
       if Map.has_key?(blueprint, section) do
-        execute_section(blueprint[section], section)
+        case section do
+          "dependencies" -> execute_section(blueprint[section], section, get_deps)
+          _ -> execute_section(blueprint[section], section)
+        end
       end
     end)
   end
@@ -110,11 +113,13 @@ defmodule GenDSL.Parser do
   end
 
   # TODO: Add support for all section types
-  def execute_section(section, type) when type == "dependencies" do
+  def execute_section(section, type, get_deps) when type == "dependencies" do
     IO.puts("Installing dependencies")
 
-    section
-    |> Mix.install(consolidate_protocols: true)
+    if get_deps do
+      section
+      |> Mix.install(consolidate_protocols: true)
+    end
   end
 
   def execute_section(section, type) when type == "pretasks" do
