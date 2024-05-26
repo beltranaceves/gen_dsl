@@ -17,13 +17,13 @@ defmodule GenDSL do
     :world
   end
 
-  def generate_from_filepath(filename, get_deps \\ true) do
+  def generate_from_filepath(filename, get_deps \\ true, return_dir \\ nil) do # TODO: rework the parameters into a keywork list and handle it like they do in Elixir mix tasks, with switches
     filename
     |> read_blueprint()
     |> case do
       {:ok, blueprint} ->
         blueprint
-        |> generate_from_blueprint(get_deps)
+        |> generate_from_blueprint(get_deps, return_dir)
 
       {:error, reason} ->
         IO.puts("Error generating from filepath")
@@ -32,12 +32,12 @@ defmodule GenDSL do
     end
   end
 
-  def generate_from_blueprint(blueprint, get_deps \\ true) do
+  def generate_from_blueprint(blueprint, get_deps \\ true, return_dir \\ nil) do
     # TODO: implement an add_postrequisites function. At least add a task to log: "Please check INSTRUCTIONS.md to complete installation."
     blueprint
     |> sanitize_blueprint()
     |> add_prerequisites()
-    |> add_postrequisites()
+    |> add_postrequisites(return_dir)
     |> process_blueprint()
     |> execute_blueprint(get_deps)
   end

@@ -181,11 +181,12 @@ defmodule GenDSL.Parser do
     |> Map.merge(prerequisites)
   end
 
-  def add_postrequisites(tasks) do
+  def add_postrequisites(tasks, original_dir \\ nil) do
     prerequisites = %{
       "posttasks" => [
         %{
-          "type" => "ReturnDir"
+          "type" => "ReturnDir",
+          "dir" => original_dir
         }
       ]
     }
