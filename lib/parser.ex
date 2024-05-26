@@ -55,14 +55,14 @@ defmodule GenDSL.Parser do
     end)
   end
 
-  def process_section(section, type) when type == "dependencies" do
+  def process_section(section, "dependencies" = _type) do
     section
     |> Enum.map(fn depenency ->
       {depenency["package"] |> String.to_atom(), depenency["version"]}
     end)
   end
 
-  def process_section(section, type) when type == "app" do
+  def process_section(section, "app" = _type) do
     IO.puts("Processing App")
 
     element_tasks =
@@ -71,7 +71,7 @@ defmodule GenDSL.Parser do
     element_tasks
   end
 
-  def process_section(section, type) when type == "pretasks" do
+  def process_section(section, "pretasks" = _type) do
     IO.puts("Processing pretasks")
 
     element_tasks =
@@ -83,7 +83,7 @@ defmodule GenDSL.Parser do
     element_tasks
   end
 
-  def process_section(section, type) when type == "generable_elements" do
+  def process_section(section, "generable_elements" = _type) do
     IO.puts("Processing generable elements")
 
     element_tasks =
@@ -95,7 +95,7 @@ defmodule GenDSL.Parser do
     element_tasks
   end
 
-  def process_section(section, type) when type == "posttasks" do
+  def process_section(section, "posttasks" = _type) do
     section
   end
 
@@ -103,17 +103,8 @@ defmodule GenDSL.Parser do
     []
   end
 
-  def execute_section(section, type) when type == "app" do
-    apply(
-      section["callback"],
-      [
-        section["arguments"]
-      ]
-    )
-  end
-
   # TODO: Add support for all section types
-  def execute_section(section, type, get_deps) when type == "dependencies" do
+  def execute_section(section, "dependencies" = _type, get_deps) do
     IO.puts("Installing dependencies")
 
     if get_deps do
@@ -122,7 +113,16 @@ defmodule GenDSL.Parser do
     end
   end
 
-  def execute_section(section, type) when type == "pretasks" do
+  def execute_section(section, "app" = _type) do
+    apply(
+      section["callback"],
+      [
+        section["arguments"]
+      ]
+    )
+  end
+
+  def execute_section(section, "pretasks" = _type) do
     section
     # TODO: encapsulate this in a private function
     |> Enum.each(fn generable_element ->
@@ -135,7 +135,7 @@ defmodule GenDSL.Parser do
     end)
   end
 
-  def execute_section(section, type) when type == "generable_elements" do
+  def execute_section(section, "generable_elements" = _type) do
     section
     # TODO: encapsulate this in a private function
     |> Enum.each(fn generable_element ->
@@ -148,7 +148,7 @@ defmodule GenDSL.Parser do
     end)
   end
 
-  def execute_section(section, type) when type == "posttasks" do
+  def execute_section(section, "posttasks" = _type) do
     section
   end
 
