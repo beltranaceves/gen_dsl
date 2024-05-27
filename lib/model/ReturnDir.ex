@@ -6,6 +6,7 @@ defmodule GenDSL.Model.ReturnDir do
   end
 
   def execute(args) do
+    IO.puts("Returning to the previous directory: #{inspect(args)}")
     case Map.fetch(args, "dir") do
       {:ok, dir} ->
         File.cd!(dir)
