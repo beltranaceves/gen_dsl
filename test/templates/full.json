@@ -64,26 +64,17 @@
     {
       "type": "Embedded",
       "path": "my_escript_app",
-      "schema": {
-        "type": "Schema",
-        "path": "my_escript_app",
-        "plural": "schema_plural_space",
-        "module": "Module.Name.Space",
-        "name": "schema_name_space",
-        "no_migration": false,
-        "table": null,
-        "binary_id": false,
-        "fields": [
-          {
-            "field_name": "username",
-            "datatype": "string"
-          },
-          {
-            "field_name": "password",
-            "datatype": "string"
-          }
-        ]
-      }
+      "module": "Module.Name.Space",
+      "fields": [
+        {
+          "field_name": "username",
+          "datatype": "string"
+        },
+        {
+          "field_name": "password",
+          "datatype": "string"
+        }
+      ]
     },
     {
       "type": "Html",

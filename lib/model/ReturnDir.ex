@@ -9,7 +9,10 @@ defmodule GenDSL.Model.ReturnDir do
     IO.puts("Returning to the previous directory: #{inspect(args)}")
     case Map.fetch(args, "dir") do
       {:ok, dir} ->
-        File.cd!(dir)
+        case dir do
+          nil -> File.cd!("..")
+          _ -> File.cd!(dir)
+        end
 
       :error ->
         File.cd!("..")
