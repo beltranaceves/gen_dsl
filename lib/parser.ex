@@ -96,7 +96,15 @@ defmodule GenDSL.Parser do
   end
 
   def process_section(section, "posttasks" = _type) do
+    IO.puts("Processing posttasks")
     section
+    post_tasks =
+      section
+      |> Enum.map(fn post_task ->
+        to_callbacks(post_task)
+      end)
+
+    post_tasks
   end
 
   def process_section(_section, _type) do
@@ -150,6 +158,15 @@ defmodule GenDSL.Parser do
 
   def execute_section(section, "posttasks" = _type) do
     section
+    |> Enum.each(fn post_task ->
+      apply(
+        post_task["callback"],
+        [
+          post_task["arguments"]
+        ]
+      )
+    end)
+
   end
 
   defp to_callbacks(element) do
