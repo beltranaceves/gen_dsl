@@ -6,6 +6,8 @@ defmodule GenDSL.Model.Json do
     field(:context, :string)
     field(:web, :string)
     field(:context_app, :string)
+    field(:no_context, :boolean, default: false)
+    field(:no_schema, :boolean, default: false)
     field(:merge_with_existing_context, :boolean, default: true)
 
     # TODO: Check values with changeset for valid datatypes
@@ -17,10 +19,10 @@ defmodule GenDSL.Model.Json do
   end
 
   @required_fields ~w[context path]a
-  @optional_fields ~w[web context_app merge_with_existing_context]a
+  @optional_fields ~w[web context_app merge_with_existing_context no_context no_schema]a
   @remainder_fields ~w[]a
 
-  @flags ~w[merge_with_existing_context]a
+  @flags ~w[merge_with_existing_context no_context no_schema]a
   @named_arguments ~w[web context_app]a
   @positional_arguments ~w[context]a
 
