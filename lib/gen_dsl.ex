@@ -38,7 +38,7 @@ defmodule GenDSL do
     blueprint
     |> sanitize_blueprint()
     |> add_prerequisites()
-    # TODO: try to remove the prefix, is should not be needed but elixir compiler does not work
+    # TODO: try to remove the prefix, is should not be needed but elixir linter cannot find the function without it
     |> GenDSL.Parser.add_postrequisites(return_dir)
     |> process_blueprint()
     |> IO.inspect(label: "Processed blueprint")
