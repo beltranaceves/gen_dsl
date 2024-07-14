@@ -170,7 +170,7 @@ defmodule GenDSL.Parser do
 
   defp to_callbacks(element) do
     apply(
-      String.to_existing_atom("Elixir.GenDSL.Model." <> element["type"]),
+      String.to_existing_atom("Elixir." <> element["type"]),
       :to_task,
       [
         element
