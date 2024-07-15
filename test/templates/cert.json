@@ -3,7 +3,7 @@
     "pretasks": [],
     "generable_elements": [
         {
-            "type": "Cert",
+            "type": "GenDSL.Model.Cert",
             "app": "my_app",
             "domain": "my_app.com",
             "url": "http://my_app.com",

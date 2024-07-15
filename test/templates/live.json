@@ -3,10 +3,10 @@
   "pretasks": [],
   "generable_elements": [
     {
-      "type": "Live",
+      "type": "GenDSL.Model.Live",
       "context": "MyLiveContext",
       "schema": {
-        "type": "Schema",
+        "type": "GenDSL.Model.Schema",
         "plural": "schema_plural_live",
         "module": "Module.Name.Live",
         "name": "schema_name_live",

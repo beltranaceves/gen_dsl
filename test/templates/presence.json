@@ -3,7 +3,7 @@
     "pretasks": [],
     "generable_elements": [
         {
-            "type": "Presence",
+            "type": "GenDSL.Model.Presence",
             "module": "PresenceNotDefault"
         }
     ],

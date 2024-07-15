@@ -3,7 +3,7 @@
     "pretasks": [],
     "generable_elements": [
         {
-            "type": "App",
+            "type": "GenDSL.Model.App",
             "path": "test_project",
             "umbrella": false,
             "app": "test_app_name",
@@ -24,7 +24,7 @@
             "no_install": false
         },
         {
-            "type": "Schema",
+            "type": "GenDSL.Model.Schema",
             "path": "test_project",
             "plural": "schema_plural",
             "module": "Module.Name",

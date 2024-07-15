@@ -3,7 +3,7 @@
   "pretasks": [],
   "generable_elements": [
     {
-      "type": "Embedded",
+      "type": "GenDSL.Model.Embedded",
       "module": "Module.Name.Space",
       "fields": [
         {

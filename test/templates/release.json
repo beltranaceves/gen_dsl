@@ -3,7 +3,7 @@
     "pretasks": [],
     "generable_elements": [
         {
-            "type": "Release",
+            "type": "GenDSL.Model.Release",
             "docker": true
         }
     ],

@@ -3,7 +3,7 @@
     "pretasks": [],
     "generable_elements": [
         {
-            "type": "Socket",
+            "type": "GenDSL.Model.Socket",
             "module": "Socket"
         }
     ],

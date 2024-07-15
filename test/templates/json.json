@@ -3,10 +3,10 @@
   "pretasks": [],
   "generable_elements": [
     {
-      "type": "Json",
+      "type": "GenDSL.Model.Json",
       "context": "MyApiContext",
       "schema": {
-        "type": "Schema",
+        "type": "GenDSL.Model.Schema",
         "plural": "schema_plural_json",
         "module": "Module.Name.Json",
         "name": "schema_name_json",

@@ -3,7 +3,7 @@
     "pretasks": [],
     "generable_elements": [
         {
-            "type": "Notifier",
+            "type": "GenDSL.Model.Notifier",
             "context": "NotifierContext",
             "module": "MyNotifier",
             "message_names": [

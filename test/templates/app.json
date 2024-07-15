@@ -1,6 +1,6 @@
 {
   "app": {
-    "type": "App",
+    "type": "GenDSL.Model.App",
     "path": "NEW_NAME",
     "umbrella": false,
     "app": "test_app_name",
@@ -27,7 +27,7 @@
   "pretasks": [],
   "generable_elements": [
     {
-      "type": "App",
+      "type": "GenDSL.Model.App",
       "path": "NEW_NAME",
       "umbrella": false,
       "app": "test_app_name",

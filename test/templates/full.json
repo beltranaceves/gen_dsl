@@ -1,6 +1,6 @@
 {
   "app": {
-    "type": "App",
+    "type": "GenDSL.Model.App",
     "path": "my_escript_app",
     "umbrella": false,
     "app": "test_app_name",
@@ -24,7 +24,7 @@
   "pretasks": [],
   "generable_elements": [
     {
-      "type": "Cert",
+      "type": "GenDSL.Model.Cert",
       "path": "my_escript_app",
       "app": "my_app",
       "domain": "my_app.com",
@@ -32,16 +32,16 @@
       "output": "my_app.com"
     },
     {
-      "type": "Channel",
+      "type": "GenDSL.Model.Channel",
       "path": "my_escript_app",
       "module": "MyModule"
     },
     {
-      "type": "Context",
+      "type": "GenDSL.Model.Context",
       "path": "my_escript_app",
       "context": "MyContext",
       "schema": {
-        "type": "Schema",
+        "type": "GenDSL.Model.Schema",
         "path": "my_escript_app",
         "plural": "schema_plural",
         "module": "Module.Name",
@@ -62,7 +62,7 @@
       }
     },
     {
-      "type": "Embedded",
+      "type": "GenDSL.Model.Embedded",
       "path": "my_escript_app",
       "module": "Module.Name.Space",
       "fields": [
@@ -77,11 +77,11 @@
       ]
     },
     {
-      "type": "Html",
+      "type": "GenDSL.Model.Html",
       "path": "my_escript_app",
       "context": "MyWebContext",
       "schema": {
-        "type": "Schema",
+        "type": "GenDSL.Model.Schema",
         "path": "my_escript_app",
         "plural": "schema_plural_html",
         "module": "Module.Name.Html",
@@ -102,11 +102,11 @@
       }
     },
     {
-      "type": "Json",
+      "type": "GenDSL.Model.Json",
       "path": "my_escript_app",
       "context": "MyApiContext",
       "schema": {
-        "type": "Schema",
+        "type": "GenDSL.Model.Schema",
         "path": "my_escript_app",
         "plural": "schema_plural_json",
         "module": "Module.Name.Json",
@@ -127,11 +127,11 @@
       }
     },
     {
-      "type": "Live",
+      "type": "GenDSL.Model.Live",
       "path": "my_escript_app",
       "context": "MyLiveContext",
       "schema": {
-        "type": "Schema",
+        "type": "GenDSL.Model.Schema",
         "path": "my_escript_app",
         "plural": "schema_plural_live",
         "module": "Module.Name.Live",
@@ -152,24 +152,24 @@
       }
     },
     {
-      "type": "Notifier",
+      "type": "GenDSL.Model.Notifier",
       "path": "my_escript_app",
       "context": "NotifierContext",
       "module": "MyNotifier",
       "message_names": ["my_app", "my_message"]
     },
     {
-      "type": "Presence",
+      "type": "GenDSL.Model.Presence",
       "path": "my_escript_app",
       "module": "PresenceNotDefault"
     },
     {
-      "type": "Release",
+      "type": "GenDSL.Model.Release",
       "path": "my_escript_app",
       "docker": true
     },
     {
-      "type": "Schema",
+      "type": "GenDSL.Model.Schema",
       "path": "my_escript_app",
       "plural": "schema_plural_two",
       "module": "Module.Name.Two",
@@ -189,12 +189,12 @@
       ]
     },
     {
-      "type": "Secret",
+      "type": "GenDSL.Model.Secret",
       "path": "my_escript_app",
       "length": 32
     },
     {
-      "type": "Socket",
+      "type": "GenDSL.Model.Socket",
       "path": "my_escript_app",
       "module": "Socket"
     }

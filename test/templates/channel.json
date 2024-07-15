@@ -3,7 +3,7 @@
     "pretasks": [],
     "generable_elements": [
         {
-            "type": "Channel",
+            "type": "GenDSL.Model.Channel",
             "module": "MyModule"
         }
     ],

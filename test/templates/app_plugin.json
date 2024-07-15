@@ -3,7 +3,7 @@
     "pretasks": [],
     "generable_elements": [
         {
-            "type": "AppPlugin",
+            "type": "GenDSL.Model.AppPlugin",
             "path": "NEW_NAME",
             "umbrella": false,
             "app": "TestAppName",

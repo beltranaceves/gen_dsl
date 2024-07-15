@@ -1,6 +1,6 @@
 {
   "app": {
-    "type": "Nerves",
+    "type": "GenDSL.Model.Nerves",
     "path": "NEW_NAME"
   },
   "dependencies": [

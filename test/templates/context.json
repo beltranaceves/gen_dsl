@@ -3,10 +3,10 @@
   "pretasks": [],
   "generable_elements": [
     {
-      "type": "Context",
+      "type": "GenDSL.Model.Context",
       "context": "MyContext",
       "schema": {
-        "type": "Schema",
+        "type": "GenDSL.Model.Schema",
         "plural": "schema_plural",
         "module": "Module.Name",
         "name": "schema_name",
